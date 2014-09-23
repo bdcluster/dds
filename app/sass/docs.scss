@@ -1,0 +1,44 @@
+@import "vandor", "iconfont";
+
+/* for angular-bootstrap */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.platform-body{
+  padding-top: $navbar-height + $grid-gutter-width / 2;
+  overflow-x: hidden;
+  min-width: 970px;
+}
+
+.fix-md-width{
+  width:$container-md;
+}
+
+.login-panel{
+  $w: 800px;
+  width: $w;
+  max-height: $w*2/3;
+  margin-top: $navbar-height;
+  @include center-block();
+}
+
+.login-form{
+  margin-top: 70px;
+  padding: $grid-gutter-width / 2;
+  padding-right: $grid-gutter-width;
+  border-left: 1px dashed gray;
+}
+
+.yanzheng{
+  width:100%;
+  height:34px;
+}
+
+.username{
+  color: $btn-primary-bg;
+}
+
+.accordion{
+  .panel-group{
+    margin-left: 10px;
+  }
+}

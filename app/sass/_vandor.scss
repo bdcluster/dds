@@ -1,0 +1,19 @@
+@import "bootstrap",
+        "compass/css3";
+
+// animate.css base sass import
+// Grab the settings
+$enable-prefixes:         true;
+$enable-all-modules:      true;
+
+@import 'settings/main',
+        'settings/names';
+
+
+// Import Utilities
+@import 'utilities/functions',
+        'utilities/mixins',
+        'animations/fading-entrances/fade-in';
+
+// Import base animation classes
+@import 'utilities/base-classes';

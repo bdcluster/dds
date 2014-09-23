@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="DdsApp">
+  <head>
+    <meta charset="utf-8">
+    <title>代驾平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- build:css css/docs.css -->
+    <link rel="stylesheet" href="./css/docs.css">
+    <!-- endbuild -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-ng-controller="GlobelController as globCtrl" class="platform-body">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">代驾平台</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right top-toolbar">
+            <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
+            <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
+            <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-xs-2 accordion" ui-view="viewMenu"></aside>
+            <section class="col-xs-9" ui-view="viewMain"></section>
+        </div>
+    </div>
+    <section ui-view></section>
+    <!-- build:js js/docs.js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/eCharts/build/echarts-plain-original.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

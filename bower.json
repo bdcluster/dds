@@ -1,0 +1,15 @@
+{
+  "name": "rc",
+  "private": true,
+  "dependencies": {
+    "angularjs": "~1.2.23",
+    "angular-bootstrap": "~0.11.0",
+    "eCharts": "~2.0.3",
+    "bootstrap-sass": "~3.0.2",
+    "angular-resource": "~1.2.23",
+    "angular-ui-router": "~0.2.11",
+    "animate-css": "~3.2.0",
+    "animate-scss": "~1.0.0",
+    "holderjs": "~2.4.0"
+  }
+}

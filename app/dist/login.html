@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="DdsApp">
+  <head>
+    <meta charset="utf-8">
+    <title>代驾平台123</title>
+    <link rel="stylesheet" href="./css/docs.css">
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body ng-controller="LoginController as log">
+  <div class="alert alert-danger" role="alert" ng-show="log.errorshow">error</div>
+    <div class="container fix-md-width">
+      <div class="login-panel panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="login-cover col-xs-6">
+              <img src="img/designall.jpeg" class="img-responsive">
+            </div>
+            <div class="login-form col-xs-6" ng-include="log.template"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/docs.js"></script>
+  </body>
+</html>

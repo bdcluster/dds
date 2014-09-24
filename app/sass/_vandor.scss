@@ -1,7 +1,41 @@
-@import "bootstrap",
-        "compass/css3";
+/* boostrap sass import */
+// Core variables and mixins
+@import "variables";
+@import "mixins";
+$nav-pills-border-radius:   0;
+$panel-border-radius:       0;
 
-// animate.css base sass import
+// Reset
+@import "normalize";
+
+// Core CSS
+@import "scaffolding";
+@import "type";
+@import "code";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+
+// Components
+@import "component-animations";
+@import "glyphicons";
+@import "input-groups";
+// @import "button-groups";
+@import "pagination";
+@import "navs";
+@import "navbar";
+@import "panels";
+@import "wells";
+@import "close";
+
+// Utility classes
+@import "utilities";
+
+/* compass import */
+@import "compass/css3";
+
+/* animate.css base sass import */
 // Grab the settings
 $enable-prefixes:         true;
 $enable-all-modules:      true;

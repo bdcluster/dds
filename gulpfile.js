@@ -113,14 +113,43 @@
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //| ✓ minify template files
+  //| ✓ minify include files
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  gulp.task('tmpl', function(){
-    return gulp.src(_.views + '/*.html')
-    .pipe($.minifyHtml())
-    .pipe(gulp.dest(_.dist + '/views/'));
+  // gulp.task('tmpl', function(){
+  //   return gulp.src([
+  //     _.views + '/form.login.html',
+  //     _.views + '/menu.html'
+  //   ])
+  //   .pipe($.minifyHtml())
+  //   .pipe(gulp.dest(_.dist + '/views/'));
+  // });
+  
+  //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //| ✓ concat & minify all template to a js file
+  //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  gulp.task('tmpl2js', function(){
+    return gulp.src(_.views + '/**/*.html')
+    .pipe($.plumber())
+    .pipe($.minifyHtml({
+      empty: true,
+      spare: true,
+      quotes: true
+    }))
+    .pipe($.ngHtml2js({
+      moduleName: "DdsTemplate",
+      prefix: "views/"
+    }))
+    .pipe($.concat("templates.js", {newLine: ';'}))
+    .pipe(gulp.dest(_.app + '/js/'))
+    .pipe($.size());
   });
 
+  //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //| ✓ copy static files to dist files
+  //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  gulp.task('copy', function(){
+    return gulp.src(_.app + '/fonts/*.*').pipe(gulp.dest(_.dist + '/fonts/'));
+  });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ connect
@@ -162,6 +191,11 @@
     $.watch({ glob: [_.img + '/**/*.{png,jpg,jpeg,gif,ico}'] }, function() {
       gulp.start('images');
     });
+
+    // Watch template files
+    $.watch({ glob: [_.views + '/**/*.html']}, function() {
+      gulp.start('tmpl2js');
+    });
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,7 +219,7 @@
   //| ✓ alias
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('test', ['jsonlint', 'jshint']);
-  gulp.task('build', ['test', 'clean', 'html', 'json', 'tmpl', 'images', 'svg']);
+  gulp.task('build', ['test', 'clean', 'html', 'json', 'tmpl2js', 'images', 'svg', 'copy']);
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ default

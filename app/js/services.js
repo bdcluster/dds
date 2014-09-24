@@ -2,6 +2,14 @@
   'use strict';
   var app = angular.module('DdsServices', []);
 
+  app.factory('DDS',['$resource', function($resource){
+    return $resource('/json/:service.json', {}, {
+      menuQuery:{
+        params:{service: 'menus'}
+      }
+    });
+  }]);
+
   app.factory('Common', ['$window', function($window){
     var ua = navigator.userAgent.toLowerCase();
     return {

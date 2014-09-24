@@ -12,8 +12,8 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body data-ng-controller="GlobelController as globCtrl" class="platform-body">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <body data-ng-controller="GlobelController as glob" class="platform-body">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">代驾平台</a>
@@ -25,22 +25,31 @@
         </ul>
     </nav>
     <div class="container-fluid">
-        <div class="row">
-            <aside class="col-xs-2 accordion" ui-view="viewMenu"></aside>
-            <section class="col-xs-9" ui-view="viewMain"></section>
-        </div>
+        <aside class="col-xs-2 accordion" ng-include="glob.menuTemplate">content loading......</aside>
+        <section class="col-xs-9" data-ng-view></section>
+        <div class="clearfix"></div>
     </div>
-    <section ui-view></section>
+    <footer class="container-fluid">
+        <div class="col-xs-8 col-xs-offset-2">
+            <div class="row">
+                <div class="col-xs-8">Copyright &copy; Globel International Group 2014.</div>
+                <div class="col-xs-4 text-right"><span class="glyphicon glyphicon-fire"></span> Powered by some a famous team</div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </footer>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/eCharts/build/echarts-plain-original.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
     <script src="js/directives.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/templates.js"></script>    
     <!-- endbuild -->
   </body>
 </html>

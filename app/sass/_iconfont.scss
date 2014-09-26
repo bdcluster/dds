@@ -18,7 +18,20 @@ $icon-font:          "../fonts/";
   -moz-osx-font-smoothing: grayscale;
 }
 
-$icons: (yonghu:"\343f", mima:"\e651", yanzheng:"\e6ad", login:"\e71d", exit:"\3435", help:"\f004b", arrow-right:"\e60e");
+$icons: (
+  yonghu:"\343f", 
+  mima:"\e651", 
+  yanzheng:"\e6ad", 
+  login:"\e71d", 
+  exit:"\3435", 
+  help:"\f004b", 
+  arrow-right:"\e60e",
+  setting:"\f0015", 
+  client:"\e65b", 
+  order:"\e60f", 
+  charge:"\e661",
+  chart:"\e618"
+  );
 @each $icon-name, $icon-content in $icons{
   .icon-#{$icon-name}:before{
     content: $icon-content;

@@ -46,7 +46,7 @@
   gulp.task('sass', function(){
     return gulp.src(_.sass + '/**/*.{scss, sass}').pipe($.rubySass({
       loadPath: [
-        'app/bower_components/bootstrap-sass/lib/',
+        'app/bower_components/bootstrap-sass-only/scss/bootstrap/',
         'app/bower_components/animate-scss/src/'
       ],
       style: 'expanded',
@@ -148,7 +148,7 @@
   //| ✓ copy static files to dist files
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('copy', function(){
-    return gulp.src(_.app + '/fonts/*.*').pipe(gulp.dest(_.dist + '/fonts/'));
+    return gulp.src(_.app + '/fonts/**/*.*').pipe(gulp.dest(_.dist + '/fonts/'));
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

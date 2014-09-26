@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html ng-app="DdsApp">
+<html  xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="DdsApp">
   <head>
     <meta charset="utf-8">
     <title>代驾平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="dist/css/docs.css">
-    <!--[if lt IE 9]>
-      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <!--[if lte IE 8]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>
     <![endif]-->
   </head>
   <body data-ng-controller="GlobelController as glob" class="platform-body">
@@ -17,24 +20,32 @@
           <a class="navbar-brand" href="#">代驾平台</a>
         </div>
         <ul class="nav navbar-nav navbar-right top-toolbar">
-          <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
-          <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
-          <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li>
+            <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
+            <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
+            <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li>
         </ul>
     </nav>
     <div class="container-fluid">
-      <aside class="col-xs-2 accordion" ng-include="glob.menuTemplate">content loading......</aside>
-      <section class="col-xs-9" data-ng-view></section>
-      <div class="clearfix"></div>
+      <div class="row">
+        <aside class="col-xs-2 accordion" ng-include="glob.menuTemplate">content loading......</aside>
+        <section class="col-xs-9" data-ng-view></section>
+      </div>
+      <!-- <div class="clearfix"></div> -->
     </div>
     <footer class="container-fluid">
-      <div class="col-xs-8 col-xs-offset-2">
-        <div class="row">
-          <div class="col-xs-8">Copyright &copy; Globel International Group 2014.</div>
-          <div class="col-xs-4 text-right"><span class="glyphicon glyphicon-fire"></span> Powered by some a famous team</div>
+      <div class="row">
+        <div class="col-xs-9 col-xs-offset-2">
+          <div class="row">
+            <div class="col-xs-7">
+              Copyright &copy; Globel International Group 2014. 
+            </div>
+            <div class="col-xs-5 text-right">
+              <span class="glyphicon glyphicon-fire"></span> Powered by some a famous team<br>
+              <span class="glyphicon glyphicon-phone-alt"></span> 021-12345678
+            </div>
+          </div>
         </div>
       </div>
-      <div class="clearfix"></div>
     </footer>
     <script src="dist/js/docs.js"></script>
   </body>

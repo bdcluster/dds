@@ -8,8 +8,16 @@
   overflow-x: hidden;
   min-width: 1000px;
   & > nav{
-    @include opacity(0.85);
+    background-color: rgba($navbar-inverse-bg, 0.85);
+    min-width: 1000px;
+    .navbar-brand{
+      color: white
+    }
   }
+}
+
+.glyphicon-fire{ 
+  color: $brand-danger;
 }
 
 .fix-md-width{
@@ -32,8 +40,11 @@
 }
 
 .yanzheng{
-  width:100%;
   height:34px;
+}
+
+.btn-login{
+  margin-left: - $grid-gutter-width / 2;
 }
 
 .username{
@@ -43,18 +54,35 @@
 /* accordion panel setting */
 .panel-group .panel{
   @include box-shadow(none);
+  &.active .panel-heading{
+    a {color: $brand-primary;}
+  }
   &:first-child{
     @include border-top-radius($border-radius-base);
   }
   &:last-child{
     @include border-bottom-radius($border-radius-base);
   }
-  .panel-body{
-    padding:0;
-  }
   & + .panel{
     margin-top:0;
     border-top-width:0;    
+  }
+  a.accordion-toggle:hover{
+    text-decoration: none;
+    color: $brand-primary;
+  }
+  .panel-body{
+    padding:0;
+    li + li{
+      margin-top: 0;
+    }
+    a{
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
+  .panel-heading span.iconfont{
+    font-size:1.2em;
   }
 }
 
@@ -70,7 +98,13 @@
     color: white;
     td{
       border-width: 1px;
+      &.action{
+        width: 130px;
+      }
     }
+  }
+  tbody td > button + button{
+    margin-left: 5px;
   }
 }
 
@@ -89,4 +123,5 @@ footer{
   padding-top:$grid-gutter-width / 2;
   padding-bottom: $grid-gutter-width;
   color: $gray-light;
+  line-height: 2em;
 }

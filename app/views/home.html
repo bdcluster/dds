@@ -1,12 +1,12 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only" for="demo1">Email address</label>
-      <input type="email" class="form-control" id="demo1" placeholder="名称">
+      <label class="sr-only">名称</label>
+      <input type="text" class="form-control" name="demo1" data-ng-model="glob.search.name" placeholder="名称">
     </div>
     <div class="form-group">
-      <label class="sr-only" for="demo2">Email address</label>
-      <input type="email" class="form-control" id="demo2" placeholder="账号">
+      <label class="sr-only">账号</label>
+      <input type="text" class="form-control" name="demo2" data-ng-model="glob.search.account" placeholder="账号">
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary">
@@ -22,15 +22,24 @@
       <td>姓名</td>
       <td>账号</td>
       <td>角色</td>
-      <td>操作</td>
+      <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Tom</td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>Tom Cruise</td>
+      <td>tomcat</td>
+      <td>admin</td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="home.modify()">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="home.remove()">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
     </tr>
     <tr>
       <td>Jerry</td>
@@ -48,7 +57,7 @@
 </table>
 <div class="row">
   <div class="col-xs-10">
-    <pagination total-items="home.totleRecords" ng-model="home.currentPage" items-per-page="home.recordsPerPage" max-size="home.maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="home.numPages" ng-change="home.changePage()"></pagination>
+    <div data-pagination data-total-items="home.totleRecords" data-ng-model="home.currentPage" data-items-per-page="home.recordsPerPage" data-max-size="home.maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="home.numPages" data-ng-change="home.changePage()"  data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{home.currentPage}} / {{home.numPages}}

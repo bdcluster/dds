@@ -1,16 +1,10 @@
 (function(){
   'use strict';
-  var app = angular.module('DdsServices', []);
-
-  app.factory('DDS',['$resource', function($resource){
-    return $resource('/json/:service.json', {}, {
-      menuQuery:{
-        params:{service: 'menus'}
-      }
-    });
-  }]);
-
-  app.factory('Common', ['$window', function($window){
+  var app = angular.module('DdsServices', [])
+  .factory('DDS', ['$resource', function($resource){
+    return $resource('/json/:service.json', {});
+  }])
+  .factory('Common', ['$window', '$modal', function($window, $modal){
     var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
@@ -33,6 +27,24 @@
         else {
           return 3;
         }
+      },
+      openModal: function(opts){
+        var options = angular.extend(opts, {
+          templateUrl: opts.templateUrl,
+          controller: 'ModalController',
+          resolve: opts.resolve,
+        });
+        var modalInstance = $modal.open(options);
+
+        modalInstance.result.then(
+          function (result) {
+            result();
+          }, 
+          function (reason) {}
+        );
+        modalInstance.opened.then(
+          function(info){}
+        );
       }
     };
   }]);

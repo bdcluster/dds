@@ -28,7 +28,7 @@
   $w: 800px;
   width: $w;
   max-height: $w*2/3;
-  margin-top: $navbar-height;
+  margin-top: $navbar-height*2;
   @include center-block();
 }
 
@@ -91,7 +91,6 @@
 }
 
 .table-dds{
-  border-radius: $border-radius-base;
   thead > tr {
     background: $brand-info;
     font-weight: bold;

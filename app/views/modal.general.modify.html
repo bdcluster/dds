@@ -2,7 +2,66 @@
   <h3 class="modal-title" data-ng-bind="modalTitle"></h3>
 </div>
 <div class="modal-body">
-  Modal Body
+  <form class="form-horizontal" role="form" name="normalForm">
+    <div class="form-group">
+      <label for="username" class="col-xs-2 control-label">用户名</label>
+      <div class="col-xs-9">
+        <p class="form-control-static">用户名</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="userfullname" class="col-xs-2 control-label">用户姓名</label>
+      <div class="col-xs-9">
+        <input type="password" class="form-control" id="userfullname" name="userfullname" data-ng-model="formData.userfullname">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="usermobile" class="col-xs-2 control-label">手机</label>
+      <div class="col-xs-9">
+        <input type="password" class="form-control" id="usermobile" name="usermobile" data-ng-model="formData.usermobile">
+      </div>
+    </div>    
+    <div class="form-group">
+      <label class="col-xs-2 control-label">角色</label>
+      <div class="col-xs-9">
+        <label class="checkbox-inline">
+          <input type="checkbox" data-ng-true-value="1" data-ng-model="formData.chk1" name="role"> 管理员
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" data-ng-true-value="2" data-ng-model="formData.chk2" name="role"> 用户
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-2 control-label">单选</label>
+      <div class="col-xs-9">
+        <label class="radio-inline">
+          <input type="radio" name="r" value="1" data-ng-model="formData.radio"> 管理员
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="r" value="2" data-ng-model="formData.radio"> 用户
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-2 control-label" for="usersel">选择</label>
+      <div class="col-xs-9">
+        <select class="form-control" id="usersel" name="usersel" data-ng-model="formData.usersel">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-2 control-label" for="userdesc">用户备注</label>
+      <div class="col-xs-9">
+        <textarea class="form-control" id="userdesc" name="userdesc" rows="3" data-ng-model="formData.userdesc"></textarea>
+      </div>
+    </div>
+  </form>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" ng-click="confirm()">
@@ -11,4 +70,5 @@
   <button class="btn" ng-click="cancel()">
     <span class="glyphicon glyphicon-ban-circle"></span>
     取消</button>
+    {{formData | json}}
 </div>

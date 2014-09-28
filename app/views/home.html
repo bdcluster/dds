@@ -1,12 +1,13 @@
+<div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
       <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="glob.search.name" placeholder="名称">
+      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
     </div>
     <div class="form-group">
       <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="glob.search.account" placeholder="账号">
+      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary">
@@ -31,11 +32,11 @@
       <td>tomcat</td>
       <td>admin</td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="home.modify()">
+        <button class="btn btn-primary btn-xs" data-ng-click="modify()">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="home.remove()">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove()">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>
@@ -57,9 +58,9 @@
 </table>
 <div class="row">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="home.totleRecords" data-ng-model="home.currentPage" data-items-per-page="home.recordsPerPage" data-max-size="home.maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="home.numPages" data-ng-change="home.changePage()"  data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="totleRecords" data-ng-model="currentPage" data-items-per-page="recordsPerPage" data-max-size="maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="numPages" data-ng-change="changePage()"  data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{home.currentPage}} / {{home.numPages}}
+    Page: {{currentPage}} / {{numPages}}
   </div>
 </div>

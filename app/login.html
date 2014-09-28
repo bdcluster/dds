@@ -9,8 +9,8 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-controller="LoginController as log">
-    <div class="alert alert-danger" role="alert" ng-show="log.errorshow">error</div>
+  <bod data-ng-controller="GlobelController"y>
+    <div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="navbar-fixed-top">{{alert.msg}}</div>
     <div class="container fix-md-width">
       <div class="login-panel panel panel-default">
         <div class="panel-body">
@@ -18,13 +18,14 @@
             <div class="login-cover col-xs-6">
               <img src="img/designall.jpeg" class="img-responsive">
             </div>
-            <div class="login-form col-xs-6" ng-include="log.template"></div>
+            <div class="login-form col-xs-6" ng-include="loginForm" ng-controller="LoginController"></div>
           </div>
         </div>
       </div>
     </div>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>    
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>

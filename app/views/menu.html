@@ -1,8 +1,8 @@
 <div data-accordion close-others="true">
-  <div data-accordion-group data-ng-repeat="m in glob.menus" data-is-open="m.open" data-ng-click="glob.markOpen($index)" data-ng-class="{active:m.open}">
+  <div data-accordion-group data-ng-repeat="m in menus" data-is-open="m.open" data-ng-click="markOpen($index)" data-ng-class="{active:m.open}">
     <div data-accordion-heading><span class="iconfont" data-ng-class="{'icon-{{m.alias}}': true}"></span> {{m.name}}</div>
     <ul class="nav nav-pills nav-stacked">
-      <li data-ng-repeat="m2 in m.subname" data-ng-class="{active: glob.isActivedMenu('/'+m2.path)}">
+      <li data-ng-repeat="m2 in m.subname" data-ng-class="{active: isActivedMenu('/'+m2.path)}">
         <a href="#/{{m2.path}}">
           <span class='iconfont icon-arrow-right'></span>
           <span data-ng-bind="m2.name"></span>

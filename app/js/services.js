@@ -4,7 +4,7 @@
   .factory('DDS', ['$resource', function($resource){
     return $resource('/json/:service.json', {});
   }])
-  .factory('Common', ['$window', '$modal', function($window, $modal){
+  .factory('Common', ['$window', '$timeout', '$modal', function($window, $timeout, $modal){
     var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
@@ -28,11 +28,15 @@
           return 3;
         }
       },
+      alert: function(scope, opts){
+        scope.alerts.push(opts)
+        $timeout(function(){ scope.alerts.pop();}, 5000);
+      },
       openModal: function(opts){
         var options = angular.extend(opts, {
           templateUrl: opts.templateUrl,
-          controller: 'ModalController',
-          resolve: opts.resolve,
+          controller: 'ModalController as mc',
+          resolve: opts.resolve
         });
         var modalInstance = $modal.open(options);
 

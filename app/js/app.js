@@ -4,6 +4,7 @@
   // var viewPath = window.DEBUG ? 'views/' : 'dist/views/';
   var viewPath = 'views/';
   var app = angular.module('DdsApp', [
+    'ngMd5',
     'ngRoute',
     'ngResource',
     'ngCookies',
@@ -12,14 +13,12 @@
     'DdsServices',
     'DdsDirectives',
     'DdsTemplate'
-  ]);
-
-  app.config(['$routeProvider', function($routeProvider){
+  ])
+  .config(['$routeProvider', function($routeProvider){
     $routeProvider
       .when('/home', {
         templateUrl: viewPath + 'home.html',
-        controller:  'HomeController',
-        controllerAs:'home'
+        controller:  'HomeController'
       })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'

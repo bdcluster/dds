@@ -15,21 +15,21 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>
     <![endif]-->
   </head>
-  <body data-ng-controller="GlobelController as glob" class="platform-body">
+  <body data-ng-controller="GlobelController" class="platform-body">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">代驾平台</a>
         </div>
         <ul class="nav navbar-nav navbar-right top-toolbar">
-            <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
-            <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
-            <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li>
+          <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
+          <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
+          <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li>
         </ul>
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <aside class="col-xs-2 accordion" ng-include="glob.menuTemplate">content loading......</aside>
+        <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
         <section class="col-xs-9" data-ng-view></section>
       </div>
       <!-- <div class="clearfix"></div> -->
@@ -51,6 +51,7 @@
     </footer>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>

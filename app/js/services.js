@@ -2,7 +2,12 @@
   'use strict';
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', function($resource){
-    return $resource('/json/:service.json', {});
+    return $resource('/json/:service.json', {}, {
+      login:{
+        method:'GET',
+        params:{service:'login'}
+      }
+    });
   }])
   .factory('Common', ['$window', '$timeout', '$modal', function($window, $timeout, $modal){
     var ua = navigator.userAgent.toLowerCase();

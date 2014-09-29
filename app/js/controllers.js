@@ -36,15 +36,25 @@
     });
   }])
   /* 登 录 */
-  .controller('LoginController', ['$scope', '$window', '$cookieStore', 'Common', 'md5', function($scope, $window, $cookieStore, Common, md5){
+  .controller('LoginController', ['$scope', '$window', '$cookieStore', '$filter', 'Common', 'DDS', function($scope, $window, $cookieStore, $filter, Common, DDS){
     angular.extend($scope, {
+      user:{},
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
-        $cookieStore.remove('opendAccordion');
-        console.log($window.location='d.html');
+        //  md5 for password
+        $scope.user.password = $filter('md5')($scope.user.password);
+        DDS.login($scope.user, function(res){
+          var data=res.data;
+          if(data.username===$scope.user.username && data.password===$scope.user.password){
+            $cookieStore.remove('opendAccordion');
+            console.log($window.location='d.html');
+          }
+          else{
+            Common.alert($scope, {type:'danger', msg:'something error!'})
+          }
+        });
       }
     });
-    Common.alert($scope, {type:'danger', msg:'error!', show:true});
   }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'Common', function($scope, $modal, Common){

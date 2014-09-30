@@ -10,8 +10,15 @@
     <![endif]-->
   </head>
   <bod data-ng-controller="GlobelController"y>
-    <div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="navbar-fixed-top">{{alert.msg}}</div>
     <div class="container fix-md-width">
+    <div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="navbar-fixed-top">
+      <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+          <i class="iconfont icon-{{alert.type}}"></i>
+          <span data-ng-bind="alert.type"></span>
+        </div>
+      </div>
+    </div>
       <div class="login-panel panel panel-default">
         <div class="panel-body">
           <div class="row">

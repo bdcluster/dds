@@ -34,8 +34,10 @@
         }
       },
       alert: function(scope, opts){
-        scope.alerts.push(opts)
-        $timeout(function(){ scope.alerts.pop();}, 5000);
+        scope.alerts.push(opts);
+        $timeout(function(){ 
+          scope.alerts.pop();
+        }, 5000);
       },
       openModal: function(opts){
         var options = angular.extend(opts, {

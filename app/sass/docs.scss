@@ -9,13 +9,20 @@
   min-width: 1000px;
   & > nav{
     background-color: rgba($navbar-inverse-bg, 0.85);
-    min-width: 1000px;
     .navbar-brand{
-      color: white
+      color: white;
+      .icon-car{
+        font-size:28px;
+      }
+      small{
+        font-size:0.8em;
+      }
+    }
+    .navbar-right:last-child{
+      margin-right:0;
     }
   }
 }
-
 .glyphicon-fire{ 
   color: $brand-danger;
 }

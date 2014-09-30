@@ -19,18 +19,23 @@ $icon-font:          "../fonts/";
 }
 
 $icons: (
-  yonghu:"\343f", 
-  mima:"\e651", 
-  yanzheng:"\e6ad", 
-  login:"\e71d", 
-  exit:"\3435", 
-  help:"\f004b", 
-  arrow-right:"\e60e",
-  setting:"\f0015", 
-  client:"\e65b", 
-  order:"\e60f", 
-  charge:"\e661",
-  chart:"\e618"
+  yonghu:"\e610", 
+  mima:"\e609", 
+  yanzheng:"\e60a", 
+  login:"\e604", 
+  exit:"\e600", 
+  help:"\e605", 
+  arrow-right:"\e603",
+  setting:"\e602", 
+  client:"\e608", 
+  order:"\e606", 
+  charge:"\e607",
+  chart:"\e60b",
+  success:"\e60e",
+  warning:"\e60f",
+  info:"\e60c",
+  danger:"\e60d",
+  car:"\e601"
   );
 @each $icon-name, $icon-content in $icons{
   .icon-#{$icon-name}:before{

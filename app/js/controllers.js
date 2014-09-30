@@ -7,11 +7,11 @@
   .controller('GlobelController', ['$scope', '$location', '$cookieStore', 'DDS', function($scope, $location, $cookieStore, DDS){
     angular.extend($scope, {
       alerts: [],
+      navDrop:{
+        isopen:false
+      },
       closeAlert: function(index){
         this.alerts.splice(index, 1);
-      },
-      showAlert: function(index){
-        this.alerts[index].show=true;
       },
       menuTemplate: templatePath + 'menu.html'
     });
@@ -96,7 +96,7 @@
                 removeText: '确定要删除这条记录？', // modal 删除提示语
                 confirm: function(modalInstance){ // 确认modal callback
                   modalInstance.close(function(){
-                    $log.info('remove');
+                    // $log.info('remove');
                   });
                 },
                 cancel: function(modalInstance){ // 取消modal 默认没有callback
@@ -113,6 +113,7 @@
   .controller('ModalController', ['$scope', '$modalInstance', 'modalSet', function($scope, $modalInstance, modalSet){
     angular.extend($scope, {
       modalTitle: modalSet.title,
+      formData:{},
       removeText: modalSet.removeText,
       confirm: function(){
         modalSet.confirm($modalInstance, this);

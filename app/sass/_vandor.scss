@@ -34,7 +34,7 @@ $panel-border-radius:       0;
 @import "scaffolding", "type", "code", "grid", "tables", "forms", "buttons";
 
 // Components
-@import "component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close";
+@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close";
 
 // Utility classes
 @import "utilities";
@@ -50,12 +50,11 @@ $enable-all-modules:      true;
 @import 'settings/main',
         'settings/names';
 
+// Import base animation classes
+@import 'utilities/base-classes';
 
 // Import Utilities
 @import 'utilities/functions',
         'utilities/mixins',
         'animations/fading-exits/fade-out',
         'animations/fading-entrances/fade-in';
-
-// Import base animation classes
-@import 'utilities/base-classes';

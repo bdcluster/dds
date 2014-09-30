@@ -1,4 +1,7 @@
-<div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</div>
+<div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
+  <i class="iconfont icon-{{alert.type}}"></i>
+  <span data-ng-bind="alert.type"></span>
+</div>
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">

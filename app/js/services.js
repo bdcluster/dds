@@ -4,8 +4,9 @@
   .factory('DDS', ['$resource', function($resource){
     return $resource('/json/:service.json', {}, {
       login:{
-        method:'GET',
-        params:{service:'login'}
+        method:'POST',
+        url:'http://10.10.40.208:8080/j_spring_security_check'
+        // params:{service:'j_spring_security_check'}
       }
     });
   }])
@@ -38,6 +39,14 @@
         $timeout(function(){ 
           scope.alerts.pop();
         }, 5000);
+      },
+      validResponse: function(res){
+        if (res.header.resonCode=== 0) {
+          return res.data;
+        }
+        else{
+          return null;
+        }
       },
       openModal: function(opts){
         var options = angular.extend(opts, {

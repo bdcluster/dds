@@ -42,15 +42,19 @@
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
         //  md5 for password
-        $scope.user.password = $filter('md5')($scope.user.password);
+        // $scope.user.password = $filter('md5')($scope.user.password);
         DDS.login($scope.user, function(res){
-          var data=res.data;
-          if(data.username===$scope.user.username && data.password===$scope.user.password){
-            $cookieStore.remove('opendAccordion');
-            console.log($window.location='d.html');
-          }
-          else{
-            Common.alert($scope, {type:'danger', msg:'something error!'})
+          var data = Common.validResponse(res);
+          $cookieStore.remove('opendAccordion');
+          if(data){
+            if(data.user.userId===$scope.user.userId && data.user.userName===$scope.user.password){
+              console.log(data.user);
+              $window.location='d.html';
+            }
+            else{
+              console.log(data.user.userId, $scope.user.userId);
+              Common.alert($scope, {type:'danger', msg:'something error!'});
+            }
           }
         });
       }

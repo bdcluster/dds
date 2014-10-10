@@ -1,7 +1,12 @@
 {
-  "errorcode":0,
-  "data":{
-    "username" : "admin",
-    "password" : "b0baee9d279d34fa1dfd71aadb908c3f"
+  "errorCode": 0,
+  "data": {
+    "sessionId": "c7877fdb3ee",
+    "user": {
+      "id": 1,
+      "userId": "admin",
+      "userName": "管理员",
+      "role": 1
+    }
   }
 }

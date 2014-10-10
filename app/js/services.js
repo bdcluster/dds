@@ -2,11 +2,11 @@
   'use strict';
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', function($resource){
-    return $resource('/json/:service.json', {}, {
+    var normalPrarms = {local:1, mock:1, enforce:1};
+    return $resource('http://127.0.0.1:8084/:endpoint/:action', normalPrarms, {
       login:{
         method:'POST',
-        url:'http://10.10.40.208:8080/j_spring_security_check'
-        // params:{service:'j_spring_security_check'}
+        params:{endpoint:'user', action:'login'}
       }
     });
   }])
@@ -41,7 +41,7 @@
         }, 5000);
       },
       validResponse: function(res){
-        if (res.header.resonCode=== 0) {
+        if (res.header.errorCode=== 0) {
           return res.data;
         }
         else{

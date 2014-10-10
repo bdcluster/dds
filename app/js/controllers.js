@@ -16,7 +16,7 @@
       menuTemplate: templatePath + 'menu.html'
     });
     // 从DDS service获取菜单
-    DDS.get({service: 'menus'}, function(res){
+    /*DDS.get({service: 'menus'}, function(res){
       angular.extend($scope, {
         menus: res.data.menudata,
         isActivedMenu: function(viewLocation){
@@ -33,30 +33,31 @@
         }
       });
       $scope.keepOpenAccordion();
-    });
+    });*/
   }])
   /* 登 录 */
   .controller('LoginController', ['$scope', '$window', '$cookieStore', '$filter', 'Common', 'DDS', function($scope, $window, $cookieStore, $filter, Common, DDS){
+    console.log($window.localStorage)
     angular.extend($scope, {
       user:{},
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
         //  md5 for password
-        // $scope.user.password = $filter('md5')($scope.user.password);
+        $scope.user.password = $filter('md5')($scope.user.password);
+        $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
           var data = Common.validResponse(res);
           $cookieStore.remove('opendAccordion');
           if(data){
-            if(data.user.userId===$scope.user.userId && data.user.userName===$scope.user.password){
-              console.log(data.user);
-              $window.location='d.html';
-            }
-            else{
-              console.log(data.user.userId, $scope.user.userId);
-              Common.alert($scope, {type:'danger', msg:'something error!'});
-            }
+            console.log($scope.user);
+          }
+          else{
+            Common.alert($scope, {type:'danger', msg:'something error!'});
           }
         });
+      },
+      isUnchanged: function(user){
+        return angular.equals(user, $scope.master);
       }
     });
   }])

@@ -1,0 +1,11 @@
+{
+    
+    "header":{
+       "errorCode": 0
+    },
+        "data":{
+            "pageNo|1-20": 1,
+            "pageSize": 20, 
+            "returnValue":Random.boolean()
+        }
+}

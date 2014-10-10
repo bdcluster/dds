@@ -1,0 +1,14 @@
+{  
+    "header":{
+       "errorCode": 0
+    },
+        "data":{
+           "area|10":[
+               {
+                   "aid|1-34":1,
+                    "name|1":[Random.region(),Random.region(),Random.region(),"武汉","襄阳","成都","苏州","杭州","兰州"]
+               }
+            ]
+           
+        }
+}

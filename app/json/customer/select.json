@@ -1,0 +1,20 @@
+{
+    
+    "header":{
+       "errorCode": 0
+    },
+        "data":{
+            "pageNo|1-20": 1,
+            "pageSize": 20, 
+           "customers|10":[
+                    {
+               "customerNo":"@LAST",
+                "name":"@FIRST @LAST",
+                "emergencyPhone|11":"1",
+                "createTime":"@DATE @TIME",
+                "vip|0-1":0,
+                "commonDestination":"ÖÐÐÇ³Ç"
+                    }
+                ]
+        }
+}

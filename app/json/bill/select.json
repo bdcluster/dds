@@ -1,0 +1,27 @@
+{
+    
+    "header":{
+       "errorCode": 0
+    },
+        "data":{
+            "pageNo|1-20": 1,
+            "pageSize": 20, 
+           "bill|10":[
+                    {
+               "billNo|+1":1,
+               "cName":"@FIRST",
+               "cMobile|11":"3",
+               "dName":"@LAST",
+               "dMobile|11":"2",
+                "status|1-4":1,
+                "distance":Random.integer(1,10000),
+                "charge":"@distance",
+                "destination|1":["上海南站","中山公园","上海科技馆","上海动物园","上海迪士尼","上海欢乐谷","虹口足球场","万达广场"],
+                "createTime":"@DATE @TIME",
+                "startTime":Random.datetime(),
+                "endTime":Random.now(),
+                "hours":"@INT(0,10)"
+              }
+                ]
+        }
+}

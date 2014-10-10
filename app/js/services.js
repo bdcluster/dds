@@ -10,7 +10,7 @@
       }
     });
   }])
-  .factory('Common', ['$window', '$timeout', '$modal', function($window, $timeout, $modal){
+  .factory('C', ['$window', '$timeout', '$modal', function($window, $timeout, $modal){
     var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
@@ -65,6 +65,9 @@
         modalInstance.opened.then(
           function(info){}
         );
+      },
+      storage: function(){
+        if($window.localStorage) console.log(true)
       }
     };
   }]);

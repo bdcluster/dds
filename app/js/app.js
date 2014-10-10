@@ -12,7 +12,8 @@
     'DdsControllers',
     'DdsServices',
     'DdsDirectives',
-    'DdsTemplate'
+    'DdsTemplate',
+    'LocalStorageModule'
   ])
   .config(['$routeProvider','$httpProvider', function($routeProvider,$httpProvider){
     $routeProvider

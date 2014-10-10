@@ -36,8 +36,8 @@
     });*/
   }])
   /* 登 录 */
-  .controller('LoginController', ['$scope', '$window', '$cookieStore', '$filter', 'Common', 'DDS', function($scope, $window, $cookieStore, $filter, Common, DDS){
-    console.log($window.localStorage)
+  .controller('LoginController', ['$scope', '$window', '$cookieStore', '$filter', 'C', 'DDS', function($scope, $window, $cookieStore, $filter, Common, DDS){
+    Common.storage();
     angular.extend($scope, {
       user:{},
       loginForm: templatePath + 'form.login.html',
@@ -62,7 +62,7 @@
     });
   }])
   /* demo */
-  .controller('HomeController', ['$scope', '$modal', 'Common', function($scope, $modal, Common){
+  .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, Common){
     angular.extend($scope, {
       maxSize : 10,
       totleRecords : 200,

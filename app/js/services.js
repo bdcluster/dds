@@ -5,12 +5,13 @@
     var normalPrarms = {local:1, mock:1, enforce:1};
     return $resource('http://127.0.0.1:8084/:endpoint/:action', normalPrarms, {
       login:{
-        method:'POST',
-        params:{endpoint:'user', action:'login'}
+        method:'GET',
+        url:"http://10.10.40.208:8080/customer/index"
+        // params:{endpoint:'user', action:'login'}
       }
     });
   }])
-  .factory('C', ['$window', '$timeout', '$modal', function($window, $timeout, $modal){
+  .factory('C', ['$window', '$timeout', '$modal','localStorageService', function($window, $timeout, $modal, ls){
     var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
@@ -67,7 +68,25 @@
         );
       },
       storage: function(){
-        if($window.localStorage) console.log(true)
+        var store, now = new Date();
+        ls.isSupported ? store = ls : store = ls.cookie;
+        return {
+          set: function(key, val){
+            return ls.set(key, val);
+          },
+          get: function(key){
+            return ls.get(key);
+          },
+          remove: function(key){
+            return ls.remove(key);
+          },
+          clear: function(){
+            return ls.clearAll();
+          }
+        }
+      },
+      back2Login:function(){
+        $window.location='login.html';
       }
     };
   }]);

@@ -27,7 +27,7 @@ $icons: (
   help:"\e605", 
   arrow-right:"\e603",
   setting:"\e602", 
-  client:"\e608", 
+  customer:"\e608", 
   order:"\e606", 
   charge:"\e607",
   chart:"\e60b",
@@ -35,7 +35,11 @@ $icons: (
   warning:"\e60f",
   info:"\e60c",
   danger:"\e60d",
-  car:"\e601"
+  car:"\e601",
+  driver:"\e601",
+  oldpwd:"\e611",
+  newpwd:"\e613",
+  newpwd2:"\e612"
   );
 @each $icon-name, $icon-content in $icons{
   .icon-#{$icon-name}:before{

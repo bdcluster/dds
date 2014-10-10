@@ -26,7 +26,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle">
               <i class="iconfont icon-yonghu"></i>
-              欢迎您，Admin
+              欢迎您，{{loginInfo.userId}}
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
@@ -34,11 +34,13 @@
                 <a href="#"><i class="iconfont icon-yonghu"></i> 修改资料</a>
               </li>
               <li>
+                <a href="#/chgpwd"><i class="iconfont icon-mima"></i> 修改密码</a>
+              </li>              <li>
                 <a href="#"><i class="iconfont icon-help"></i> 帮助文档</a>
               </li>
               <li class="divider"></li>
               <li>
-                <a href="#"><i class="iconfont icon-exit"></i> 退出系统</a>
+                <a href="#" data-ng-click="signOut()"><i class="iconfont icon-exit"></i> 退出系统</a>
               </li>
             </ul>
           </li>
@@ -73,7 +75,6 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>    

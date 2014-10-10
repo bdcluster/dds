@@ -4,40 +4,51 @@
   var templatePath = 'views/';
   var app = angular.module('DdsControllers', [])
    /* 全局controller，不包括登录页面 */
-  .controller('GlobelController', ['$scope', '$location', '$cookieStore', 'DDS', function($scope, $location, $cookieStore, DDS){
+  .controller('GlobelController', ['$scope', '$location', 'C', 'DDS', function($scope, $location, C, DDS){
+    var storage = C.storage();
+    if(!storage.get("loginInfo") && $location.path()){
+      console.log($location.path())
+      C.back2Login();
+    }
     angular.extend($scope, {
       alerts: [],
+      loginInfo: storage.get('loginInfo'),
       navDrop:{
         isopen:false
       },
+      menuTemplate: templatePath + 'menu.html',
       closeAlert: function(index){
         this.alerts.splice(index, 1);
       },
-      menuTemplate: templatePath + 'menu.html'
+      signOut: function(){
+        storage.remove('loginInfo');
+        C.back2Login();
+      }
     });
     // 从DDS service获取菜单
-    /*DDS.get({service: 'menus'}, function(res){
+    DDS.get({endpoint:'user', action:'menus'}, function(res){
+      var data = C.validResponse(res);
       angular.extend($scope, {
-        menus: res.data.menudata,
+        menus: data,
         isActivedMenu: function(viewLocation){
           return viewLocation === $location.path();
         },
         markOpen: function(no){
-          $cookieStore.put('opendAccordion', no);
+          storage.set('opendAccordion', no);
         },
         keepOpenAccordion: function(){
-          var index = $cookieStore.get('opendAccordion');
-          if(index !== undefined){
+          var index = storage.get('opendAccordion');
+          if(index){
             this.menus[index].open = true;
           }
         }
       });
       $scope.keepOpenAccordion();
-    });*/
+    });
   }])
   /* 登 录 */
-  .controller('LoginController', ['$scope', '$window', '$cookieStore', '$filter', 'C', 'DDS', function($scope, $window, $cookieStore, $filter, Common, DDS){
-    Common.storage();
+  .controller('LoginController', ['$scope', '$window', '$filter', 'C', 'DDS', function($scope, $window, $filter, C, DDS){
+    var storage = C.storage();
     angular.extend($scope, {
       user:{},
       loginForm: templatePath + 'form.login.html',
@@ -46,13 +57,14 @@
         $scope.user.password = $filter('md5')($scope.user.password);
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
-          var data = Common.validResponse(res);
-          $cookieStore.remove('opendAccordion');
+          var data = C.validResponse(res);
+          storage.remove('opendAccordion');
           if(data){
-            console.log($scope.user);
+            storage.set('loginInfo', data.user);
+            $window.location="d.html";
           }
           else{
-            Common.alert($scope, {type:'danger', msg:'something error!'});
+            C.alert($scope, {type:'danger', msg:'something error!'});
           }
         });
       },
@@ -61,8 +73,14 @@
       }
     });
   }])
+  /* change password */
+  .controller('ChangePasswordController', ['$scope', function($scope){
+    angular.extend($scope, {
+
+    });
+  }])
   /* demo */
-  .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, Common){
+  .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){
     angular.extend($scope, {
       maxSize : 10,
       totleRecords : 200,
@@ -71,7 +89,7 @@
       changePage: function(){
       },
       modify: function(){
-        Common.openModal({
+        C.openModal({
           templateUrl: templatePath + 'modal.general.modify.html',
           resolve: {
             modalSet: function(){
@@ -80,7 +98,7 @@
                 confirm: function(modalInstance, scope){ // 确认modal callback
                   console.log(scope.formData); // collect form data
                   modalInstance.close(function(){ // close modal
-                    Common.alert($scope, {type:'success', msg:'编辑成功！'});
+                    C.alert($scope, {type:'success', msg:'编辑成功！'});
                   });
                 },
                 cancel: function(modalInstance){ // 取消modal 默认没有callback
@@ -92,7 +110,7 @@
         });
       },
       remove: function(){
-        Common.openModal({
+        C.openModal({
           templateUrl: templatePath + 'modal.general.remove.html',
           size: 'sm',
           resolve:{

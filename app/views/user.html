@@ -14,50 +14,43 @@
       </button>
     </div>
   </form>
+  <button class="btn btn-primary" data-ng-click="addUser()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
   <thead>
     <tr>
+      <td>用户名</td>
       <td>姓名</td>
-      <td>账号</td>
       <td>角色</td>
+      <td>备注</td>
+      <td>添加时间</td>
       <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Tom Cruise</td>
-      <td>tomcat</td>
-      <td>admin</td>
+    <tr data-ng-repeat="user in users">
+      <td data-ng-bind="user.userId"></td>
+      <td data-ng-bind="user.userName"></td>
+      <td data-ng-bind="user.roles"></td>
+      <td data-ng-bind="user.description"></td>
+      <td data-ng-bind="user.createTime"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="modify()">
+        <button class="btn btn-primary btn-xs" data-ng-click="modify(user.id)">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove()">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(user.id)">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>
       </td>
     </tr>
-    <tr>
-      <td>Jerry</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Andy</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
   </tbody>
 </table>
-<div class="row">
+<div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="totleRecords" data-ng-model="currentPage" data-items-per-page="recordsPerPage" data-max-size="maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="numPages" data-ng-change="changePage()"  data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="totalRecords" data-ng-model="currentPage" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{currentPage}} / {{numPages}}

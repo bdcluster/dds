@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h3 class="modal-title" data-ng-bind="modalTitle"></h3>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal form-modal" role="form" name="userForm">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.userId.$valid, 'has-error':userForm.userId.$invalid &amp;&amp; userForm.userId.$dirty}">
+      <label for="username" class="col-xs-2 control-label">用户名</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="userId" data-ng-model="user.userId" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="userForm.userId.$dirty" data-ng-class="{'glyphicon-ok':userForm.userId.$valid, 'glyphicon-remove':userForm.userId.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.userName.$valid, 'has-error':userForm.userName.$invalid &amp;&amp; userForm.userName.$dirty}">
+      <label for="userfullname" class="col-xs-2 control-label">用户姓名</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="userName" data-ng-model="user.userName" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="userForm.userName.$dirty" data-ng-class="{'glyphicon-ok':userForm.userName.$valid, 'glyphicon-remove':userForm.userName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.mobile.$valid, 'has-error':userForm.mobile.$invalid &amp;&amp; userForm.mobile.$dirty}">
+      <label for="usermobile" class="col-xs-2 control-label">手机</label>
+      <div class="col-xs-9">
+        <input type="tex" class="form-control" name="mobile" data-ng-model="user.mobile" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="userForm.mobile.$dirty" data-ng-class="{'glyphicon-ok':userForm.mobile.$valid, 'glyphicon-remove':userForm.mobile.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.email.$valid, 'has-error':userForm.email.$invalid &amp;&amp; userForm.email.$dirty}">
+      <label for="usermobile" class="col-xs-2 control-label">邮箱</label>
+      <div class="col-xs-9">
+        <input type="email" class="form-control" name="email" data-ng-model="user.email" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="userForm.email.$dirty" data-ng-class="{'glyphicon-ok':userForm.email.$valid, 'glyphicon-remove':userForm.email.$invalid}"></i>
+      </div>
+    </div>  
+    <div class="form-group has-feedback">
+      <label class="col-xs-2 control-label">角色</label>
+      <div class="col-xs-9">
+        <label class="radio-inline">
+          <input type="radio" name="role" value="1" data-ng-model="user.role"> 管理员
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="role" value="2" data-ng-model="user.role"> 用户
+        </label>
+      </div>
+    </div>
+    <div class="form-group has-feedback">
+      <label class="col-xs-2 control-label" for="userdesc">用户描述</label>
+      <div class="col-xs-9">
+        <textarea class="form-control" name="description" rows="3" data-ng-model="user.description"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="confirm()" ng-disabled="userForm.$invalid">
+    <span class="glyphicon glyphicon-ok"></span>
+    确认</button>
+  <button class="btn" ng-click="cancel()">
+    <span class="glyphicon glyphicon-ban-circle"></span>
+    取消</button>
+</div>

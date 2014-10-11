@@ -24,6 +24,10 @@
         templateUrl: viewPath + 'home.html',
         controller:  'HomeController'
       })
+      .when('/user', {
+        templateUrl: viewPath + 'user.html',
+        controller:  'UserController'
+      })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'
       })

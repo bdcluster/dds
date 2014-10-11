@@ -3,15 +3,27 @@
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', function($resource){
     var normalPrarms = {local:1, mock:1, enforce:1};
-    return $resource('http://127.0.0.1:8084/:endpoint/:action', normalPrarms, {
+    return $resource('http://127.0.0.1:8084/:endpoint/:action/:id', normalPrarms, {
       login:{
         method:'GET',
-        url:"http://10.10.40.208:8080/customer/index"
-        // params:{endpoint:'user', action:'login'}
+        // url:"http://10.10.40.208:8080/login-index"
+        params:{endpoint:'user', action:'login'}
+      },
+      signOut:{
+        method:'POST',
+        params:{endpoint:'user', action:'signOut'}
+      },
+      savePwd:{
+        method:'POST',
+        params:{endpoint:'user', action:'editPassword'}
+      },
+      delUser:{
+        method:'POST',
+        params:{endpoint:'user', action:'delete', id:'@userId'}
       }
     });
   }])
-  .factory('C', ['$window', '$timeout', '$modal','localStorageService', function($window, $timeout, $modal, ls){
+  .factory('C', ['$window', '$timeout','$location', '$modal','localStorageService', function($window, $timeout, $location, $modal, ls){
     var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
@@ -39,7 +51,7 @@
         scope.alerts.push(opts);
         $timeout(function(){ 
           scope.alerts.pop();
-        }, 5000);
+        }, 3000);
       },
       validResponse: function(res){
         if (res.header.errorCode=== 0) {
@@ -87,6 +99,16 @@
       },
       back2Login:function(){
         $window.location='login.html';
+      },
+      back2Home: function(delay){
+        if(delay){
+          $timeout(function(){
+            $location.path('/home');
+          }, 3000);
+        }
+        else{
+          $location.path('/home');
+        }
       }
     };
   }]);

@@ -25,16 +25,23 @@
       },
       saveUser:{
         method:'POST',
-        // url:'http://10.10.40.88:8080/driver/index',
         params:{endpoint:'user', action:'@action', id:'@id'}
+      },
+      delRole:{
+        method:'POST',
+        params:{endpoint:'role', action:'delete', id:'@id'}
+      },
+      saveRole:{
+        method:'POST',
+        params:{endpoint:'role', action:'@action', id:'@id'}
       }
     });
   }])
   .factory('C', ['$window', '$timeout','$location', '$modal','localStorageService', function($window, $timeout, $location, $modal, ls){
-    var ua = navigator.userAgent.toLowerCase();
     return {
       runtimeEvn: function(){
         //0开发 1测试 2生产 3其他
+        var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
             path = $window.location.pathname,
             local= /^(localhost|10\.10|127\.0|192\.168)/i;
@@ -54,6 +61,7 @@
           return 3;
         }
       },
+
       alert: function(scope, opts){
         scope.alerts.push(opts);
         $timeout(function(){ 
@@ -68,12 +76,19 @@
           return null;
         }
       },
-      openModal: function(opts){
-        var options = angular.extend(opts, {
-          templateUrl: opts.templateUrl,
-          controller: 'ModalController as mc',
-          resolve: opts.resolve
-        });
+
+      openModal: function(modalSet, module){
+        var m = module || 'general.remove';
+        var options = {
+          templateUrl: 'views/modal.'+ m +'.html',
+          controller: 'ModalController',
+          resolve: {
+            modalSet: function(){ return modalSet }
+          }
+        };
+        if(m  === 'general.remove'){
+          angular.extend(options, {size:'sm'});
+        }
         var modalInstance = $modal.open(options);
 
         modalInstance.result.then(
@@ -85,6 +100,10 @@
         modalInstance.opened.then(
           function(info){}
         );
+      },
+
+      cancelModal: function(modalInstance){ // 取消modal 默认没有callback
+        modalInstance.dismiss();
       },
       storage: function(){
         var store, now = new Date();
@@ -104,9 +123,11 @@
           }
         }
       },
+
       back2Login:function(){
         $window.location='login.html';
       },
+
       back2Home: function(delay){
         if(delay){
           $timeout(function(){
@@ -117,6 +138,7 @@
           $location.path('/home');
         }
       },
+
       list:function(scope, resource, options){
         var self = this;
         resource.get(options, function(res){

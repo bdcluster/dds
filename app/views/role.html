@@ -30,7 +30,7 @@
     <tr data-ng-repeat="role in roles">
       <td data-ng-bind="role.roleName"></td>
       <td data-ng-bind="role.description"></td>
-      <td data-ng-bind="user.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
+      <td data-ng-bind="role.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRole(role)">
           <span class="glyphicon glyphicon-edit"></span>

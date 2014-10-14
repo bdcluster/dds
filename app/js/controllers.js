@@ -32,7 +32,7 @@
             C.back2Login();
           }
         });
-      },
+      }
     });
     // 从DDS service获取菜单
     if(storage.get("loginInfo")){
@@ -117,16 +117,18 @@
   }])
   /* 用户管理 */
   .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){
-    var userParams = {endpoint:'user', action:'select'};
     $scope.changePage = function(){
-      var options = angular.extend(userParams, {pageNo:$scope.pageNo})
-      C.list($scope, DDS, options);
+      C.list($scope, DDS, {
+        endpoint:'user', action:'select',
+        pageNo:$scope.pageNo
+      });
     }
     $scope.changePage(); // default: load pageNo:1
 
     $scope.saveUser = function(user){
-      var params={pageNo:$scope.pageNo}, userInfo = angular.extend({},user);
+      var params={pageNo:$scope.pageNo};
       if(user){
+        var userInfo = angular.extend({},user);
         angular.extend(params, {action:'edit', id:userInfo.id});
       }
       else{
@@ -134,8 +136,8 @@
       }
       DDS.get({endpoint:"role", action:'select'}).$promise.then(function(res){
         var roles = res.data.roles;
-        var modalOptions = {
-          title: '用户信息', // modal 窗体标题
+        var modalSet = {
+          modalTitle: '用户信息', // modal 窗体标题
           extraData: roles,
           formData: userInfo || {},
           confirm: function(modalInstance, scope){ // 确认modal callback
@@ -150,21 +152,13 @@
               }
             });
           },
-          cancel: function(modalInstance){ // 取消modal 默认没有callback
-            modalInstance.dismiss();
-          }
+          cancel: C.cancelModal
         }
-
-        C.openModal({
-          templateUrl: templatePath + 'modal.user.html',
-          resolve:{ 
-            modalSet: function(){ return modalOptions } 
-          }
-        });
+        C.openModal(modalSet, 'user');
       })
     }
     $scope.remove = function(id){
-      var modalOptions = {
+      var modalSet = {
         removeText: '确定要删除这条记录？', // modal 删除提示语
         confirm: function(modalInstance){ // 确认modal callback
           DDS.delUser({pageNo:$scope.pageNo, id: id}, function(res){
@@ -177,22 +171,67 @@
             }
           });
         },
-        cancel: function(modalInstance){ // 取消modal 默认没有callback
-          modalInstance.dismiss('dismiss');
-        }
+        cancel: C.cancelModal
       };
-      C.openModal({
-        templateUrl: templatePath + 'modal.general.remove.html',
-        size: 'sm',
-        resolve:{
-          modalSet: function(){ return modalOptions }
-        }
-      });
+      C.openModal(modalSet);
     }
   }])
   /* 角色管理 */
-  .controller('RoleController', ['$scope', '$modal', 'C', function($scope, $modal, C){
+  .controller('RoleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    $scope.changePage = function(){
+      C.list($scope, DDS, {
+        endpoint:'role', action:'select',
+        pageNo:$scope.pageNo
+      });
+    }
+    $scope.changePage(); // default: load pageNo:1
 
+    $scope.saveRole = function(role){
+      var params={pageNo:$scope.pageNo};
+      if(role){
+        var roleInfo = angular.extend({},role);
+        angular.extend(params, {action:'edit', id:roleInfo.id});
+      }
+      else{
+        angular.extend(params, {action:'add'});
+      }
+      var modalSet = {
+        modalTitle: '角色定义', // modal 窗体标题
+        formData: roleInfo || {},
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.saveRole(angular.extend(params, scope.formData), function(res){
+            var data = C.validResponse(res);
+            if(data){
+              modalInstance.close(function(){ // close modal
+                angular.extend($scope, data);
+                C.alert($scope, {type:'success', msg:data.message});
+              });
+            }
+          });
+        },
+        cancel: C.cancelModal
+      }
+      C.openModal(modalSet, 'role');
+    }
+
+    $scope.remove = function(id){
+      var modalSet = {
+        removeText: '确定要删除这条记录？', // modal 删除提示语
+        confirm: function(modalInstance){ // 确认modal callback
+          DDS.delRole({pageNo:$scope.pageNo, id: id}, function(res){
+            var data = C.validResponse(res);
+            if(data){
+              modalInstance.close(function(){
+                angular.extend($scope, data);
+                C.alert($scope, {type:'danger', msg:data.message});
+              });
+            }
+          });
+        },
+        cancel: C.cancelModal
+      };
+      C.openModal(modalSet);
+    }    
   }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){
@@ -204,54 +243,39 @@
       changePage: function(){
       },
       modify: function(){
-        C.openModal({
-          templateUrl: templatePath + 'modal.general.modify.html',
-          resolve: {
-            modalSet: function(){
-              return {
-                title: '名称', // modal 窗体标题
-                confirm: function(modalInstance, scope){ // 确认modal callback
-                  console.log(scope.formData); // collect form data
-                  modalInstance.close(function(){ // close modal
-                    C.alert($scope, {type:'success', msg:'编辑成功！'});
-                  });
-                },
-                cancel: function(modalInstance){ // 取消modal 默认没有callback
-                  modalInstance.dismiss('dismiss');
-                }
-              };
-            }
-          }
-        });
+        var modalSet = {
+          modalTitle: '名称', // modal 窗体标题
+          confirm: function(modalInstance, scope){ // 确认modal callback
+            console.log(scope.formData); // collect form data
+            modalInstance.close(function(){ // close modal
+              C.alert($scope, {type:'success', msg:'编辑成功！'});
+            });
+          },
+          cancel: C.cancelModal
+        }
+        C.openModal(modalSet, 'general.modify');
       },
       remove: function(){
-        C.openModal({
-          templateUrl: templatePath + 'modal.general.remove.html',
-          size: 'sm',
-          resolve:{
-            modalSet: function(){
-              return {
-                removeText: '确定要删除这条记录？', // modal 删除提示语
-                confirm: function(modalInstance){ // 确认modal callback
-                  modalInstance.close(function(){
-                    // $log.info('remove');
-                    C.alert($scope, {type:'danger', msg:'OK!'});
-                  });
-                },
-                cancel: function(modalInstance){ // 取消modal 默认没有callback
-                  modalInstance.dismiss('dismiss');
-                }
-              };
-            }
+        var modalSet = {
+          removeText: '确定要删除这条记录？', // modal 删除提示语
+          confirm: function(modalInstance){ // 确认modal callback
+            modalInstance.close(function(){
+              // $log.info('remove');
+              C.alert($scope, {type:'danger', msg:'OK!'});
+            });
+          },
+          cancel: function(modalInstance){ // 取消modal 默认没有callback
+            modalInstance.dismiss('dismiss');
           }
-        });
+        }; 
+        C.openModal(modalSet);
       }
     });
   }])
   /* normal modal */
   .controller('ModalController', ['$scope', '$modalInstance', 'modalSet', function($scope, $modalInstance, modalSet){
     angular.extend($scope, {
-      modalTitle: modalSet.title,
+      modalTitle: modalSet.modalTitle,
       formData:modalSet.formData || {},
       extraData: modalSet.extraData || {},
       removeText: modalSet.removeText,

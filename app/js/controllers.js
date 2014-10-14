@@ -134,7 +134,7 @@
       else{
         angular.extend(params, {action:'add'});
       }
-      DDS.get({endpoint:"role", action:'select'}).$promise.then(function(res){
+      DDS.get({endpoint:"role", action:'select'}, function(res){
         var roles = res.data.roles;
         var modalSet = {
           modalTitle: '用户信息', // modal 窗体标题
@@ -143,13 +143,7 @@
           confirm: function(modalInstance, scope){ // 确认modal callback
             delete scope.formData.role;
             DDS.saveUser(angular.extend(params, scope.formData), function(res){
-              var data = C.validResponse(res);
-              if(data){
-                modalInstance.close(function(){ // close modal
-                  angular.extend($scope, data);
-                  C.alert($scope, {type:'success', msg:data.message});
-                });
-              }
+              C.responseHandler(scope, $scope, modalInstance, res);
             });
           },
           cancel: C.cancelModal
@@ -200,13 +194,7 @@
         formData: roleInfo || {},
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveRole(angular.extend(params, scope.formData), function(res){
-            var data = C.validResponse(res);
-            if(data){
-              modalInstance.close(function(){ // close modal
-                angular.extend($scope, data);
-                C.alert($scope, {type:'success', msg:data.message});
-              });
-            }
+            C.responseHandler(scope, $scope, modalInstance, res);
           });
         },
         cancel: C.cancelModal
@@ -275,6 +263,7 @@
   /* normal modal */
   .controller('ModalController', ['$scope', '$modalInstance', 'modalSet', function($scope, $modalInstance, modalSet){
     angular.extend($scope, {
+      alert:{show:false},
       modalTitle: modalSet.modalTitle,
       formData:modalSet.formData || {},
       extraData: modalSet.extraData || {},

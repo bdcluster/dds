@@ -62,18 +62,33 @@
         }
       },
 
-      alert: function(scope, opts){
-        scope.alerts.push(opts);
-        $timeout(function(){ 
-          scope.alerts.pop();
-        }, 3000);
-      },
-      validResponse: function(res){
-        if (res.header.errorCode=== 0) {
-          return res.data;
+      alert: function(scope, opts, alone){
+        if(alone){
+          angular.extend(scope.alert, opts);
         }
         else{
-          return null;
+          scope.alerts.push(opts);
+          $timeout(function(){ 
+            scope.alerts.pop();
+          }, 3000);
+        }
+      },
+      validResponse: function(res){
+        if(res.header){
+          if(res.header.errorCode === 0){
+            if(res.data.code>0){
+              return res.data.message;
+            }
+            else{
+              return res.data;
+            }
+          }
+          else{
+            return 'errorCode = ' + res.header.errorCode
+          }
+        }
+        else{
+          return '系统错误，无返回数据！';
         }
       },
 
@@ -148,6 +163,19 @@
             scope.showPagination = true;
           }
         });
+      },
+
+      responseHandler: function(modalScope, ctrlScope, modalInstance, res){
+        var self = this, data = self.validResponse(res);
+        if(typeof data!=='string'){
+          modalInstance.close(function(){ // close modal
+            angular.extend(ctrlScope, data);
+            self.alert(ctrlScope, {type:'success', msg:data.message});
+          });
+        }
+        else{
+          self.alert(modalScope, {type:'danger', msg:data, show:true}, true);
+        }
       }
     };
   }]);

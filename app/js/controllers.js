@@ -17,7 +17,9 @@
         isopen:false
       },
       showPagination:false,
+      pageNo:1,
       maxPageSize : 8,
+      recordsPerPage: 10,
       menuTemplate: templatePath + 'menu.html',
       closeAlert: function(index){
         this.alerts.splice(index, 1);
@@ -63,6 +65,7 @@
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
         //  md5 for password
+          console.log($scope.user)
         $scope.user.password = $filter('md5')($scope.user.password);
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
@@ -113,83 +116,82 @@
     }
   }])
   /* 用户管理 */
-  .controller('UserController', ['$scope','$location', 'DDS', 'C', function($scope, $location, DDS, C){
-    $scope.userParams = {endpoint:'user', action:'select'}
+  .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){
+    var userParams = {endpoint:'user', action:'select'};
     $scope.changePage = function(){
-      DDS.get(angular.extend($scope.userParams, {pageNo:$scope.currentPage}), function(res){
-        var data = C.validResponse(res);
-        if(data){
-          $scope.users = data.users;
-          $scope.currentPage = data.pageNo;
-          $scope.totalRecords = data.total;
-        }
-      });
+      var options = angular.extend(userParams, {pageNo:$scope.pageNo})
+      C.list($scope, DDS, options);
     }
-    DDS.get($scope.userParams, function(res){
-      var data = C.validResponse(res);
-      if(data){
-        angular.extend($scope, {
-          showPagination:true,
-          totalRecords : data.total,
-          currentPage : data.pageNo,
-          recordsPerPage: 10,
-          users: data.users
-        });
+    $scope.changePage(); // default: load pageNo:1
+
+    $scope.saveUser = function(user){
+      var params={pageNo:$scope.pageNo}, userInfo = angular.extend({},user);
+      if(user){
+        angular.extend(params, {action:'edit', id:userInfo.id});
       }
-    });
-    $scope.addUser = function(){
-      C.openModal({
-        templateUrl: templatePath + 'modal.general.user.html',
-        resolve:{
-          modalSet: function(){
-            return {
-              title: '用户信息', // modal 窗体标题
-              confirm: function(modalInstance, scope){ // 确认modal callback
-                console.log(scope.formData); // collect form data
+      else{
+        angular.extend(params, {action:'add'});
+      }
+      DDS.get({endpoint:"role", action:'select'}).$promise.then(function(res){
+        var roles = res.data.roles;
+        var modalOptions = {
+          title: '用户信息', // modal 窗体标题
+          extraData: roles,
+          formData: userInfo || {},
+          confirm: function(modalInstance, scope){ // 确认modal callback
+            delete scope.formData.role;
+            DDS.saveUser(angular.extend(params, scope.formData), function(res){
+              var data = C.validResponse(res);
+              if(data){
                 modalInstance.close(function(){ // close modal
-                  C.alert($scope, {type:'success', msg:'编辑成功！'});
+                  angular.extend($scope, data);
+                  C.alert($scope, {type:'success', msg:data.message});
                 });
-              },
-              cancel: function(modalInstance){ // 取消modal 默认没有callback
-                modalInstance.dismiss('dismiss');
               }
-            };
+            });
+          },
+          cancel: function(modalInstance){ // 取消modal 默认没有callback
+            modalInstance.dismiss();
           }
         }
-      });
+
+        C.openModal({
+          templateUrl: templatePath + 'modal.user.html',
+          resolve:{ 
+            modalSet: function(){ return modalOptions } 
+          }
+        });
+      })
     }
     $scope.remove = function(id){
+      var modalOptions = {
+        removeText: '确定要删除这条记录？', // modal 删除提示语
+        confirm: function(modalInstance){ // 确认modal callback
+          DDS.delUser({pageNo:$scope.pageNo, id: id}, function(res){
+            var data = C.validResponse(res);
+            if(data){
+              modalInstance.close(function(){
+                angular.extend($scope, data);
+                C.alert($scope, {type:'danger', msg:data.message});
+              });
+            }
+          });
+        },
+        cancel: function(modalInstance){ // 取消modal 默认没有callback
+          modalInstance.dismiss('dismiss');
+        }
+      };
       C.openModal({
         templateUrl: templatePath + 'modal.general.remove.html',
         size: 'sm',
         resolve:{
-          modalSet: function(){
-            return {
-              removeText: '确定要删除这条记录？', // modal 删除提示语
-              confirm: function(modalInstance){ // 确认modal callback
-                modalInstance.close(function(){
-                  var postData = {
-                    pageNo:$scope.currentPage,
-                    userId: id
-                  }
-                  DDS.delUser(postData, function(res){
-                    var data = C.validResponse(res);
-                    if(data){
-                      $scope.users = data.users;
-                      $scope.currentPage = data.pageNo;
-                      $scope.totalRecords = data.total;
-                    }
-                  });
-                });
-              },
-              cancel: function(modalInstance){ // 取消modal 默认没有callback
-                modalInstance.dismiss('dismiss');
-              }
-            };
-          }
+          modalSet: function(){ return modalOptions }
         }
       });
     }
+  }])
+  /* 角色管理 */
+  .controller('RoleController', ['$scope', '$modal', 'C', function($scope, $modal, C){
 
   }])
   /* demo */
@@ -233,6 +235,7 @@
                 confirm: function(modalInstance){ // 确认modal callback
                   modalInstance.close(function(){
                     // $log.info('remove');
+                    C.alert($scope, {type:'danger', msg:'OK!'});
                   });
                 },
                 cancel: function(modalInstance){ // 取消modal 默认没有callback
@@ -249,7 +252,8 @@
   .controller('ModalController', ['$scope', '$modalInstance', 'modalSet', function($scope, $modalInstance, modalSet){
     angular.extend($scope, {
       modalTitle: modalSet.title,
-      formData:{},
+      formData:modalSet.formData || {},
+      extraData: modalSet.extraData || {},
       removeText: modalSet.removeText,
       confirm: function(){
         modalSet.confirm($modalInstance, this);

@@ -14,33 +14,29 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary" data-ng-click="saveUser()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+  <button class="btn btn-primary" data-ng-click="saveRole()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
   <thead>
     <tr>
-      <td>用户名</td>
-      <td>姓名</td>
-      <td>角色</td>
-      <td>备注</td>
-      <td>添加时间</td>
+      <td>角色名称</td>
+      <td>角色描述</td>
+      <td>创建时间</td>
       <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="user in users">
-      <td data-ng-bind="user.userId"></td>
-      <td data-ng-bind="user.userName"></td>
-      <td data-ng-bind="user.role.roleName"></td>
-      <td data-ng-bind="user.description"></td>
+    <tr data-ng-repeat="role in roles">
+      <td data-ng-bind="role.roleName"></td>
+      <td data-ng-bind="role.description"></td>
       <td data-ng-bind="user.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="saveUser(user)">
+        <button class="btn btn-primary btn-xs" data-ng-click="saveRole(role)">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove(user.id)">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(role.id)">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>

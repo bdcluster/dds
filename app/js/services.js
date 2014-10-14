@@ -3,10 +3,12 @@
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', function($resource){
     var normalPrarms = {local:1, mock:1, enforce:1};
-    return $resource('http://127.0.0.1:8084/:endpoint/:action/:id', normalPrarms, {
+    // var url = 'http://10.10.40.219:8080/ddrive-platform-web/:endpoint/:action/:id';
+    var url = 'http://127.0.0.1:8084/:endpoint/:action/:id'
+    // normalPrarms = {};
+    return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        // url:"http://10.10.40.208:8080/login-index"
         params:{endpoint:'user', action:'login'}
       },
       signOut:{
@@ -19,7 +21,12 @@
       },
       delUser:{
         method:'POST',
-        params:{endpoint:'user', action:'delete', id:'@userId'}
+        params:{endpoint:'user', action:'delete', id:'@id'}
+      },
+      saveUser:{
+        method:'POST',
+        // url:'http://10.10.40.88:8080/driver/index',
+        params:{endpoint:'user', action:'@action', id:'@id'}
       }
     });
   }])
@@ -109,6 +116,16 @@
         else{
           $location.path('/home');
         }
+      },
+      list:function(scope, resource, options){
+        var self = this;
+        resource.get(options, function(res){
+          var data = self.validResponse(res);
+          if(data){
+            angular.extend(scope, data);
+            scope.showPagination = true;
+          }
+        });
       }
     };
   }]);

@@ -28,22 +28,26 @@
         templateUrl: viewPath + 'user.html',
         controller:  'UserController'
       })
+      .when('/role', {
+        templateUrl: viewPath + 'role.html',
+        controller:  'RoleController'
+      })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'
       })
       .otherwise({redirectTo: '/home'});
 
-    /*$httpProvider.defaults.transformRequest = function(obj){
-       var str = [];
-       for(var p in obj){
-         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-       }
-       return str.join("&");
-     }*/
+    $httpProvider.defaults.transformRequest = function(obj){
+      var str = [];
+      for(var p in obj){
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+      }
+      return str.join("&");
+    }
 
     // HTTP POST
-    /*$httpProvider.defaults.headers.post = {
+    $httpProvider.defaults.headers.post = {
       'Content-Type': 'application/x-www-form-urlencoded'
-    }*/
+    }
   }]);
 })();

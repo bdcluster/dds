@@ -123,6 +123,13 @@
   line-height: 34px;
 }
 
+.form-modal .has-feedback .form-control-feedback{
+  line-height:34px;
+  margin-top:-34px;
+  @extend .pull-right;
+  right:0;
+}
+
 footer{
   border-top: 1px solid $navbar-default-border;
   margin-top: $grid-gutter-width;

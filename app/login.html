@@ -9,7 +9,7 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <bod data-ng-controller="GlobelController"y>
+  <bod data-ng-controller="GlobelController">
     <div class="container fix-md-width">
     <div alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" class="navbar-fixed-top">
       <div class="row">
@@ -34,9 +34,9 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>    
     <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>    
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
     <script src="js/directives.js"></script>

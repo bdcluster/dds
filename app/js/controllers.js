@@ -13,10 +13,6 @@
     angular.extend($scope, {
       alerts: [],
       loginInfo: storage.get('loginInfo'),
-      navDrop:{
-        isopen:false
-      },
-      showPagination:false,
       pageNo:1,
       maxPageSize : 8,
       recordsPerPage: 10,
@@ -25,7 +21,7 @@
         this.alerts.splice(index, 1);
       },
       signOut: function(){
-        DDS.signOut({a:1,b:2}, function(res){
+        DDS.signOut(function(res){
           var data = C.validResponse(res);
           if(data){
             storage.clear();
@@ -242,6 +238,42 @@
     }
     $scope.changePage(); // default: load pageNo:1
 
+  }])
+  /* 订单管理 */
+  .controller('OrderController', ['$scope', 'DDS', 'C', '$timeout', function($scope, DDS, C, $timeout){
+    angular.extend($scope, {
+      syncStatus: '同步订单',
+      rotate:false,
+      changePage: function(){
+        C.list($scope, DDS, {
+          endpoint:'bill', action:'select',
+          pageNo:$scope.pageNo
+        });
+      },
+      syncOrder: function(){
+        var self = this;
+        self.syncStatus = '正在同步';
+        self.rotate = true;
+        DDS.get({endpoint:'bill', action:'synchOrder', chaos: Math.random()}, function(res){
+          var data = C.validResponse(res);
+          $timeout(function(){
+            if(typeof data!=='string'){
+              if(data.returnValue){
+                self.syncStatus = '同步成功';
+              }
+              else{
+                self.syncStatus = '同步失败';
+              }
+            }
+            else{
+              self.syncStatus = '同步失败';
+            }
+            self.rotate = false;
+          }, 2000);
+        });
+      }
+    });
+    $scope.changePage();
   }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){

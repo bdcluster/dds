@@ -51,6 +51,7 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
+        <!-- menu loaded -->
         <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
         <section class="col-xs-9">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">

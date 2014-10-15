@@ -109,8 +109,11 @@
       }
     }
   }
-  tbody td > button + button{
-    margin-left: 5px;
+  & > tbody > tr > td{
+    vertical-align: middle;
+    & > button + button{
+      margin-left: 5px;
+    }
   }
 }
 
@@ -128,6 +131,19 @@
   margin-top:-34px;
   @extend .pull-right;
   right:0;
+}
+
+@include keyframes("sync-rotate"){
+  from{
+    @include rotate(0deg);
+  }
+  to{
+    @include rotate(359deg);
+  }
+}
+
+.sync-ing i{
+  @include animation("sync-rotate" 1.5s linear infinite forwards);
 }
 
 footer{

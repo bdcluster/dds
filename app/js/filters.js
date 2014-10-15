@@ -16,6 +16,18 @@
       }
     }
   })
+  .filter('billStatus', function(){
+    return function(code){
+      switch(code){
+        case 0 :
+          return '<i class="glyphicon glyphicon-ok-sign"></i>';
+        case 1 :
+          return '<i class="glyphicon glyphicon glyphicon-remove-sign"></i>';
+        default:
+          return '<i class="glyphicon glyphicon glyphicon-question-sign"></i>';
+      }
+    }
+  })
   /*  1=是； 2=否*/
   .filter('isVIP', function(){
     return function(vip){

@@ -7,8 +7,8 @@
     <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
   </div>
   <div class="modal-body">
-    <div data-alert data-type="{{alert.type}}" data-ng-show="alert.show" class="animated fade-in">
-      <i class="iconfont icon-{{alert.type}}"></i>
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.userId.$valid, 'has-error':userForm.userId.$invalid &amp;&amp; userForm.userId.$dirty}">

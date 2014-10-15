@@ -174,7 +174,7 @@
           });
         }
         else{
-          self.alert(modalScope, {type:'danger', msg:data, show:true}, true);
+          self.alert(modalScope, {msg:data, show:true}, true);
         }
       }
     };

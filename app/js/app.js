@@ -41,6 +41,10 @@
         templateUrl: viewPath + 'driv.html',
         controller:  'DriverController'
       })
+      .when('/order', {
+        templateUrl: viewPath + 'order.html',
+        controller:  'OrderController'
+      })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'
       })

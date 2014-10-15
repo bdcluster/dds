@@ -9,9 +9,10 @@
     'ngResource',
     'ui.bootstrap',
     'DdsControllers',
-    'DdsServices',
     'DdsDirectives',
     'DdsTemplate',
+    'DdsServices',
+    'DdsFilters',
     'LocalStorageModule'
   ])
   .config(['$routeProvider','$httpProvider', function($routeProvider,$httpProvider){
@@ -31,6 +32,10 @@
       .when('/role', {
         templateUrl: viewPath + 'role.html',
         controller:  'RoleController'
+      })
+      .when('/customer', {
+        templateUrl: viewPath + 'cust.html',
+        controller:  'CustomerController'
       })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'

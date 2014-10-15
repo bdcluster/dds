@@ -1,0 +1,59 @@
+<div class="well">
+  <form class="form-inline pull-right" role="form">
+    <div class="form-group">
+      <label class="sr-only">名称</label>
+      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">账号</label>
+      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>
+<table class="table table-bordered table-striped table-dds">
+  <thead>
+    <tr>
+      <td>客户编号</td>
+      <td>姓名</td>
+      <td>手机号</td>
+      <td>VIP</td>
+      <td>常用目的地</td>
+      <td>注册时间</td>
+      <td class="action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat="cust in customers">
+      <td data-ng-bind="cust.customerNo"></td>
+      <td data-ng-bind="cust.name"></td>
+      <td data-ng-bind="cust.emergencyPhone"></td>
+      <td data-ng-bind="cust.vip | isVIP"></td>
+      <td data-ng-bind="cust.commonDestination"></td>
+      <td data-ng-bind="cust.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="saveRole(role)">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(role.id)">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row" data-ng-show="showPagination">
+  <div class="col-xs-10">
+    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+  </div>
+  <div class="col-xs-2 text-right pagination-tip">
+    Page: {{pageNo}} / {{numPages}}
+  </div>
+</div>

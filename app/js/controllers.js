@@ -28,7 +28,7 @@
         DDS.signOut({a:1,b:2}, function(res){
           var data = C.validResponse(res);
           if(data){
-            storage.remove('loginInfo');
+            storage.clear();
             C.back2Login();
           }
         });
@@ -220,6 +220,17 @@
       };
       C.openModal(modalSet);
     }    
+  }])
+  /* 客户管理 */
+  .controller('CustomerController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    $scope.changePage = function(){
+      C.list($scope, DDS, {
+        endpoint:'customer', action:'select',
+        pageNo:$scope.pageNo
+      });
+    }
+    $scope.changePage(); // default: load pageNo:1
+
   }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){

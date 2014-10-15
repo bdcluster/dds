@@ -158,7 +158,7 @@
         var self = this;
         resource.get(options, function(res){
           var data = self.validResponse(res);
-          if(data){
+          if(typeof data!=='string'){
             angular.extend(scope, data);
             scope.showPagination = true;
           }

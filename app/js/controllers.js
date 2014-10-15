@@ -232,6 +232,17 @@
     $scope.changePage(); // default: load pageNo:1
 
   }])
+  /* 司机管理 */
+  .controller('DriverController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    $scope.changePage = function(){
+      C.list($scope, DDS, {
+        endpoint:'driver', action:'select',
+        pageNo:$scope.pageNo
+      });
+    }
+    $scope.changePage(); // default: load pageNo:1
+
+  }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){
     angular.extend($scope, {

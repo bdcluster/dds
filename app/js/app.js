@@ -45,6 +45,10 @@
         templateUrl: viewPath + 'order.html',
         controller:  'OrderController'
       })
+      .when('/rule', {
+        templateUrl: viewPath + 'rule.html',
+        controller:  'RuleController'
+      })
       .when('/page2', {
         templateUrl: viewPath + 'form.login.html'
       })

@@ -143,7 +143,7 @@
 }
 
 .sync-ing i{
-  @include animation("sync-rotate" 1.5s linear infinite forwards);
+  @include animation("sync-rotate" 2s linear infinite forwards);
 }
 
 footer{

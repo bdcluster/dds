@@ -30,27 +30,27 @@
         });
       }
     });
-    // 从DDS service获取菜单
+    // 从localstorage获取菜单数据
     if(storage.get("loginInfo")){
-      DDS.get({endpoint:'user', action:'menus'}, function(res){
-        var data = C.validResponse(res);
-        angular.extend($scope, {
-          menus: data,
-          isActivedMenu: function(viewLocation){
-            return viewLocation === $location.path();
-          },
-          markOpen: function(no){
-            storage.set('opendAccordion', no);
-          },
-          keepOpenAccordion: function(){
-            var index = storage.get('opendAccordion');
-            if(index !== null){
-              this.menus[index].open = true;
-            }
+      angular.extend($scope, {
+        menus: storage.get('menus'),
+        isActivedMenu: function(viewLocation){
+          return viewLocation === $location.path();
+        },
+        markOpen: function(no){
+          storage.set('opendAccordion', no);
+        },
+        keepOpenAccordion: function(){
+          var index = storage.get('opendAccordion');
+          if(index !== null){
+            this.menus[index].open = true;
           }
-        });
-        $scope.keepOpenAccordion();
+        }
       });
+      $scope.keepOpenAccordion();
+      //缓存角色与省市数据
+      C.cacheData(DDS, {endpoint:'role', action:'select'});
+      C.cacheData(DDS, {endpoint:'place', action:'select'});
     }
   }])
   /* 登 录 */
@@ -61,18 +61,23 @@
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
         //  md5 for password
-          console.log($scope.user)
         $scope.user.password = $filter('md5')($scope.user.password);
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
           var data = C.validResponse(res);
-          storage.remove('opendAccordion');
-          if(data){
+          storage.clear();
+          if(typeof data!=='string'){
+            //缓存登录信息
             storage.set('loginInfo', angular.extend(data.user, {sessionId: data.sessionId}));
-            $window.location="d.html";
+            //缓存
+            DDS.get({endpoint:'user', action:'menus'}, function(result){
+              storage.set('menus', result.data);
+              $window.location='d.html';
+            });
+           
           }
           else{
-            C.alert($scope, {type:'danger', msg:'something error!'});
+            C.alert($scope, {type:'danger', msg:data});
           }
         });
       },
@@ -113,6 +118,7 @@
   }])
   /* 用户管理 */
   .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){
+    var storage = C.storage();
     $scope.changePage = function(){
       C.list($scope, DDS, {
         endpoint:'user', action:'select',
@@ -130,38 +136,29 @@
       else{
         angular.extend(params, {action:'add'});
       }
-      DDS.get({endpoint:"role", action:'select'}, function(res){
-        var roles = res.data.roles;
-        var modalSet = {
-          modalTitle: '用户信息', // modal 窗体标题
-          extraData: roles,
-          formData: userInfo || {},
-          confirm: function(modalInstance, scope){ // 确认modal callback
-            delete scope.formData.role;
-            DDS.saveUser(angular.extend(params, scope.formData), function(res){
-              C.responseHandler(scope, $scope, modalInstance, res);
-            });
-          },
-          cancel: C.cancelModal
+      var modalSet = {
+        modalTitle: '用户信息', // modal 窗体标题
+        extraData: storage.get('role').roles,
+        formData: userInfo || {},
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          delete scope.formData.role;
+          DDS.saveUser(angular.extend(params, scope.formData), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
         }
-        C.openModal(modalSet, 'user');
-      })
+        // ,cancel: C.cancelModal
+      }
+      C.openModal(modalSet, 'user');
     }
     $scope.remove = function(id){
       var modalSet = {
-        removeText: '确定要删除这条记录？', // modal 删除提示语
-        confirm: function(modalInstance){ // 确认modal callback
+        removeText: '确定要删除这条用户记录？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delUser({pageNo:$scope.pageNo, id: id}, function(res){
-            var data = C.validResponse(res);
-            if(data){
-              modalInstance.close(function(){
-                angular.extend($scope, data);
-                C.alert($scope, {type:'danger', msg:data.message});
-              });
-            }
+            C.responseHandler(scope, $scope, modalInstance, res);
           });
-        },
-        cancel: C.cancelModal
+        }
+        // ,cancel: C.cancelModal
       };
       C.openModal(modalSet);
     }
@@ -192,27 +189,21 @@
           DDS.saveRole(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           });
-        },
-        cancel: C.cancelModal
+        }
+        // ,cancel: C.cancelModal
       }
       C.openModal(modalSet, 'role');
     }
 
     $scope.remove = function(id){
       var modalSet = {
-        removeText: '确定要删除这条记录？', // modal 删除提示语
-        confirm: function(modalInstance){ // 确认modal callback
+        removeText: '确定要删除这个角色？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delRole({pageNo:$scope.pageNo, id: id}, function(res){
-            var data = C.validResponse(res);
-            if(data){
-              modalInstance.close(function(){
-                angular.extend($scope, data);
-                C.alert($scope, {type:'danger', msg:data.message});
-              });
-            }
+            C.responseHandler(scope, $scope, modalInstance, res);
           });
-        },
-        cancel: C.cancelModal
+        }
+        // ,cancel: C.cancelModal
       };
       C.openModal(modalSet);
     }    
@@ -275,6 +266,54 @@
     });
     $scope.changePage();
   }])
+  /* 计费规则 */
+  .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    var storage = C.storage();
+    $scope.changePage = function(){
+      C.list($scope, DDS, {
+        endpoint:'rule', action:'select',
+        pageNo:$scope.pageNo
+      });
+    }
+    $scope.changePage();
+
+    $scope.saveRule = function(rule){
+      var params={pageNo:$scope.pageNo};
+      if(rule){
+        var ruleInfo = angular.extend({},rule);
+        angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
+      }
+      else{
+        angular.extend(params, {action:'add'});
+      }
+      var modalSet = {
+        modalTitle: '计费规则定义', // modal 窗体标题
+        formData: ruleInfo || {},
+        extraData: storage.get('place').areas,
+        selCity: function(id){
+          console.log(id);
+        },
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.saveRule(angular.extend(params, scope.formData), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      }
+      C.openModal(modalSet, 'rule');
+    }
+
+    $scope.remove = function(id){
+      var modalSet = {
+        removeText: '确定要删除这条计费规则？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.delRule({pageNo:$scope.pageNo, id: id}, function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      };
+      C.openModal(modalSet);
+    }  
+  }])
   /* demo */
   .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){
     angular.extend($scope, {
@@ -326,7 +365,11 @@
         modalSet.confirm($modalInstance, this);
       },
       cancel: function(){
-        modalSet.cancel($modalInstance);
+        // modalSet.cancel($modalInstance);
+        $modalInstance.dismiss('cancel');
+      },
+      selCity:function(){
+        modalSet.selCity();
       }
     });
   }]);

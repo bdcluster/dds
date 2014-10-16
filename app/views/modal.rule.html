@@ -1,0 +1,45 @@
+<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate>
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.city.$valid, 'has-error':ruleForm.city.$invalid &amp;&amp; ruleForm.city.$dirty}">
+      <label for="province" class="col-xs-2 control-label">省市名称</label>
+      <div class="col-xs-5">
+        <select name="province" class="form-control" data-ng-model="formData.provinceId" data-ng-options="prov.aid as prov.name for prov in extraData" ng-change="selCity(this)" required>
+          <option value="">-- 请选择 --</option> 
+        </select>
+      </div>
+      <div class="col-xs-4">
+        <select name="city" class="form-control" data-ng-model="formData.cityId" data-ng-options="city.cityId as city.cityName for city in formData.province.cities" required>
+          <option value="">-- 请选择 --</option> 
+        </select>
+        <!-- <input name="provinceId" type="hidden" data-ng-model="formData.provinceId"> -->
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.description.$valid, 'has-error':ruleForm.description.$invalid &amp;&amp; ruleForm.description.$dirty}">
+      <label for="userfullname" class="col-xs-2 control-label">角色描述</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="description" data-ng-model="formData.description" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.description.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.description.$valid, 'glyphicon-remove':ruleForm.description.$invalid}"></i>
+      </div>
+    </div>
+  </div>
+  {{formData}}
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="ruleForm.$invalid" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

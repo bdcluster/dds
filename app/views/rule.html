@@ -1,0 +1,64 @@
+<div class="well">
+  <form class="form-inline pull-right" role="form">
+    <div class="form-group">
+      <label class="sr-only">名称</label>
+      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">账号</label>
+      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+    </div>
+  </form>
+  <button class="btn btn-primary" data-ng-click="saveRule()">
+    <i class="glyphicon glyphicon-plus"></i> 添加
+  </button>
+  <div class="clearfix"></div>
+</div>
+<table class="table table-bordered table-striped table-dds">
+  <thead>
+    <tr>
+      <td>编号</td>
+      <td>省份</td>
+      <td>城市</td>
+      <td>时间段</td>
+      <td>起步价</td>
+      <td>加收金额</td>
+      <td>规则描述</td>
+      <td class="action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat="rule in rules">
+      <td data-ng-bind="rule.ruleId"></td>
+      <td data-ng-bind="rule.province"></td>
+      <td data-ng-bind="rule.city"></td>
+      <td data-ng-bind="rule.period"></td>
+      <td data-ng-bind="rule.startPrice"></td>
+      <td data-ng-bind="rule.extraPrice"></td>
+      <td data-ng-bind="rule.description"></td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.ruleId)">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row" data-ng-show="showPagination">
+  <div class="col-xs-10">
+    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+  </div>
+  <div class="col-xs-2 text-right pagination-tip">
+    Page: {{pageNo}} / {{numPages}}
+  </div>
+</div>

@@ -34,6 +34,10 @@
       saveRole:{
         method:'POST',
         params:{endpoint:'role', action:'@action', id:'@id'}
+      },
+      saveRule:{
+        method:'POST',
+        params:{endpoint:'rule', action:'@action', id:'@id'}
       }
     });
   }])
@@ -110,7 +114,9 @@
           function (result) {
             result();
           }, 
-          function (reason) {}
+          function (reason) {
+            // console.log(reason);
+          }
         );
         modalInstance.opened.then(
           function(info){}
@@ -118,7 +124,7 @@
       },
 
       cancelModal: function(modalInstance){ // 取消modal 默认没有callback
-        modalInstance.dismiss();
+        modalInstance.dismiss('dismiss');
       },
       storage: function(){
         var store, now = new Date();
@@ -170,11 +176,32 @@
         if(typeof data!=='string'){
           modalInstance.close(function(){ // close modal
             angular.extend(ctrlScope, data);
-            self.alert(ctrlScope, {type:'success', msg:data.message});
+            self.alert(ctrlScope, {type:'success', msg:data.message || '操作成功！'});
           });
         }
         else{
           self.alert(modalScope, {msg:data, show:true}, true);
+        }
+      },
+
+      cacheData: function(resource, params){
+        var self = this, key = params.endpoint;
+        var storage = self.storage();
+        var storeData = function(){
+          resource.get(params, function(res){
+            var data = self.validResponse(res);
+            if(typeof data!=='string'){
+              storage.set(key, data);
+              console.log('data cache success!');
+            }
+            else{
+              return false;
+              console.log('data cache error!');
+            }
+          });
+        };
+        if(!storage.get(key)){
+          $timeout(storeData, 200);
         }
       }
     };

@@ -290,9 +290,6 @@
         modalTitle: '计费规则定义', // modal 窗体标题
         formData: ruleInfo || {},
         extraData: storage.get('place').areas,
-        selCity: function(id){
-          console.log(id);
-        },
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveRule(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
@@ -369,7 +366,7 @@
         $modalInstance.dismiss('cancel');
       },
       selCity:function(){
-        modalSet.selCity();
+        modalSet.selCity(this);
       }
     });
   }]);

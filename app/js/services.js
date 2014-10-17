@@ -38,6 +38,10 @@
       saveRule:{
         method:'POST',
         params:{endpoint:'rule', action:'@action', id:'@id'}
+      },
+      delRule:{
+        method:'POST',
+        params:{endpoint:'rule', action:'delete', id:'@id'}
       }
     });
   }])

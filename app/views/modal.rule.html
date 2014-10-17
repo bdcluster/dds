@@ -26,17 +26,37 @@
         <input name="cityId" type="hidden" data-ng-model="formData.cityId">
       </div>
     </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.time2.$valid}">
+      <label for="time1" class="col-xs-2 control-label">时间段</label>
+      <div class="col-xs-5">
+        <select name="time1" class="form-control" data-ng-model="startTime" data-ng-options="t + ' : 00' for t in ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'] " data-ng-change="endTime=''" required>
+          <option value="">-- 请选择 --</option> 
+        </select>
+      </div>
+      <div class="col-xs-4">
+        <select name="time2" class="form-control" data-ng-model="endTime" data-ng-change="" required>
+          <option value="">-- 请选择 --</option> 
+        </select>
+        <input name="period" type="hidden" data-ng-model="formData.period">
+      </div>
+    </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.startPrice.$valid, 'has-error':ruleForm.startPrice.$invalid &amp;&amp; ruleForm.startPrice.$dirty}">
       <label for="startPrice" class="col-xs-2 control-label">起步价格</label>
       <div class="col-xs-9">
-        <input type="number" class="form-control" name="startPrice" data-ng-model="formData.startPrice" required placeholder="">
+        <div class="input-group">
+          <span class="input-group-addon">￥</span>
+          <input type="number" class="form-control" name="startPrice" data-ng-model="formData.startPrice" required placeholder="一小时内">
+        </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.startPrice.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.startPrice.$valid, 'glyphicon-remove':ruleForm.startPrice.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.extraPrice.$valid, 'has-error':ruleForm.extraPrice.$invalid &amp;&amp; ruleForm.extraPrice.$dirty}">
       <label for="extraPrice" class="col-xs-2 control-label">加收金额</label>
       <div class="col-xs-9">
-        <input type="number" class="form-control" name="extraPrice" data-ng-model="formData.extraPrice" required placeholder="">
+        <div class="input-group">
+          <span class="input-group-addon">￥</span>
+          <input type="number" class="form-control" name="extraPrice" data-ng-model="formData.extraPrice" required placeholder="超过1小时每小时加收金额">
+        </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.extraPrice.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.extraPrice.$valid, 'glyphicon-remove':ruleForm.extraPrice.$invalid}"></i>
       </div>
     </div>
@@ -47,6 +67,7 @@
       </div>
     </div>
   </div>
+  {{startTime}}
   <div class="modal-footer">
     <button class="btn btn-primary" data-ng-disabled="ruleForm.$invalid" data-ng-click="confirm()">
       <i class="glyphicon glyphicon-ok"></i> 确认

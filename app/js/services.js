@@ -70,6 +70,30 @@
         }
       },
 
+      succ: function(chart){
+        if (angular.isNumber(chart)) { return chart - 0 + 1; }
+          else {
+            chart = chart + "";
+            return chart.slice(0, chart.length - 1) +
+            String.fromCharCode(chart.charCodeAt(chart.length - 1) + 1);
+          }
+      },
+
+      range: function(start, end){
+        var edge = arguments[2] || false;
+        var v = start;
+        var a = [];
+        var flag = function (value) {
+          if (value < start) { return false; }
+          if (edge) { return value < end; }
+          return value <= end;
+        };
+        while (flag(v)) {
+          a.push(v); v = this.succ(v);
+        }
+        return a;
+      },
+
       alert: function(scope, opts, alone){
         if(alone){
           angular.extend(scope.alert, opts);

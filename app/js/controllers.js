@@ -268,7 +268,7 @@
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    var storage = C.storage();
+    var storage = C.storage(), extraData = {areas: storage.get('place').areas};
     $scope.changePage = function(){
       C.list($scope, DDS, {
         endpoint:'rule', action:'select',
@@ -277,19 +277,36 @@
     }
     $scope.changePage();
 
+    var scale = function(){
+      var t1 = C.range(0,23), t2=[], s2;
+      for(var x in t1){
+        s2 = C.range(C.succ(t1[x]), 24);
+        for(var y in s2){
+          s2[y] = s2[y]<10 ? '0' + s2[y] + ':00' : s2[y] +':00';
+        }
+        t2[x] = {
+          scale1: t1[x]<10 ? '0' + t1[x] + ':00' : t1[x] +':00',
+          scale2: s2
+        }
+      }
+      return t2;
+    }
+
     $scope.saveRule = function(rule){
       var params={pageNo:$scope.pageNo};
       if(rule){
         var ruleInfo = angular.extend({},rule);
         angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
+        angular.extend(extraData, {showEdit:true, showAreaSel:false, showPeriodSel:false});
       }
       else{
         angular.extend(params, {action:'add'});
+        angular.extend(extraData, {showEdit:false, showAreaSel:true, showPeriodSel:true});
       }
       var modalSet = {
         modalTitle: '计费规则定义', // modal 窗体标题
         formData: ruleInfo || {},
-        extraData: storage.get('place').areas,
+        extraData: angular.extend(extraData,{scale: scale()}),
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveRule(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);

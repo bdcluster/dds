@@ -72,11 +72,11 @@
 
       succ: function(chart){
         if (angular.isNumber(chart)) { return chart - 0 + 1; }
-          else {
-            chart = chart + "";
-            return chart.slice(0, chart.length - 1) +
-            String.fromCharCode(chart.charCodeAt(chart.length - 1) + 1);
-          }
+        else {
+          chart = chart + "";
+          return chart.slice(0, chart.length - 1) +
+          String.fromCharCode(chart.charCodeAt(chart.length - 1) + 1);
+        }
       },
 
       range: function(start, end){

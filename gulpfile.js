@@ -202,10 +202,13 @@
   //| ✓ clean dist folder
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('clean', function() {
-    var stream = gulp.src([
-      _.dist + '*'
-    ], { read: false });
-    return stream.pipe($.rimraf());
+    // var stream = gulp.src([
+    //   _.dist + '*'
+    // ], { read: false });
+    // return stream.pipe($.del());
+    return $.del([_.dist + '*'], function (err) {
+      console.log('Files deleted');
+    });
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

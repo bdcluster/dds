@@ -146,6 +146,11 @@
   @include animation("sync-rotate" 2s linear infinite forwards);
 }
 
+.show-edit{
+  color: $brand-primary;
+  cursor: pointer;
+}
+
 footer{
   border-top: 1px solid $navbar-default-border;
   margin-top: $grid-gutter-width;

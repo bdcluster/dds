@@ -70,7 +70,7 @@
             //缓存登录信息
             storage.set('loginInfo', angular.extend(data.user, {sessionId: data.sessionId}));
             //缓存
-            DDS.get({endpoint:'user', action:'menus'}, function(result){
+            DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
               storage.set('menus', result.data);
               $window.location='d.html';
             });
@@ -174,25 +174,44 @@
     $scope.changePage(); // default: load pageNo:1
 
     $scope.saveRole = function(role){
-      var params={pageNo:$scope.pageNo};
-      if(role){
-        var roleInfo = angular.extend({},role);
-        angular.extend(params, {action:'edit', id:roleInfo.id});
-      }
-      else{
-        angular.extend(params, {action:'add'});
-      }
-      var modalSet = {
-        modalTitle: '角色定义', // modal 窗体标题
-        formData: roleInfo || {},
-        confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.saveRole(angular.extend(params, scope.formData), function(res){
-            C.responseHandler(scope, $scope, modalInstance, res);
-          });
+      DDS.get({endpoint:'menu', action:'select', type:'1'}, function(res){
+        var data = C.validResponse(res);
+        if(typeof data!=='string'){
+          var flatMenu=[];
+          for(var m in data){
+            flatMenu.push({
+              id:data[m].id,
+              name:'' + data[m].name
+            });
+            for(var sm in data[m].subname){
+              flatMenu.push({
+                id: data[m].subname[sm].id,
+                name:'　---' + data[m].subname[sm].name
+              });
+            }
+          }
+          var params={pageNo:$scope.pageNo};
+          if(role){
+            var roleInfo = angular.extend({},role);
+            angular.extend(params, {action:'edit', id:roleInfo.id});
+          }
+          else{
+            angular.extend(params, {action:'add'});
+          }
+          var modalSet = {
+            modalTitle: '角色定义', // modal 窗体标题
+            formData: roleInfo || {},
+            extraData:flatMenu,
+            confirm: function(modalInstance, scope){ // 确认modal callback
+              DDS.saveRole(angular.extend(params, scope.formData), function(res){
+                C.responseHandler(scope, $scope, modalInstance, res);
+              });
+            }
+            // ,cancel: C.cancelModal
+          }
+          C.openModal(modalSet, 'role');
         }
-        // ,cancel: C.cancelModal
-      }
-      C.openModal(modalSet, 'role');
+      });
     }
 
     $scope.remove = function(id){

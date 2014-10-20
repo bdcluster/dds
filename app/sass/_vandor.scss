@@ -11,7 +11,7 @@
         "mixins/text-emphasis", "mixins/text-overflow", "mixins/vendor-prefixes";
 
 // Components
-@import "mixins/alerts", "mixins/buttons", "mixins/panels", 
+@import "mixins/alerts", "mixins/buttons", "mixins/panels",
         "mixins/pagination", "mixins/list-group", "mixins/nav-divider", 
         "mixins/forms", "mixins/progress-bar", "mixins/table-row";
 
@@ -34,7 +34,7 @@ $panel-border-radius:       0;
 @import "scaffolding", "type", "code", "grid", "tables", "forms", "buttons";
 
 // Components
-@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close";
+@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close", "button-groups";
 
 // Utility classes
 @import "utilities";

@@ -45,7 +45,7 @@
       }
     });
   }])
-  .factory('C', ['$window', '$timeout','$location', '$modal','localStorageService', function($window, $timeout, $location, $modal, ls){
+  .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
       runtimeEvn: function(){
         //0开发 1测试 2生产 3其他
@@ -92,6 +92,49 @@
           a.push(v); v = this.succ(v);
         }
         return a;
+      },
+
+      mLength: function(){
+        var monthDays = ["", 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (((this.year % 4 === 0) && (this.year % 100 !== 0)) || (this.year % 400 === 0)){
+          monthDays[1] = 29;
+        }
+        return monthDays;
+      },
+
+      getPeriod: function(){
+        var section = $location.path(), period, pickYear, firstDay, endDay;
+        var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
+        var curQuarter = Math.ceil(curMonth / 3);
+        var params = arguments[0];
+        switch(section){
+          case '/month-ord':
+            if(params && params.year && params.month){
+              pickYear = params.year;
+              firstDay = params.month + '-01';
+              endDay   = params.month + '-' + this.mLength()[params.month];
+            }
+            else{
+              pickYear = curYear;
+              firstDay = curMonth + '-01';
+              endDay   = curMonth + '-'+ this.mLength()[curMonth];
+            }
+            period = {
+              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
+              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
+            }
+            break;
+          case '/quarter-ord':
+            pickYear = params ? params.year : curYear;
+            firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
+            endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
+            period = {
+              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
+              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
+            }
+            break;
+        }
+        return period;
       },
 
       alert: function(scope, opts, alone){

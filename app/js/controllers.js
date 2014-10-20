@@ -285,6 +285,25 @@
     });
     $scope.changePage();
   }])
+  /* 时间段统计 */
+  .controller('OrderFilterController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    var params = angular.extend({endpoint:'bill', action:'timeStatus'}, C.getPeriod());
+    $scope.years = C.range(2010, new Date().getFullYear());
+    // $scope.quarter = Math.ceil((new Date().getMonth()+1)/3);
+    $scope.search = {
+      quarter: Math.ceil((new Date().getMonth()+1)/3)
+    };
+
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(params, {pageNo:$scope.pageNo}));
+    }
+    $scope.changePage();
+
+    $scope.getSearch = function(search){
+      angular.extend(params, C.getPeriod(search));
+      C.list($scope, DDS, angular.extend(params, {pageNo:$scope.pageNo}));
+    }
+  }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
     var storage = C.storage(), extraData = {areas: storage.get('place').areas};

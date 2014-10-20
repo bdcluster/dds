@@ -45,6 +45,18 @@
         templateUrl: viewPath + 'order.html',
         controller:  'OrderController'
       })
+      .when('/month-ord', {
+        templateUrl: viewPath + 'month-ord.html',
+        controller:  'OrderFilterController'
+      })
+      .when('/quarter-ord', {
+        templateUrl: viewPath + 'quarter-ord.html',
+        controller:  'OrderFilterController'
+      })
+      .when('/time-ord', {
+        templateUrl: viewPath + 'time-ord.html',
+        controller:  'OrderFilterController'
+      })
       .when('/rule', {
         templateUrl: viewPath + 'rule.html',
         controller:  'RuleController'

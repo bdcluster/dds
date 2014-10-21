@@ -34,13 +34,13 @@
       <td data-ng-bind="cust.emergencyPhone"></td>
       <td data-ng-bind="cust.vip | isVIP"></td>
       <td data-ng-bind="cust.commonDestination"></td>
-      <td data-ng-bind="cust.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
+      <td data-ng-bind="cust.createTime | myDate"></td>
     </tr>
   </tbody>
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{pageNo}} / {{numPages}}

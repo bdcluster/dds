@@ -58,6 +58,13 @@
   color: $btn-primary-bg;
 }
 
+.home{
+  color: darken($brand-primary, 5%);
+  i{
+    font-size: 1.3em;
+  }
+}
+
 /* accordion panel setting */
 .panel-group .panel{
   @include box-shadow(none);

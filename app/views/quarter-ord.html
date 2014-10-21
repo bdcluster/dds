@@ -18,12 +18,11 @@
       </div>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary" data-ng-click="getSearch(search)">
+      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
   </form>
-  {{search}}
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -51,7 +50,7 @@
       <td data-ng-bind="ord.totalAmount | currency: '￥'"></td>
       <td data-ng-bind="ord.totalHours"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="">
+        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.cName)">
           查看明细
           <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
@@ -61,9 +60,9 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

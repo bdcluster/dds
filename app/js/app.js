@@ -61,8 +61,9 @@
         templateUrl: viewPath + 'rule.html',
         controller:  'RuleController'
       })
-      .when('/page2', {
-        templateUrl: viewPath + 'form.login.html'
+      .when('/demo', {
+        templateUrl: viewPath + 'demo.html',
+        controller:  'DemoController'
       })
       .otherwise({redirectTo: '/home'});
 
@@ -72,11 +73,11 @@
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
       }
       return str.join("&");
-    }
+    };
 
     // HTTP POST
     $httpProvider.defaults.headers.post = {
       'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    };
   }]);
 })();

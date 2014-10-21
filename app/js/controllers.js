@@ -7,13 +7,12 @@
   .controller('GlobelController', ['$scope', '$location', 'C', 'DDS', function($scope, $location, C, DDS){
     var storage = C.storage();
     if(!storage.get("loginInfo") && $location.path()){
-      console.log($location.path())
       C.back2Login();
     }
     angular.extend($scope, {
       alerts: [],
       loginInfo: storage.get('loginInfo'),
-      pageNo:1,
+      pageNum:1,
       maxPageSize : 8,
       recordsPerPage: 10,
       menuTemplate: templatePath + 'menu.html',
@@ -23,7 +22,7 @@
       signOut: function(){
         DDS.signOut(function(res){
           var data = C.validResponse(res);
-          if(data){
+          if(typeof data !== 'string' && data.code === 0){
             storage.clear();
             C.back2Login();
           }
@@ -50,7 +49,7 @@
       $scope.keepOpenAccordion();
       //缓存角色与省市数据
       C.cacheData(DDS, {endpoint:'role', action:'select'});
-      C.cacheData(DDS, {endpoint:'place', action:'select'});
+      C.cacheData(DDS, {endpoint:'provinces', action:'select'});
     }
   }])
   /* 登 录 */
@@ -87,54 +86,64 @@
     });
   }])
   /* 修改密码 */
-  .controller('ChangePasswordController', ['$scope','C','DDS' , function($scope, C, DDS){
+  .controller('ChangePasswordController', ['$scope', 'C' ,'DDS', '$filter', function($scope, C, DDS, $filter){
     var storage = C.storage().get('loginInfo');
     $scope.pwd = {};
     $scope.pwdSubmit = function(){
       var postData = {    
         userId: storage.userId,
         sessionId : storage.sessionId,
-        user: { 
-          id: storage.id,
-          oldPassword: $scope.pwd.oldPwd,
-          newPassword: $scope.pwd.newPwd
-        } 
+        id: storage.id,
+        oldPassword: $filter('md5')($scope.pwd.oldPwd),
+        newPassword: $filter('md5')($scope.pwd.newPwd)
       };
       $scope.master = angular.copy($scope.pwd);
       DDS.savePwd(postData, function(res){
         var data = C.validResponse(res);
-        if(data && data.exit === true){
-          C.alert($scope, {type:"success", msg:"password change success!"});
+        if(typeof data!=='string'){
+          C.alert($scope, {type:"success", msg:"密码修改成功!"});
           C.back2Home(true);
         }
         else{
-          C.alert($scope, {type:"danger", msg:"password change error!"});
+          C.alert($scope, {type:"danger", msg:data});
         }
-      })
+      });
     };
     $scope.isUnchanged = function(pwd){
       return (angular.equals(pwd, $scope.master) || pwd.newPwd !== pwd.rpNewPwd);
-    }
+    };
+  }])
+  /* 欢 迎 页 */
+  .controller('HomeController', [function(){
+    //Home page controller here....
   }])
   /* 用户管理 */
   .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){
-    var storage = C.storage();
+    var storage = C.storage(), userInfo;
+    var paramsInit = {
+      endpoint:'user', action:'select',
+      pageNum:$scope.pageNum
+    };
     $scope.changePage = function(){
-      C.list($scope, DDS, {
-        endpoint:'user', action:'select',
-        pageNo:$scope.pageNo
-      });
-    }
-    $scope.changePage(); // default: load pageNo:1
+      C.list(this, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage(); // default: load pageNum:1
+    /* 搜索 */
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum:1}));
+      }
+    };
 
     $scope.saveUser = function(user){
-      var params={pageNo:$scope.pageNo};
+      var params={pageNum:$scope.pageNum};
       if(user){
-        var userInfo = angular.extend({},user);
+        userInfo = angular.extend({},user);
         angular.extend(params, {action:'edit', id:userInfo.id});
       }
       else{
         angular.extend(params, {action:'add'});
+        userInfo = {};
       }
       var modalSet = {
         modalTitle: '用户信息', // modal 窗体标题
@@ -147,35 +156,42 @@
           });
         }
         // ,cancel: C.cancelModal
-      }
+      };
       C.openModal(modalSet, 'user');
-    }
+    };
     $scope.remove = function(id){
       var modalSet = {
         removeText: '确定要删除这条用户记录？', // modal 删除提示语
         confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.delUser({pageNo:$scope.pageNo, id: id}, function(res){
+          DDS.delUser({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           });
         }
         // ,cancel: C.cancelModal
       };
       C.openModal(modalSet);
-    }
+    };
   }])
   /* 角色管理 */
   .controller('RoleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    var paramsInit = {
+      endpoint:'role', action:'select',
+      pageNum:$scope.pageNum
+    };
     $scope.changePage = function(){
-      C.list($scope, DDS, {
-        endpoint:'role', action:'select',
-        pageNo:$scope.pageNo
-      });
-    }
-    $scope.changePage(); // default: load pageNo:1
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage(); // default: load pageNum:1
+
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
 
     $scope.saveRole = function(role){
       DDS.get({endpoint:'menu', action:'select', type:'1'}, function(res){
-        var data = C.validResponse(res);
+        var data = C.validResponse(res), roleInfo;
         if(typeof data!=='string'){
           var flatMenu=[];
           for(var m in data){
@@ -190,9 +206,9 @@
               });
             }
           }
-          var params={pageNo:$scope.pageNo};
+          var params={pageNum:$scope.pageNum};
           if(role){
-            var roleInfo = angular.extend({},role);
+            roleInfo = angular.extend({}, role);
             angular.extend(params, {action:'edit', id:roleInfo.id});
           }
           else{
@@ -208,57 +224,76 @@
               });
             }
             // ,cancel: C.cancelModal
-          }
+          };
           C.openModal(modalSet, 'role');
         }
       });
-    }
+    };
 
     $scope.remove = function(id){
       var modalSet = {
         removeText: '确定要删除这个角色？', // modal 删除提示语
         confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.delRole({pageNo:$scope.pageNo, id: id}, function(res){
+          DDS.delRole({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           });
         }
         // ,cancel: C.cancelModal
       };
       C.openModal(modalSet);
-    }    
+    };  
   }])
   /* 客户管理 */
   .controller('CustomerController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    $scope.changePage = function(){
-      C.list($scope, DDS, {
-        endpoint:'customer', action:'select',
-        pageNo:$scope.pageNo
-      });
+    var paramsInit = {
+      endpoint:'customer', action:'select',
+      pageNum:$scope.pageNum
     }
-    $scope.changePage(); // default: load pageNo:1
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage(); // default: load pageNum:1
 
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
   }])
   /* 司机管理 */
   .controller('DriverController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    $scope.changePage = function(){
-      C.list($scope, DDS, {
-        endpoint:'driver', action:'select',
-        pageNo:$scope.pageNo
-      });
+    var paramsInit = {
+      endpoint:'driver', action:'select',
+      pageNum:$scope.pageNum
     }
-    $scope.changePage(); // default: load pageNo:1
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage(); // default: load pageNum:1
 
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
   }])
   /* 订单管理 */
-  .controller('OrderController', ['$scope', 'DDS', 'C', '$timeout', function($scope, DDS, C, $timeout){
+  .controller('OrderController', ['$scope', 'DDS', 'C', '$timeout', '$routeParams', function($scope, DDS, C, $timeout, $routeParams){
+    var paramsInit = {
+      endpoint:'bill', action:'select',
+      pageNum:$scope.pageNum
+    };
+    angular.extend(paramsInit, $routeParams);
     angular.extend($scope, {
       syncStatus: '同步订单',
       rotate:false,
       changePage: function(){
-        C.list($scope, DDS, {
-          endpoint:'bill', action:'select',
-          pageNo:$scope.pageNo
-        });
+        C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+      },
+      doSearch: function(o){
+        if(o){
+          C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+        }
       },
       syncOrder: function(){
         var self = this;
@@ -287,33 +322,43 @@
   }])
   /* 时间段统计 */
   .controller('OrderFilterController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    var params = angular.extend({endpoint:'bill', action:'timeStatus'}, C.getPeriod());
+    var paramsInit = angular.extend({endpoint:'bill', action:'timeStatus'}, C.getPeriod());
     $scope.years = C.range(2010, new Date().getFullYear());
     // $scope.quarter = Math.ceil((new Date().getMonth()+1)/3);
-    $scope.search = {
-      quarter: Math.ceil((new Date().getMonth()+1)/3)
-    };
+    $scope.search = {};
+    $scope.search.quarter = Math.ceil((new Date().getMonth()+1)/3);
 
     $scope.changePage = function(){
-      C.list($scope, DDS, angular.extend(params, {pageNo:$scope.pageNo}));
-    }
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
     $scope.changePage();
 
-    $scope.getSearch = function(search){
-      angular.extend(params, C.getPeriod(search));
-      C.list($scope, DDS, angular.extend(params, {pageNo:$scope.pageNo}));
+    $scope.doSearch = function(o){
+      C.list($scope, DDS, angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1}));
+    };
+
+    $scope.orderByCust = function(cName){
+      C.goOrderList(cName);
     }
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    var storage = C.storage(), extraData = {areas: storage.get('place').areas};
-    $scope.changePage = function(){
-      C.list($scope, DDS, {
-        endpoint:'rule', action:'select',
-        pageNo:$scope.pageNo
-      });
+    var paramsInit = {
+      endpoint:'rule', action:'select',
+      pageNum:$scope.pageNum
     }
+    var storage = C.storage(), extraData = {areas: storage.get('provinces')};
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
     $scope.changePage();
+
+    $scope.doSearch = function(o){
+      console.log(o);
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
 
     var scale = function(){
       var t1 = C.range(0,23), t2=[], s2;
@@ -325,15 +370,15 @@
         t2[x] = {
           scale1: t1[x]<10 ? '0' + t1[x] + ':00' : t1[x] +':00',
           scale2: s2
-        }
+        };
       }
       return t2;
-    }
+    };
 
     $scope.saveRule = function(rule){
-      var params={pageNo:$scope.pageNo};
+      var params={pageNum:$scope.pageNum}, ruleInfo;
       if(rule){
-        var ruleInfo = angular.extend({},rule);
+        ruleInfo = angular.extend({}, rule);
         angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
         angular.extend(extraData, {showEdit:true, showAreaSel:false, showPeriodSel:false});
       }
@@ -350,24 +395,24 @@
             C.responseHandler(scope, $scope, modalInstance, res);
           });
         }
-      }
+      };
       C.openModal(modalSet, 'rule');
-    }
+    };
 
     $scope.remove = function(id){
       var modalSet = {
         removeText: '确定要删除这条计费规则？', // modal 删除提示语
         confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.delRule({pageNo:$scope.pageNo, id: id}, function(res){
+          DDS.delRule({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           });
         }
       };
       C.openModal(modalSet);
-    }  
+    };
   }])
   /* demo */
-  .controller('HomeController', ['$scope', '$modal', 'C', function($scope, $modal, C){
+  .controller('DemoController', ['$scope', '$modal', 'C', function($scope, $modal, C){
     angular.extend($scope, {
       maxSize : 10,
       totleRecords : 200,
@@ -385,7 +430,7 @@
             });
           },
           cancel: C.cancelModal
-        }
+        };
         C.openModal(modalSet, 'general.modify');
       },
       remove: function(){

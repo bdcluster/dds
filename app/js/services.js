@@ -1,19 +1,26 @@
 (function(){
   'use strict';
   var app = angular.module('DdsServices', [])
-  .factory('DDS', ['$resource', function($resource){
+  .factory('DDS', ['$resource', 'C', function($resource, C){
     var normalPrarms = {local:1, mock:1, enforce:1};
-    // var url = 'http://10.10.40.219:8080/ddrive-platform-web/:endpoint/:action/:id';
-    var url = 'http://127.0.0.1:8084/:endpoint/:action/:id'
+    var url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
+    // var normalPrarms = {};
+    // var url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
+    var loginInfo = C.storage().get('loginInfo');
+    if (loginInfo){
+      angular.extend(normalPrarms, {sessionId:loginInfo.sessionId, loginName:loginInfo.userId});
+    }
     // normalPrarms = {};
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        params:{endpoint:'user', action:'login'}
+        url: 'http://10.10.40.88:8080/login-index'
+        // params:{endpoint:'user', action:'login'}
       },
       signOut:{
-        method:'POST',
-        params:{endpoint:'user', action:'signOut'}
+        method:'GET',
+        url:'http://10.10.40.88:8080/logout'
+        // params:{endpoint:'user', action:'signOut'}
       },
       savePwd:{
         method:'POST',
@@ -122,16 +129,16 @@
             period = {
               startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
               endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-            }
+            };
             break;
           case '/quarter-ord':
-            pickYear = params ? params.year : curYear;
+            pickYear = params ? curYear : 2014;
             firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
             endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
             period = {
               startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
               endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-            }
+            };
             break;
         }
         return period;
@@ -159,7 +166,7 @@
             }
           }
           else{
-            return 'errorCode = ' + res.header.errorCode
+            return 'errorCode = ' + res.header.errorCode;
           }
         }
         else{
@@ -173,7 +180,7 @@
           templateUrl: 'views/modal.'+ m +'.html',
           controller: 'ModalController',
           resolve: {
-            modalSet: function(){ return modalSet }
+            modalSet: function(){ return modalSet; }
           }
         };
         if(m  === 'general.remove'){
@@ -213,7 +220,7 @@
           clear: function(){
             return ls.clearAll();
           }
-        }
+        };
       },
 
       back2Login:function(){
@@ -239,6 +246,11 @@
             angular.extend(scope, data);
             scope.showPagination = true;
           }
+          else{
+            self.alert(scope, {type:'danger', msg:data});
+          }
+        }, function(res){
+          self.alert(scope, {type:'danger', msg:'网络错误！'});
         });
       },
 
@@ -263,17 +275,21 @@
             var data = self.validResponse(res);
             if(typeof data!=='string'){
               storage.set(key, data);
-              console.log('data cache success!');
+              // console.log('data cache success!');
             }
             else{
+              // console.log('data cache error!');
               return false;
-              console.log('data cache error!');
             }
           });
         };
         if(!storage.get(key)){
           $timeout(storeData, 200);
         }
+      },
+
+      goOrderList: function(cName){
+        $location.path('/order').search('cName', cName);
       }
     };
   }]);

@@ -14,51 +14,52 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary" data-ng-click="saveRule()">
-    <i class="glyphicon glyphicon-plus"></i> 添加
-  </button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
   <thead>
     <tr>
-      <td>编号</td>
-      <td>省份</td>
-      <td>城市</td>
-      <td>时间段</td>
-      <td>起步价</td>
-      <td>加收金额</td>
-      <td>规则描述</td>
+      <td>姓名</td>
+      <td>账号</td>
+      <td>角色</td>
       <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="rule in rules">
-      <td data-ng-bind="rule.ruleId"></td>
-      <td data-ng-bind="rule.province"></td>
-      <td data-ng-bind="rule.city"></td>
-      <td data-ng-bind="rule.period"></td>
-      <td data-ng-bind="rule.startPrice"></td>
-      <td data-ng-bind="rule.extraPrice"></td>
-      <td data-ng-bind="rule.description"></td>
+    <tr>
+      <td>Tom Cruise</td>
+      <td>tomcat</td>
+      <td>admin</td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
+        <button class="btn btn-primary btn-xs" data-ng-click="modify()">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.ruleId)">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove()">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>
       </td>
     </tr>
+    <tr>
+      <td>Jerry</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Andy</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
-<div class="row" data-ng-show="showPagination">
+<div class="row">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="totleRecords" data-ng-model="currentPage" data-items-per-page="recordsPerPage" data-max-size="maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="numPages" data-ng-change="changePage()"  data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNum}} / {{numPages}}
+    Page: {{currentPage}} / {{numPages}}
   </div>
 </div>

@@ -1,6 +1,13 @@
 (function(){
   'use strict';
   var app = angular.module('DdsFilters', [])
+  .filter('myDate', ['$filter', function($filter){
+    return function(d){
+      var mydate = new Date(d);
+      var argu = arguments[1] || 'yyyy-MM-dd hh:mm:ss';
+      return $filter('date')(mydate, argu);
+    }
+  }])
   /* 司机状态 0:空闲, 1:忙碌, 2:代驾中 */
   .filter('driveStatus', function(){
     return function(code){
@@ -14,7 +21,7 @@
         default:
           return '未知';
       }
-    }
+    };
   })
   .filter('billStatus', function(){
     return function(code){
@@ -26,13 +33,13 @@
         default:
           return '<i class="glyphicon glyphicon glyphicon-question-sign"></i>';
       }
-    }
+    };
   })
   /*  1=是； 2=否*/
   .filter('isVIP', function(){
     return function(vip){
       if (vip===1) return '是';
       else return '否';
-    }
+    };
   });
 })();

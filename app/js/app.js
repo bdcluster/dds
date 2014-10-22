@@ -67,6 +67,10 @@
       })
       .otherwise({redirectTo: '/home'});
 
+    if(window.localStorage['ls.token']){
+      $httpProvider.defaults.headers.common['Authorization'] = 'DDS ' + window.localStorage['ls.token'];
+    }
+
     $httpProvider.defaults.transformRequest = function(obj){
       var str = [];
       for(var p in obj){

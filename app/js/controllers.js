@@ -60,14 +60,15 @@
       loginForm: templatePath + 'form.login.html',
       checkLogin: function(){
         //  md5 for password
-        $scope.user.password = $filter('md5')($scope.user.password);
+        // $scope.user.password = $filter('md5')($scope.user.password);
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
           var data = C.validResponse(res);
           storage.clear();
           if(typeof data!=='string'){
             //缓存登录信息
-            storage.set('loginInfo', angular.extend(data.user, {sessionId: data.sessionId}));
+            storage.set('token', data.sessionId);
+            storage.set('loginInfo', data.user);
             //缓存
             DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
               storage.set('menus', result.data);

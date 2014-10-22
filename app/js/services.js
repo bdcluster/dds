@@ -2,25 +2,26 @@
   'use strict';
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    var normalPrarms = {local:1, mock:1, enforce:1};
-    var url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
+    // var normalPrarms = {local:1, mock:1, enforce:1};
+    var url = 'http://10.10.40.88:8080/:endpoint/:action/:id'
+    // var url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
     // var normalPrarms = {};
     // var url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
     var loginInfo = C.storage().get('loginInfo');
+    var normalPrarms = {};
     if (loginInfo){
-      angular.extend(normalPrarms, {sessionId:loginInfo.sessionId, loginName:loginInfo.userId});
+      angular.extend(normalPrarms, {userId:loginInfo.userId});
     }
-    // normalPrarms = {};
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        url: 'http://10.10.40.88:8080/login-index'
-        // params:{endpoint:'user', action:'login'}
+        url: 'http://10.10.40.88:8080/login-index',
+        params:{endpoint:'user', action:'login'}
       },
       signOut:{
         method:'GET',
-        url:'http://10.10.40.88:8080/logout'
-        // params:{endpoint:'user', action:'signOut'}
+        // url:'http://10.10.40.88:8080/logout'
+        params:{endpoint:'user', action:'signOut'}
       },
       savePwd:{
         method:'POST',

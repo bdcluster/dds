@@ -1,12 +1,24 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">客户名称</label>
+      <input type="text" class="form-control" name="cName" data-ng-model="search.cName" placeholder="客户名称">
     </div>
     <div class="form-group">
       <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <input type="text" class="form-control" name="dName" data-ng-model="search.dName" placeholder="司机名称">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">订单号</label>
+      <input type="text" class="form-control" name="billNo" data-ng-model="search.billNo" placeholder="订单号">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">状态</label>
+      <select name="status" class="form-control" data-ng-model="search.status">
+        <option value="">---订单状态---</option>
+        <option value="0">确认订单</option>
+        <option value="1">取消订单</option>
+      </select>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">

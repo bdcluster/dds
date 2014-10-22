@@ -73,7 +73,6 @@
               storage.set('menus', result.data);
               $window.location='d.html';
             });
-           
           }
           else{
             C.alert($scope, {type:'danger', msg:data});
@@ -328,13 +327,32 @@
     $scope.search = {};
     $scope.search.quarter = Math.ceil((new Date().getMonth()+1)/3);
 
+    /* datepicker setting*/
+    $scope.toggleDP1 = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.sOpen = !$scope.sOpen;
+    };
+    $scope.toggleDP2 = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.eOpen = !$scope.eOpen;
+    };
+    $scope.dateOptions = {
+      showWeeks:false
+    };
+
+
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage();
 
     $scope.doSearch = function(o){
-      C.list($scope, DDS, angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1}));
+      var s = angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1})
+      delete s.dp1; 
+      delete s.dp2;
+      C.list($scope, DDS, s);
     };
 
     $scope.orderByCust = function(cName){
@@ -354,7 +372,6 @@
     $scope.changePage();
 
     $scope.doSearch = function(o){
-      console.log(o);
       if(o){
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
       }

@@ -1,15 +1,15 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">姓名</label>
+      <input type="text" class="form-control" name="name" data-ng-model="search.name" placeholder="姓名">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">手机号</label>
+      <input type="text" class="form-control" name="emergencyPhone" data-ng-model="search.emergencyPhone" placeholder="手机号">
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
@@ -43,6 +43,6 @@
     <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

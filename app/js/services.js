@@ -110,10 +110,10 @@
       },
 
       getPeriod: function(){
-        var section = $location.path(), period, pickYear, firstDay, endDay;
+        var section = $location.path(), pickYear, firstDay, endDay;
         var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
         var curQuarter = Math.ceil(curMonth / 3);
-        var params = arguments[0];
+        var params = arguments[0], period={};
         switch(section){
           case '/month-ord':
             if(params && params.year && params.month){
@@ -130,17 +130,38 @@
               startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
               endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
             };
-            break;
+          break;
+
           case '/quarter-ord':
-            pickYear = params ? curYear : 2014;
-            firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
-            endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
-            period = {
-              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
-              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-            };
-            break;
+            if(params && params.year){
+              pickYear = params ? params.year : curYear;
+              firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
+              endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
+              period = {
+                startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
+                endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
+              };
+            }
+          break;
+
+          case '/time-ord':
+            if(params && params.dp1 && params.dp2){
+              if(params.dp1>params.dp2){
+                period = {
+                  startTime: $filter('date')(params.dp2, 'yyyy-MM-dd'),
+                  endTime: $filter('date')(params.dp1, 'yyyy-MM-dd')
+                }
+              }
+              else{
+                period = {
+                  startTime: $filter('date')(params.dp1, 'yyyy-MM-dd'),
+                  endTime: $filter('date')(params.dp2, 'yyyy-MM-dd')
+                }
+              }
+            }
+          break;
         }
+        // console.log(period)
         return period;
       },
 

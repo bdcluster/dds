@@ -5,23 +5,26 @@
       <input class="form-control" type="text" name="cName" data-ng-model="search.cName" placeholder="客户名称">
     </div>
     <div class="form-group">
-      <label class="sr-only">年份</label>
-      <select class="form-control" data-ng-model="search.year" data-ng-options="y for y in years">
-        <option value="">-- 选择年份 --</option>
-      </select>
+      <label class="sr-only">开始时间</label>
+      <div class="input-group dds-dp">
+        <input type="text" class="form-control" datepicker-popup ng-model="search.dp1" is-open="sOpen" datepicker-options="dateOptions" show-button-bar="false">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" style="height:34px;" ng-click="toggleDP1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
     </div>
     <div class="form-group">
-      <label class="sr-only">季度</label>
-      <div class="btn-group">
-        <label class="btn btn-default" ng-model="search.quarter" btn-radio="1">Q1</label>
-        <label class="btn btn-default" ng-model="search.quarter" btn-radio="2">Q2</label>
-        <label class="btn btn-default" ng-model="search.quarter" btn-radio="3">Q3</label>
-        <label class="btn btn-default" ng-model="search.quarter" btn-radio="4">Q4</label>
+      <label class="sr-only">结束时间</label>
+      <div class="input-group dds-dp">
+        <input type="text" class="form-control" datepicker-popup ng-model="search.dp2" is-open="eOpen" datepicker-options="dateOptions" show-button-bar="false" min-date="search.dp1">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" style="height:34px;" ng-click="toggleDP2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
       </div>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
-        <span class="glyphicon glyphicon-search"></span> 搜素
+        <i class="glyphicon glyphicon-search"></i> 搜素
       </button>
     </div>
   </form>
@@ -65,6 +68,6 @@
     <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNum}} / {{numPages}}
+    Page: {{pageNo}} / {{numPages}}
   </div>
 </div>

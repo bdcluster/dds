@@ -1,15 +1,11 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">角色名称</label>
+      <input type="text" class="form-control" name="roleName" data-ng-model="search.roleName" placeholder="角色名称">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>

@@ -1,15 +1,24 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">姓名</label>
+      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="姓名">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">司机工号</label>
+      <input type="text" class="form-control" name="demo2" data-ng-model="search.driverNo" placeholder="司机工号">
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <label class="sr-only">状态</label>
+      <select name="status" class="form-control" data-ng-model="search.status">
+        <option value="">---司机状态---</option>
+        <option value="0">空闲</option>
+        <option value="1">忙碌</option>
+        <option value="2">代驾中</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
@@ -31,7 +40,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="driver in drivers" data-ng-class="{success:driver.status==0, danger:driver.status==1, warning:driver.status==2, info:driver.status>2}">
+    <tr data-ng-repeat="driver in drivers">
       <td data-ng-bind="driver.driverNo"></td>
       <td data-ng-bind="driver.name"></td>
       <td data-ng-bind="driver.dMobile"></td>

@@ -158,6 +158,19 @@
   cursor: pointer;
 }
 
+.dds-dp .dropdown-menu{
+  padding: 5px;
+  table{
+    @extend .table-bordered;
+    outline-width: 0;
+    button{
+      border-radius:0;
+      border-width: 0;
+    }
+    
+  }
+}
+
 footer{
   border-top: 1px solid $navbar-default-border;
   margin-top: $grid-gutter-width;

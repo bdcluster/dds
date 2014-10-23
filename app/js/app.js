@@ -15,61 +15,84 @@
     'DdsFilters',
     'LocalStorageModule'
   ])
-  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider,$httpProvider, localStorageServiceProvider){
+  .run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+      if (nextRoute.access && nextRoute.access.requiredLogin && !AuthService.isLogged) {
+        $location.path('/login');
+      }
+    });
+  }])
+  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider, $httpProvider, localStorageServiceProvider){
+
+    $httpProvider.interceptors.push('TokenInterceptor');
+
     $routeProvider
+      .when('/login', {
+        templateUrl: viewPath + 'login.html',
+        controller:  'AdminController',
+        access: { requiredLogin: false }
+      })
       .when('/chgpwd', {
         templateUrl: viewPath + 'chgpwd.html',
-        controller:  'ChangePasswordController'
+        controller:  'ChangePasswordController',
+        access: { requiredLogin: true }
       })
       .when('/home', {
         templateUrl: viewPath + 'home.html',
-        controller:  'HomeController'
+        controller:  'HomeController',
+        access: { requiredLogin: true }
       })
       .when('/user', {
         templateUrl: viewPath + 'user.html',
-        controller:  'UserController'
+        controller:  'UserController',
+        access: { requiredLogin: true }
       })
       .when('/role', {
         templateUrl: viewPath + 'role.html',
-        controller:  'RoleController'
+        controller:  'RoleController',
+        access: { requiredLogin: true }
       })
       .when('/customer', {
         templateUrl: viewPath + 'cust.html',
-        controller:  'CustomerController'
+        controller:  'CustomerController',
+        access: { requiredLogin: true }
       })
       .when('/driver', {
         templateUrl: viewPath + 'driv.html',
-        controller:  'DriverController'
+        controller:  'DriverController',
+        access: { requiredLogin: true }
       })
       .when('/order', {
         templateUrl: viewPath + 'order.html',
-        controller:  'OrderController'
+        controller:  'OrderController',
+        access: { requiredLogin: true }
       })
       .when('/month-ord', {
         templateUrl: viewPath + 'month-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/quarter-ord', {
         templateUrl: viewPath + 'quarter-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/time-ord', {
         templateUrl: viewPath + 'time-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/rule', {
         templateUrl: viewPath + 'rule.html',
-        controller:  'RuleController'
+        controller:  'RuleController',
+        access: { requiredLogin: true }
       })
       .when('/demo', {
         templateUrl: viewPath + 'demo.html',
-        controller:  'DemoController'
+        controller:  'DemoController',
+        access: { requiredLogin: true }
       })
-      .otherwise({redirectTo: '/home'});
-
-    if(window.sessionStorage['ls.token']){
-      $httpProvider.defaults.headers.common['Authorization'] = 'DDS ' + window.sessionStorage['ls.token'];
-    }
+      .otherwise({redirectTo: '/login'});
 
     $httpProvider.defaults.transformRequest = function(obj){
       var str = [];

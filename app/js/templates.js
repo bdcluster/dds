@@ -71,6 +71,17 @@ try {
   module = angular.module('DdsTemplate', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('views/login.html',
+    '<div class="login-panel panel panel-default col-xs-10"><div class="panel-body"><div class="row"><div class="login-cover col-xs-6"><img src="img/designall.jpeg" class="img-responsive"></div><div class="login-form col-xs-6" ng-include="\'views/form.login.html\'"></div></div></div></div>');
+}]);
+})();
+;(function(module) {
+try {
+  module = angular.module('DdsTemplate');
+} catch (e) {
+  module = angular.module('DdsTemplate', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('views/menu.html',
     '<div data-accordion="" close-others="true"><div data-accordion-group="" data-ng-repeat="m in menus" data-is-open="m.open" data-ng-click="markOpen($index)" data-ng-class="{active:m.open}"><div data-accordion-heading=""><i class="iconfont" data-ng-class="{\'icon-{{m.alias}}\': true}"></i> {{m.name}}</div><ul class="nav nav-pills nav-stacked"><li data-ng-repeat="m2 in m.subname" data-ng-class="{active: isActivedMenu(\'/\'+m2.path)}"><a href="#/{{m2.path}}"><i class="iconfont icon-arrow-right"></i> <span data-ng-bind="m2.name"></span></a></li></ul></div></div>');
 }]);

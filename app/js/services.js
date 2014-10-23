@@ -1,9 +1,31 @@
 (function(){
   'use strict';
   var app = angular.module('DdsServices', [])
-  .factory('DDS', ['$resource', 'C', function($resource, C){
+
+  .factory('AuthService', [function(){
+    var auth = {
+        isLogged: false
+    }
+    return auth;
+  }])
+  .factory('TokenInterceptor', ['$q', '$window', function ($q, $window) {
+    return {
+      request: function (config) {
+        config.headers = config.headers || {};
+        if($window.sessionStorage['ls.token'] && $window.sessionStorage['ls.userId']){
+          // $httpProvider.defaults.headers.common['Authorization'] = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
+          config.headers.Authorization = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
+        }
+        return config;
+      },
+
+      response: function (response) {
+        return response || $q.when(response);
+      }
+    };
+  }])
+  .factory('DDS', ['$resource', function($resource){
     var hosts, url, normalPrarms={}, sel = 3;
-    var loginInfo = C.storage().get('loginInfo');
     switch(sel){
       case 1:
         url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
@@ -15,9 +37,6 @@
       default:
         url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
         angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
-    }
-    if (loginInfo){
-      angular.extend(normalPrarms, {userId:loginInfo.userId});
     }
 
     return $resource(url, normalPrarms, {
@@ -232,7 +251,7 @@
       cancelModal: function(modalInstance){ // 取消modal 默认没有callback
         modalInstance.dismiss('dismiss');
       },
-      
+
       storage: function(){
         var store, now = new Date();
         ls.isSupported ? store = ls : store = ls.cookie;
@@ -253,7 +272,7 @@
       },
 
       back2Login:function(){
-        $window.location='login.html';
+        $location.path('/login');
       },
 
       back2Home: function(delay){

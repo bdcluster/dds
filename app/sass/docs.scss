@@ -33,9 +33,8 @@
 
 .login-panel{
   $w: 800px;
-  width: $w;
+  // width: $w;
   max-height: $w*2/3;
-  margin-top: $navbar-height*2;
   @include center-block();
 }
 

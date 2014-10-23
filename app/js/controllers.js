@@ -1,17 +1,32 @@
 (function(){
   'use strict';
-  // var templatePath = window.DEBUG ? 'views/' : 'dist/views/';
   var templatePath = 'views/';
   var app = angular.module('DdsControllers', [])
    /* 全局controller，不包括登录页面 */
-  .controller('GlobelController', ['$scope', '$location', 'C', 'DDS', function($scope, $location, C, DDS){
+  .controller('GlobelController', ['$rootScope', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
-    if(!storage.get("loginInfo") && $location.path()){
-      C.back2Login();
-    }
+    /*rootscope setting*/
+    angular.extend($rootScope, {
+      showNav:$location.path()!=='/login' ? true : false,
+      menus:storage.get('menus'),
+      userId:storage.get('userId'),
+      isActivedMenu: function(viewLocation){
+        return viewLocation === $location.path();
+      },
+      markOpen: function(no){
+        storage.set('opendAccordion', no);
+      },
+      keepOpenAccordion: function(){
+        var index = storage.get('opendAccordion');
+        if(index !== null){
+          this.menus[index].open = true;
+        }
+      }
+    });
+    $rootScope.keepOpenAccordion();
+
     angular.extend($scope, {
       alerts: [],
-      loginInfo: storage.get('loginInfo'),
       pageNum:1,
       maxPageSize : 8,
       recordsPerPage: 10,
@@ -24,67 +39,52 @@
           var data = C.validResponse(res);
           if(typeof data !== 'string' && data.code === 0){
             storage.clear();
+            $rootScope.menus=[];
+            $rootScope.showNav=[];
+            AuthService.isLogged = false;
             C.back2Login();
           }
         });
       }
     });
-    // 从localstorage获取菜单数据
-    if(storage.get("loginInfo")){
-      angular.extend($scope, {
-        menus: storage.get('menus'),
-        isActivedMenu: function(viewLocation){
-          return viewLocation === $location.path();
-        },
-        markOpen: function(no){
-          storage.set('opendAccordion', no);
-        },
-        keepOpenAccordion: function(){
-          var index = storage.get('opendAccordion');
-          if(index !== null){
-            this.menus[index].open = true;
-          }
-        }
-      });
-      $scope.keepOpenAccordion();
-      //缓存角色与省市数据
-      C.cacheData(DDS, {endpoint:'role', action:'select'});
-      C.cacheData(DDS, {endpoint:'provinces', action:'select'});
-    }
   }])
-  /* 登 录 */
-  .controller('LoginController', ['$scope', '$window', '$filter', 'C', 'DDS', function($scope, $window, $filter, C, DDS){
+  .controller('AdminController', ['$rootScope', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
     storage.clear();
-    
-    angular.extend($scope, {
-      user:{},
-      loginForm: templatePath + 'form.login.html',
-      checkLogin: function(){
-        //  md5 for password
-        // $scope.user.password = $filter('md5')($scope.user.password);
+
+    $scope.checkLogin = function(){
+        /*login success:
+            1. sessionStorage: token & userId & loginInfo
+            2. authService.isLogin value is true
+            3. sessionStorage: menu,role,province
+        */
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
           var data = C.validResponse(res);
           if(typeof data!=='string'){
+            AuthService.isLogged = true;
             //缓存登录信息
             storage.set('token', data.sessionId);
+            storage.set('userId', data.user.userId);
             storage.set('loginInfo', data.user);
+
             //缓存
             DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
               storage.set('menus', result.data);
-              $window.location='d.html';
+              $location.path('/home');
             });
           }
           else{
             C.alert($scope, {type:'danger', msg:data});
           }
+        }, function(){
+          C.alert($scope, {type:'danger', msg:'network error!'});
         });
-      },
-      isUnchanged: function(user){
+      };
+
+      $scope.isUnchanged = function(user){
         return angular.equals(user, $scope.master);
-      }
-    });
+      };
   }])
   /* 修改密码 */
   .controller('ChangePasswordController', ['$scope', 'C' ,'DDS', '$filter', function($scope, C, DDS, $filter){
@@ -115,8 +115,20 @@
     };
   }])
   /* 欢 迎 页 */
-  .controller('HomeController', [function(){
-    //Home page controller here....
+  .controller('HomeController', ['$rootScope', '$scope', 'C' ,'DDS', '$location', 'AuthService', function($rootScope, $scope, C, DDS, $location, AuthService){
+    var storage = C.storage();
+    // 从localstorage获取菜单数据
+    if(storage.get("loginInfo")){
+      angular.extend($rootScope, {
+        showNav: true,
+        menus: storage.get('menus'),
+        userId: storage.get('userId')
+        
+      });
+      //缓存角色与省市数据
+      C.cacheData(DDS, {endpoint:'role', action:'select'});
+      C.cacheData(DDS, {endpoint:'provinces', action:'select'});
+    }
   }])
   /* 用户管理 */
   .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){

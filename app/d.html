@@ -16,10 +16,10 @@
     <![endif]-->
   </head>
   <body data-ng-controller="GlobelController" class="platform-body">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-show="showNav">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="#/home">
             <i class="iconfont icon-car"></i> 代驾管理系统 <small>v 1.0</small>
           </a>
         </div>
@@ -27,7 +27,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle">
               <i class="iconfont icon-yonghu"></i>
-              欢迎您，<span data-ng-bind="loginInfo.userId"></span>
+              欢迎您，<span data-ng-bind="userId"></span>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">

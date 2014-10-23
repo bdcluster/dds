@@ -2,25 +2,31 @@
   'use strict';
   var app = angular.module('DdsServices', [])
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    // var normalPrarms = {local:1, mock:1, enforce:1};
-    var url = 'http://10.10.40.88:8080/:endpoint/:action/:id'
-    // var url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
-    // var normalPrarms = {};
-    // var url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
+    var hosts, url, normalPrarms={}, sel = 3;
     var loginInfo = C.storage().get('loginInfo');
-    var normalPrarms = {};
+    switch(sel){
+      case 1:
+        url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
+        break;
+      case 2:
+        // url = 'http://10.10.40.88:8080/:endpoint/:action/:id';
+        url: 'http://10.10.40.88:8080/login-index';
+        break;
+      default:
+        url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
+        angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
+    }
     if (loginInfo){
       angular.extend(normalPrarms, {userId:loginInfo.userId});
     }
+
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        url: 'http://10.10.40.88:8080/login-index',
         params:{endpoint:'user', action:'login'}
       },
       signOut:{
         method:'GET',
-        // url:'http://10.10.40.88:8080/logout'
         params:{endpoint:'user', action:'signOut'}
       },
       savePwd:{
@@ -55,7 +61,7 @@
   }])
   .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
-      runtimeEvn: function(){
+      /*runtimeEvn: function(){
         //0开发 1测试 2生产 3其他
         var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
@@ -76,7 +82,7 @@
         else {
           return 3;
         }
-      },
+      },*/
 
       succ: function(chart){
         if (angular.isNumber(chart)) { return chart - 0 + 1; }
@@ -226,6 +232,7 @@
       cancelModal: function(modalInstance){ // 取消modal 默认没有callback
         modalInstance.dismiss('dismiss');
       },
+      
       storage: function(){
         var store, now = new Date();
         ls.isSupported ? store = ls : store = ls.cookie;

@@ -55,6 +55,8 @@
   /* 登 录 */
   .controller('LoginController', ['$scope', '$window', '$filter', 'C', 'DDS', function($scope, $window, $filter, C, DDS){
     var storage = C.storage();
+    storage.clear();
+    
     angular.extend($scope, {
       user:{},
       loginForm: templatePath + 'form.login.html',
@@ -64,7 +66,6 @@
         $scope.master = angular.copy($scope.user);
         DDS.login($scope.user, function(res){
           var data = C.validResponse(res);
-          storage.clear();
           if(typeof data!=='string'){
             //缓存登录信息
             storage.set('token', data.sessionId);

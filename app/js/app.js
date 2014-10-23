@@ -15,7 +15,7 @@
     'DdsFilters',
     'LocalStorageModule'
   ])
-  .config(['$routeProvider','$httpProvider', function($routeProvider,$httpProvider){
+  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider,$httpProvider, localStorageServiceProvider){
     $routeProvider
       .when('/chgpwd', {
         templateUrl: viewPath + 'chgpwd.html',
@@ -67,8 +67,8 @@
       })
       .otherwise({redirectTo: '/home'});
 
-    if(window.localStorage['ls.token']){
-      $httpProvider.defaults.headers.common['Authorization'] = 'DDS ' + window.localStorage['ls.token'];
+    if(window.sessionStorage['ls.token']){
+      $httpProvider.defaults.headers.common['Authorization'] = 'DDS ' + window.sessionStorage['ls.token'];
     }
 
     $httpProvider.defaults.transformRequest = function(obj){
@@ -83,5 +83,8 @@
     $httpProvider.defaults.headers.post = {
       'Content-Type': 'application/x-www-form-urlencoded'
     };
+
+    //set localStorage type as sessionStorage
+    localStorageServiceProvider.setStorageType('sessionStorage');
   }]);
 })();

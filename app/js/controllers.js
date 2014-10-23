@@ -40,7 +40,7 @@
           if(typeof data !== 'string' && data.code === 0){
             storage.clear();
             $rootScope.menus=[];
-            $rootScope.showNav=[];
+            $rootScope.showNav=false;
             AuthService.isLogged = false;
             C.back2Login();
           }
@@ -51,40 +51,43 @@
   .controller('AdminController', ['$rootScope', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
     storage.clear();
+    $rootScope.showNav=false;
+    $rootScope.menus=[];
 
     $scope.checkLogin = function(){
-        /*login success:
-            1. sessionStorage: token & userId & loginInfo
-            2. authService.isLogin value is true
-            3. sessionStorage: menu,role,province
-        */
-        $scope.master = angular.copy($scope.user);
-        DDS.login($scope.user, function(res){
-          var data = C.validResponse(res);
-          if(typeof data!=='string'){
-            AuthService.isLogged = true;
-            //缓存登录信息
-            storage.set('token', data.sessionId);
-            storage.set('userId', data.user.userId);
-            storage.set('loginInfo', data.user);
+      /*login success:
+          1. sessionStorage: token & userId & loginInfo
+          2. authService.isLogin value is true
+          3. sessionStorage: menu,role,province
+      */
+      $scope.master = angular.copy($scope.user);
+      DDS.login($scope.user, function(res){
+        var data = C.validResponse(res);
+        if(typeof data!=='string'){
+          AuthService.isLogged = true;
+          //缓存登录信息
+          storage.set('token', data.sessionId);
+          // document.cookie = 'JSESSIONID='+data.sessionId;
+          storage.set('userId', data.user.userId);
+          storage.set('loginInfo', data.user);
 
-            //缓存
-            DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
-              storage.set('menus', result.data);
-              $location.path('/home');
-            });
-          }
-          else{
-            C.alert($scope, {type:'danger', msg:data});
-          }
-        }, function(){
-          C.alert($scope, {type:'danger', msg:'network error!'});
-        });
-      };
+          //缓存
+          DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
+            storage.set('menus', result.data);
+            $location.path('/home');
+          });
+        }
+        else{
+          C.alert($scope, {type:'danger', msg:data});
+        }
+      }, function(){
+        C.alert($scope, {type:'danger', msg:'network error!'});
+      });
+    };
 
-      $scope.isUnchanged = function(user){
-        return angular.equals(user, $scope.master);
-      };
+    $scope.isUnchanged = function(user){
+      return angular.equals(user, $scope.master);
+    };
   }])
   /* 修改密码 */
   .controller('ChangePasswordController', ['$scope', 'C' ,'DDS', '$filter', function($scope, C, DDS, $filter){
@@ -123,12 +126,11 @@
         showNav: true,
         menus: storage.get('menus'),
         userId: storage.get('userId')
-        
       });
-      //缓存角色与省市数据
-      C.cacheData(DDS, {endpoint:'role', action:'select'});
-      C.cacheData(DDS, {endpoint:'provinces', action:'select'});
     }
+    //缓存角色与省市数据
+    C.cacheData(DDS, {endpoint:'role', action:'select'});
+    C.cacheData(DDS, {endpoint:'provinces', action:'select'});
   }])
   /* 用户管理 */
   .controller('UserController', ['$scope','DDS', 'C', function($scope, DDS, C){

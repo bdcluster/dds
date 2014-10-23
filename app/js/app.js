@@ -109,5 +109,7 @@
 
     //set localStorage type as sessionStorage
     localStorageServiceProvider.setStorageType('sessionStorage');
+
+    // $httpProvider.defaults.withCredentials = true;
   }]);
 })();

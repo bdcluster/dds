@@ -13,8 +13,10 @@
       request: function (config) {
         config.headers = config.headers || {};
         if($window.sessionStorage['ls.token'] && $window.sessionStorage['ls.userId']){
-          // $httpProvider.defaults.headers.common['Authorization'] = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
-          config.headers.Authorization = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
+          // config.headers.Authorization = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
+          // document.cookie = 'JSESSIONID='+$window.sessionStorage['ls.token']+';domain=.ddriver.com;path=/';
+
+           // config.headers.cookie = document.cookie;
         }
         return config;
       },
@@ -24,25 +26,31 @@
       }
     };
   }])
-  .factory('DDS', ['$resource', function($resource){
-    var hosts, url, normalPrarms={}, sel = 3;
+  .factory('DDS', ['$resource', 'C', function($resource, C){
+    var hosts, url, normalPrarms={}, sel = 2;
+    var storage = C.storage();
     switch(sel){
       case 1:
         url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
         break;
       case 2:
-        // url = 'http://10.10.40.88:8080/:endpoint/:action/:id';
-        url: 'http://10.10.40.88:8080/login-index';
+        url = 'http://ddriver.com:8080/:endpoint/:action/:id;jsessionid=:js';
         break;
       default:
         url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
         angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
+    console.log(storage.get('token'))
+    if(storage.get('token')){
+      angular.extend(normalPrarms, {js:storage.get('token'),jsessionid:storage.get('token'), userId:storage.get('userId')})
+    }
 
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        params:{endpoint:'user', action:'login'}
+        url: 'http://ddriver.com:8080/login-index'
+        // params:{endpoint:'order', action:'select', js:'abcd'}
+        // params:{endpoint:'user'}
       },
       signOut:{
         method:'GET',
@@ -255,18 +263,19 @@
       storage: function(){
         var store, now = new Date();
         ls.isSupported ? store = ls : store = ls.cookie;
+      
         return {
           set: function(key, val){
-            return ls.set(key, val);
+            return store.set(key, val);
           },
           get: function(key){
-            return ls.get(key);
+            return store.get(key);
           },
           remove: function(key){
-            return ls.remove(key);
+            return store.remove(key);
           },
           clear: function(){
-            return ls.clearAll();
+            return store.clearAll();
           }
         };
       },
@@ -323,10 +332,8 @@
             var data = self.validResponse(res);
             if(typeof data!=='string'){
               storage.set(key, data);
-              // console.log('data cache success!');
             }
             else{
-              // console.log('data cache error!');
               return false;
             }
           });

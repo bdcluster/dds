@@ -1,4 +1,4 @@
-<form class="form-horizontal" role="form" name="loginForm" data-ng-submit="checkLogin()" novalidate>
+<form class="form-horizontal" role="form" name="loginForm" novalidate>
   <div class="form-group has-feedback" data-ng-class="{'has-success':loginForm.userId.$valid, 'has-error':loginForm.userId.$invalid &amp;&amp; loginForm.userId.$dirty}">
     <div class="input-group col-xs-10 col-xs-offset-1">
       <div class="input-group-addon"><i class="iconfont icon-yonghu"></i></div>
@@ -22,7 +22,8 @@
   </div> -->
   <div class="form-group">
     <div class="col-xs-offset-1 col-xs-5">
-      <button type="submit" class="btn btn-primary btn-block btn-login" ng-disabled="loginForm.$invalid || isUnchanged(user)"><span class="iconfont icon-login"></span> 登 录</button>
+      <button class="btn btn-primary btn-block btn-login" ng-disabled="loginForm.$invalid || isUnchanged(user)" data-ng-click="checkLogin()"><span class="iconfont icon-login"></span> 登 录</button>
     </div>
   </div>
+  {{user}}
 </form>

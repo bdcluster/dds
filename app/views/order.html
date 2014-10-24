@@ -24,12 +24,15 @@
       <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
+      <button class="btn btn-primary" data-ng-click="syncOrder()" data-ng-class="{'sync-ing':rotate}">
+        <i class="glyphicon glyphicon-refresh"></i>
+        <span data-ng-bind="syncStatus"></span>
+      </button>
+      <button class="btn btn-primary" data-ng-click="orderExport(search)">
+        <i class="glyphicon glyphicon-export"></i> 数据导出
+      </button>
     </div>
   </form>
-  <button class="btn btn-primary" data-ng-click="syncOrder()" data-ng-class="{'sync-ing':rotate}">
-    <i class="glyphicon glyphicon-refresh"></i>
-    <span data-ng-bind="syncStatus"></span>
-  </button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -38,9 +41,7 @@
       <td>订单号</td>
       <td>客户信息</td>
       <td>司机信息</td>
-      <td>里程</td>
       <td>费用</td>
-      <td>目的地</td>
       <td>创建时间</td>
       <td>起始时间</td>
       <td>服务时段</td>
@@ -48,27 +49,25 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="b in bill">
-      <td data-ng-bind="b.billNo"></td>
+    <tr data-ng-repeat="ord in orders">
+      <td data-ng-bind="ord.orderId"></td>
       <td>
-        <span data-ng-bind="b.cName"></span><br>
-        <span data-ng-bind="b.cMobile"></span>
+        <span data-ng-bind="ord.customerName"></span><br>
+        <span data-ng-bind="ord.customerPhone"></span>
       </td>
       <td>
-        <span data-ng-bind="b.dName"></span><br>
-        <span data-ng-bind="b.dMobile"></span>
+        <span data-ng-bind="ord.driverName"></span><br>
+        <span data-ng-bind="ord.driverPhone"></span>
       </td>
-      <td><span data-ng-bind="b.distance"></span> km</td>
-      <td data-ng-bind="b.charge | currency: '￥'"></td>
-      <td data-ng-bind="b.destination"></td>
-      <td data-ng-bind="b.createTime | myDate"></td>
+      <td data-ng-bind="ord.serviceCost | currency: '￥'"></td>
+      <td data-ng-bind="ord.billCreateTime | myDate"></td>
       <td>
-        <span data-ng-bind="b.startTime"></span><br>
-        <span data-ng-bind="b.endTime"></span>
+        <span data-ng-bind="ord.driveStartTime"></span><br>
+        <span data-ng-bind="ord.driveEndTime"></span>
       </td>
-      <td><span data-ng-bind="b.hours"></span> 小时</td>
+      <td><span data-ng-bind="ord.serviceTime"></span> 小时</td>
       <td>
-        <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':b.status==0, 'glyphicon-remove-sign text-danger':b.status==1, 'glyphicon-question-sign':b.status>1}"></i>
+        <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':ord.billStatus==1, 'glyphicon-remove-sign text-danger':ord.billStatus==0, 'glyphicon-question-sign':ord.billStatus>1}"></i>
       </td>
     </tr>
   </tbody>

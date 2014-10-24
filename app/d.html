@@ -16,7 +16,7 @@
     <![endif]-->
   </head>
   <body data-ng-controller="GlobelController" class="platform-body">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-show="showNav">
+    <nav class="navbar navbar-inverse navbar-fixed-top ng-hide" role="navigation" data-ng-show="showNav">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">
@@ -64,7 +64,7 @@
       </div>
       <!-- <div class="clearfix"></div> -->
     </div>
-    <footer class="container-fluid">
+    <footer class="container-fluid" data-ng-show="showNav">
       <div class="row">
         <div class="col-xs-9 col-xs-offset-2">
           <div class="row">

@@ -12,12 +12,9 @@
     return {
       request: function (config) {
         config.headers = config.headers || {};
-        if($window.sessionStorage['ls.token'] && $window.sessionStorage['ls.userId']){
-          // config.headers.Authorization = $window.sessionStorage['ls.userId'] + '-' + $window.sessionStorage['ls.token'];
-          // document.cookie = 'JSESSIONID='+$window.sessionStorage['ls.token']+';domain=.ddriver.com;path=/';
-
-           // config.headers.cookie = document.cookie;
-        }
+        /*if($window.sessionStorage['ls.token']){
+          config.headers.Authorization = $window.sessionStorage['ls.token'];
+        }*/
         return config;
       },
 
@@ -27,38 +24,35 @@
     };
   }])
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    var hosts, url, normalPrarms={}, sel = 2;
+    var hosts, url, normalPrarms={}, sel = 1;
     var storage = C.storage();
     switch(sel){
       case 1:
         url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
         break;
       case 2:
-        url = 'http://ddriver.com:8080/:endpoint/:action/:id;jsessionid=:js';
+        url = 'http://ddriver.com:8080/:endpoint/:action/:id';
         break;
       default:
         url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
         angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    console.log(storage.get('token'))
     if(storage.get('token')){
-      angular.extend(normalPrarms, {js:storage.get('token'),jsessionid:storage.get('token'), userId:storage.get('userId')})
+      // angular.extend(normalPrarms, {userId:storage.get('userId')})
     }
 
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        url: 'http://ddriver.com:8080/login-index'
-        // params:{endpoint:'order', action:'select', js:'abcd'}
-        // params:{endpoint:'user'}
+        params:{endpoint:'login-index'}
       },
       signOut:{
         method:'GET',
-        params:{endpoint:'user', action:'signOut'}
+        params:{endpoint:'logout'}
       },
       savePwd:{
         method:'POST',
-        params:{endpoint:'user', action:'editPassword'}
+        params:{endpoint:'password', action:'change'}
       },
       delUser:{
         method:'POST',
@@ -145,58 +139,48 @@
 
       getPeriod: function(){
         var section = $location.path(), pickYear, firstDay, endDay;
-        var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
-        var curQuarter = Math.ceil(curMonth / 3);
+        // var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
+        // var curQuarter = Math.ceil(curMonth / 3);
         var params = arguments[0], period={};
         switch(section){
           case '/month-ord':
-            if(params && params.year && params.month){
-              pickYear = params.year;
-              firstDay = params.month + '-01';
-              endDay   = params.month + '-' + this.mLength()[params.month];
-            }
-            else{
-              pickYear = curYear;
-              firstDay = curMonth + '-01';
-              endDay   = curMonth + '-'+ this.mLength()[curMonth];
-            }
             period = {
-              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
-              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-            };
+              startTime: params.year + '-' + params.month + '-01',
+              endTime: params.year + '-' + params.month + '-' + this.mLength()[params.month]
+            }
           break;
 
           case '/quarter-ord':
-            if(params && params.year){
-              pickYear = params ? params.year : curYear;
-              firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
-              endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
-              period = {
-                startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
-                endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-              };
-            }
+            pickYear = params ? params.year : curYear;
+            firstDay = params ? (params.quarter * 3 - 2) + '-01' : (curQuarter * 3 - 2) + '-01';
+            endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
+            period = {
+              startTime: new Date(pickYear + '-' + firstDay),
+              endTime:   new Date(pickYear + '-' + endDay)
+            };
           break;
 
           case '/time-ord':
             if(params && params.dp1 && params.dp2){
               if(params.dp1>params.dp2){
                 period = {
-                  startTime: $filter('date')(params.dp2, 'yyyy-MM-dd'),
-                  endTime: $filter('date')(params.dp1, 'yyyy-MM-dd')
+                  startTime:params.dp2,
+                  endTime: params.dp1
                 }
               }
               else{
                 period = {
-                  startTime: $filter('date')(params.dp1, 'yyyy-MM-dd'),
-                  endTime: $filter('date')(params.dp2, 'yyyy-MM-dd')
+                  startTime: params.dp1,
+                  endTime: params.dp2
                 }
               }
             }
           break;
         }
-        // console.log(period)
-        return period;
+        return {
+          startTime: $filter('myDate')(period.startTime, 'yyyy-MM-dd'),
+          endTime:   $filter('date')(period.endTime, 'yyyy-MM-dd')
+        };
       },
 
       alert: function(scope, opts, alone){

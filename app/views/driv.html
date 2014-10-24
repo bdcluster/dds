@@ -12,9 +12,9 @@
       <label class="sr-only">状态</label>
       <select name="status" class="form-control" data-ng-model="search.status">
         <option value="">---司机状态---</option>
-        <option value="0">空闲</option>
+        <option value="2">空闲</option>
         <option value="1">忙碌</option>
-        <option value="2">代驾中</option>
+        <option value="3">代驾中</option>
       </select>
     </div>
     <div class="form-group">
@@ -42,14 +42,14 @@
   <tbody>
     <tr data-ng-repeat="driver in drivers">
       <td data-ng-bind="driver.driverNo"></td>
-      <td data-ng-bind="driver.name"></td>
-      <td data-ng-bind="driver.dMobile"></td>
-      <td data-ng-bind="driver.dLicence"></td>
-      <td data-ng-bind="driver.status | driveStatus"></td>
-      <td data-ng-bind="driver.dYears"></td>
+      <td data-ng-bind="driver.driverName"></td>
+      <td data-ng-bind="driver.driverPhone"></td>
+      <td data-ng-bind="driver.identityCard"></td>
+      <td data-ng-bind="driver.workStatus | driveStatus"></td>
+      <td data-ng-bind="driver.driveAge"></td>
       <td data-ng-bind="driver.nativePlace"></td>
-      <td data-ng-bind="driver.counts"></td>
-      <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.core"></td>
+      <td data-ng-bind="driver.driveCount"></td>
+      <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.starLevel"></td>
     </tr>
   </tbody>
 </table>
@@ -57,7 +57,8 @@
   <div class="col-xs-10">
     <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
+  {{maxPageSize}}
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

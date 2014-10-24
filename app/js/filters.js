@@ -12,11 +12,11 @@
   .filter('driveStatus', function(){
     return function(code){
       switch(code){
-        case 0:
+        case 2:
           return '空闲';
         case 1:
           return '忙碌';
-        case 2:
+        case 3:
           return '代驾中';
         default:
           return '未知';

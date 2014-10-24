@@ -26,6 +26,9 @@
       <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <i class="glyphicon glyphicon-search"></i> 搜素
       </button>
+      <button class="btn btn-primary">
+        <i class="glyphicon glyphicon-export"></i> 数据导出
+      </button>      
     </div>
   </form>
   <div class="clearfix"></div>
@@ -45,17 +48,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="ord in status">
-      <td data-ng-bind="ord.province"></td>
-      <td data-ng-bind="ord.city"></td>
-      <td data-ng-bind="ord.cName"></td>
-      <td data-ng-bind="ord.cMobile"></td>
-      <td data-ng-bind="ord.totalCounts"></td>
-      <td data-ng-bind="ord.averageAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalHours"></td>
+    <tr data-ng-repeat="ord in orders">
+      <td data-ng-bind="ord.provinceName"></td>
+      <td data-ng-bind="ord.cityName"></td>
+      <td data-ng-bind="ord.customerName"></td>
+      <td data-ng-bind="ord.customerPhone"></td>
+      <td data-ng-bind="ord.orderCount"></td>
+      <td data-ng-bind="ord.average | currency: '￥'"></td>
+      <td data-ng-bind="ord.costCount | currency: '￥'"></td>
+      <td data-ng-bind="ord.timeCount"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.cName)">
+        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.customerName)">
           查看明细
           <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
@@ -68,6 +71,6 @@
     <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

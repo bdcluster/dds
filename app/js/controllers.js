@@ -29,7 +29,7 @@
       alerts: [],
       pageNum:1,
       maxPageSize : 8,
-      recordsPerPage: 10,
+      recordsPerPage: 2,
       menuTemplate: templatePath + 'menu.html',
       closeAlert: function(index){
         this.alerts.splice(index, 1);
@@ -48,7 +48,7 @@
       }
     });
   }])
-  .controller('AdminController', ['$rootScope', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $scope, $location, C, DDS, AuthService){
+  .controller('AdminController', ['$rootScope', '$filter', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $filter, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
     storage.clear();
     $rootScope.showNav=false;
@@ -60,19 +60,20 @@
           2. authService.isLogin value is true
           3. sessionStorage: menu,role,province
       */
+      $scope.user.password = $filter('md5')($scope.user.password);
       $scope.master = angular.copy($scope.user);
       DDS.login($scope.user, function(res){
         var data = C.validResponse(res);
         if(typeof data!=='string'){
           AuthService.isLogged = true;
+          storage.set('isLogged', true);
           //缓存登录信息
           storage.set('token', data.sessionId);
-          // document.cookie = 'JSESSIONID='+data.sessionId;
           storage.set('userId', data.user.userId);
           storage.set('loginInfo', data.user);
 
           //缓存
-          DDS.get({endpoint:'menu', action:'select', type:2}, function(result){
+          DDS.get({endpoint:'menu', action:'select', type:2, userId:data.user.userId}, function(result){
             storage.set('menus', result.data);
             $location.path('/home');
           });
@@ -90,10 +91,11 @@
     };
   }])
   /* 修改密码 */
-  .controller('ChangePasswordController', ['$scope', 'C' ,'DDS', '$filter', function($scope, C, DDS, $filter){
+  .controller('ChangePasswordController', ['$scope', 'C' ,'DDS', '$filter', 'AuthService', function($scope, C, DDS, $filter, AuthService){
     var storage = C.storage().get('loginInfo');
     $scope.pwd = {};
     $scope.pwdSubmit = function(){
+
       var postData = {    
         userId: storage.userId,
         sessionId : storage.sessionId,
@@ -234,6 +236,7 @@
             formData: roleInfo || {},
             extraData:flatMenu,
             confirm: function(modalInstance, scope){ // 确认modal callback
+              delete scope.formData.permitList;
               DDS.saveRole(angular.extend(params, scope.formData), function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
               });
@@ -279,13 +282,12 @@
   .controller('DriverController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
     var paramsInit = {
       endpoint:'driver', action:'select',
-      pageNum:$scope.pageNum
+      pageNum:$scope.pageNum,
     }
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage(); // default: load pageNum:1
-
     $scope.doSearch = function(o){
       if(o){
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
@@ -295,13 +297,14 @@
   /* 订单管理 */
   .controller('OrderController', ['$scope', 'DDS', 'C', '$timeout', '$routeParams', function($scope, DDS, C, $timeout, $routeParams){
     var paramsInit = {
-      endpoint:'bill', action:'select',
+      endpoint:'order', action:'select',
       pageNum:$scope.pageNum
     };
     angular.extend(paramsInit, $routeParams);
     angular.extend($scope, {
       syncStatus: '同步订单',
       rotate:false,
+      search:{},
       changePage: function(){
         C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
       },
@@ -331,18 +334,30 @@
             self.rotate = false;
           }, 2000);
         });
+      },
+      orderExport: function(){
+        var str = [], obj = $scope.search;
+        for(var p in obj){
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+        window.location.href='http://10.10.40.125:8080/ddrive-platform-web/order/exportOrder?' + str.join("&");
       }
     });
     $scope.changePage();
   }])
   /* 时间段统计 */
   .controller('OrderFilterController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    var paramsInit = angular.extend({endpoint:'bill', action:'timeStatus'}, C.getPeriod());
-    $scope.years = C.range(2010, new Date().getFullYear());
-    // $scope.quarter = Math.ceil((new Date().getMonth()+1)/3);
-    $scope.search = {};
-    $scope.search.quarter = Math.ceil((new Date().getMonth()+1)/3);
+    var curYear = new Date().getFullYear(), curMonth = new Date().getMonth();
+    $scope.years = C.range(2010, curYear);
+    $scope.search = {
+      year: curYear,
+      month: curMonth + 1,
+      quarter: Math.ceil((new Date().getMonth()+1)/3),
+      dp1: curYear + '-' + (curMonth+1) + '-1',
+      dp2: curYear + '-' + (curMonth+1) + '-' + C.mLength()[curMonth]
+    };
 
+    var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
     /* datepicker setting*/
     $scope.toggleDP1 = function($event) {
       $event.preventDefault();
@@ -354,10 +369,16 @@
       $event.stopPropagation();
       $scope.eOpen = !$scope.eOpen;
     };
+    $scope.staticsExport = function(){
+      var str = [], obj = C.getPeriod($scope.search);
+      for(var p in obj){
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+      }
+      window.open('http://ddriver.com:8080/order/exportStatis?' + str.join("&"));
+    };
     $scope.dateOptions = {
       showWeeks:false
     };
-
 
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
@@ -393,36 +414,21 @@
       }
     };
 
-    var scale = function(){
-      var t1 = C.range(0,23), t2=[], s2;
-      for(var x in t1){
-        s2 = C.range(C.succ(t1[x]), 24);
-        for(var y in s2){
-          s2[y] = s2[y]<10 ? '0' + s2[y] + ':00' : s2[y] +':00';
-        }
-        t2[x] = {
-          scale1: t1[x]<10 ? '0' + t1[x] + ':00' : t1[x] +':00',
-          scale2: s2
-        };
-      }
-      return t2;
-    };
-
     $scope.saveRule = function(rule){
       var params={pageNum:$scope.pageNum}, ruleInfo;
       if(rule){
         ruleInfo = angular.extend({}, rule);
         angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
-        angular.extend(extraData, {showEdit:true, showAreaSel:false, showPeriodSel:false});
+        angular.extend(extraData, {showEdit:true, showAreaSel:false});
       }
       else{
         angular.extend(params, {action:'add'});
-        angular.extend(extraData, {showEdit:false, showAreaSel:true, showPeriodSel:true});
+        angular.extend(extraData, {showEdit:false, showAreaSel:true});
       }
       var modalSet = {
         modalTitle: '计费规则定义', // modal 窗体标题
         formData: ruleInfo || {},
-        extraData: angular.extend(extraData,{scale: scale()}),
+        extraData: angular.extend(extraData,{scale: C.range(1,24)}),
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveRule(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);

@@ -20,6 +20,9 @@
       <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
+      <button class="btn btn-primary" data-ng-click="staticsExport(search)">
+        <i class="glyphicon glyphicon-export"></i> 数据导出
+      </button>
     </div>
   </form>
   <div class="clearfix"></div>
@@ -39,17 +42,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="ord in status">
-      <td data-ng-bind="ord.province"></td>
-      <td data-ng-bind="ord.city"></td>
-      <td data-ng-bind="ord.cName"></td>
-      <td data-ng-bind="ord.cMobile"></td>
-      <td data-ng-bind="ord.totalCounts"></td>
-      <td data-ng-bind="ord.averageAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalHours"></td>
+    <tr data-ng-repeat="ord in orders">
+      <td data-ng-bind="ord.provinceName"></td>
+      <td data-ng-bind="ord.cityName"></td>
+      <td data-ng-bind="ord.customerName"></td>
+      <td data-ng-bind="ord.customerPhone"></td>
+      <td data-ng-bind="ord.orderCount"></td>
+      <td data-ng-bind="ord.average | currency: '￥'"></td>
+      <td data-ng-bind="ord.costCount | currency: '￥'"></td>
+      <td data-ng-bind="ord.timeCount"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.cName)">
+        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.customerName)">
           查看明细
           <span class="glyphicon glyphicon-arrow-right"></span>
         </button>

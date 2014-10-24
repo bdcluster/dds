@@ -15,9 +15,10 @@
     'DdsFilters',
     'LocalStorageModule'
   ])
-  .run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
+  .run(['$rootScope', '$location', 'AuthService', 'C', function($rootScope, $location, AuthService, C) {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
-      if (nextRoute.access && nextRoute.access.requiredLogin && !AuthService.isLogged) {
+      var isLogged = AuthService.isLogged || C.storage().get('isLogged');
+      if (nextRoute.access && nextRoute.access.requiredLogin && !isLogged) {
         $location.path('/login');
       }
     });
@@ -92,7 +93,7 @@
         controller:  'DemoController',
         access: { requiredLogin: true }
       })
-      .otherwise({redirectTo: '/login'});
+      .otherwise({redirectTo: '/home'});
 
     $httpProvider.defaults.transformRequest = function(obj){
       var str = [];
@@ -110,6 +111,6 @@
     //set localStorage type as sessionStorage
     localStorageServiceProvider.setStorageType('sessionStorage');
 
-    // $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.withCredentials = true;
   }]);
 })();

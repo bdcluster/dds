@@ -22,18 +22,16 @@
       <td>客户编号</td>
       <td>姓名</td>
       <td>手机号</td>
-      <td>VIP</td>
       <td>常用目的地</td>
       <td>注册时间</td>
     </tr>
   </thead>
   <tbody>
     <tr data-ng-repeat="cust in customers">
-      <td data-ng-bind="cust.customerNo"></td>
-      <td data-ng-bind="cust.name"></td>
-      <td data-ng-bind="cust.emergencyPhone"></td>
-      <td data-ng-bind="cust.vip | isVIP"></td>
-      <td data-ng-bind="cust.commonDestination"></td>
+      <td data-ng-bind="cust.id"></td>
+      <td data-ng-bind="cust.userName"></td>
+      <td data-ng-bind="cust.mobilePhone"></td>
+      <td data-ng-bind="cust.address"></td>
       <td data-ng-bind="cust.createTime | myDate"></td>
     </tr>
   </tbody>

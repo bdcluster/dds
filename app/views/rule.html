@@ -25,7 +25,8 @@
       <td>编号</td>
       <td>省份</td>
       <td>城市</td>
-      <td>时间段</td>
+      <td>开始时间</td>
+      <td>结束时间</td>
       <td>起步价</td>
       <td>加收金额</td>
       <td>规则描述</td>
@@ -34,19 +35,20 @@
   </thead>
   <tbody>
     <tr data-ng-repeat="rule in rules">
-      <td data-ng-bind="rule.ruleId"></td>
-      <td data-ng-bind="rule.province"></td>
-      <td data-ng-bind="rule.city"></td>
-      <td data-ng-bind="rule.period"></td>
-      <td data-ng-bind="rule.startPrice"></td>
-      <td data-ng-bind="rule.extraPrice"></td>
-      <td data-ng-bind="rule.description"></td>
+      <td data-ng-bind="rule.id"></td>
+      <td data-ng-bind="rule.provinceName"></td>
+      <td data-ng-bind="rule.cityName"></td>
+      <td data-ng-bind="rule.ruleStartTime"></td>
+      <td data-ng-bind="rule.ruleEndTime"></td>
+      <td data-ng-bind="rule.ruleStartPrice"></td>
+      <td data-ng-bind="rule.ruleExtraPrice"></td>
+      <td data-ng-bind="rule.ruleDesc"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.ruleId)">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.id)">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>

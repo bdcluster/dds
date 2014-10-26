@@ -3,7 +3,11 @@
 /* for angular-bootstrap */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+html{
+ idth:100%; height:100%;
+}
 .platform-body{
+  width:100%; height:100%;
   padding-top: $navbar-height + $grid-gutter-width / 2 + 5;
   overflow-x: hidden;
   min-width: 1000px;
@@ -23,19 +27,34 @@
     }
   }
 }
-.glyphicon-fire{ 
-  color: $brand-danger;
-}
 
-.fix-md-width{
+/* .fix-md-width{
   width:$container-md;
 }
+ */
+.mask{
+  position: fixed;
+  top:0; left:0;
+  width: 100%;
+  height:100%;
+  background: white;
+  z-index:10000;
+}
 
-.login-panel{
-  $w: 800px;
-  // width: $w;
-  max-height: $w*2/3;
-  @include center-block();
+.login-area{
+  border-width: 0;
+  .panel-body{
+    $w: 800px; $h: 400px;
+    @include box-shadow(5px 5px 15px $panel-default-border);
+    border: 1px solid $panel-default-border;
+    position: fixed;
+    width: $w;
+    margin-left: -$w/2;
+    height: $h;
+    margin-top: -$h/2;
+    left: 50%; top: 50%;
+    z-index:10001;
+  }
 }
 
 .login-form{
@@ -61,6 +80,26 @@
   color: darken($brand-primary, 5%);
   i{
     font-size: 1.3em;
+  }
+}
+
+.menu-item{
+  width: 20%;
+  text-align:center;
+  .menu-wrap{
+    width:130px;
+    @extend .center-block;
+  }
+  i{
+    font-size:8em;
+    line-height:1em;
+    cursor:pointer;
+  }
+  span{
+    font-size:1.2em;
+  }
+  &:hover{
+    color: $state-success-text;
   }
 }
 
@@ -177,4 +216,7 @@ footer{
   padding-bottom: $grid-gutter-width;
   color: $gray-light;
   line-height: 2em;
+  .glyphicon-fire{ 
+    color: $brand-danger;
+  }
 }

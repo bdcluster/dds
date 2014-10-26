@@ -5,9 +5,11 @@
    /* 全局controller，不包括登录页面 */
   .controller('GlobelController', ['$rootScope', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
+    var isLogged = AuthService.isLogged || storage.get('isLogged');
     /*rootscope setting*/
     angular.extend($rootScope, {
-      showNav:$location.path()!=='/login' ? true : false,
+      // showNav:$location.path()!=='/login' ? true : false,
+      showPage:isLogged,
       menus:storage.get('menus'),
       userId:storage.get('userId'),
       isActivedMenu: function(viewLocation){
@@ -38,20 +40,20 @@
         DDS.signOut(function(res){
           var data = C.validResponse(res);
           if(typeof data !== 'string' && data.code === 0){
+            AuthService.isLogged = false;
             storage.clear();
             $rootScope.menus=[];
-            $rootScope.showNav=false;
-            AuthService.isLogged = false;
+            $rootScope.showPage=AuthService.isLogged;
             C.back2Login();
           }
         });
       }
     });
   }])
+  /* 登陆页面 */
   .controller('AdminController', ['$rootScope', '$filter', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $filter, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
     storage.clear();
-    $rootScope.showNav=false;
     $rootScope.menus=[];
 
     $scope.checkLogin = function(){
@@ -67,6 +69,7 @@
         if(typeof data!=='string'){
           AuthService.isLogged = true;
           storage.set('isLogged', true);
+          $rootScope.showPage=AuthService.isLogged;
           //缓存登录信息
           storage.set('token', data.sessionId);
           storage.set('userId', data.user.userId);
@@ -125,9 +128,8 @@
     // 从localstorage获取菜单数据
     if(storage.get("loginInfo")){
       angular.extend($rootScope, {
-        showNav: true,
         menus: storage.get('menus'),
-        userId: storage.get('userId')
+        userId:storage.get('userId')
       });
     }
     //缓存角色与省市数据
@@ -336,11 +338,7 @@
         });
       },
       orderExport: function(){
-        var str = [], obj = $scope.search;
-        for(var p in obj){
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-        window.location.href='http://10.10.40.125:8080/ddrive-platform-web/order/exportOrder?' + str.join("&");
+        C.exportFile(angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
       }
     });
     $scope.changePage();
@@ -370,12 +368,9 @@
       $scope.eOpen = !$scope.eOpen;
     };
     $scope.staticsExport = function(){
-      var str = [], obj = C.getPeriod($scope.search);
-      for(var p in obj){
-        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-      }
-      window.open('http://ddriver.com:8080/order/exportStatis?' + str.join("&"));
+      C.exportFile(angular.extend({endpoint:'order', action:'exportStatis'}, $scope.search));
     };
+
     $scope.dateOptions = {
       showWeeks:false
     };

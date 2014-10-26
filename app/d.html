@@ -16,7 +16,7 @@
     <![endif]-->
   </head>
   <body data-ng-controller="GlobelController" class="platform-body">
-    <nav class="navbar navbar-inverse navbar-fixed-top ng-hide" role="navigation" data-ng-show="showNav">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">
@@ -45,10 +45,8 @@
               </li>
             </ul>
           </li>
-          <!-- <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
-          <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
-          <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li> -->
         </ul>
+      </div>
     </nav>
     <div class="container-fluid">
       <div class="row">
@@ -64,7 +62,7 @@
       </div>
       <!-- <div class="clearfix"></div> -->
     </div>
-    <footer class="container-fluid" data-ng-show="showNav">
+    <footer class="container-fluid">
       <div class="row">
         <div class="col-xs-9 col-xs-offset-2">
           <div class="row">
@@ -72,13 +70,14 @@
               Copyright &copy; Globel International Group 2014. 
             </div>
             <div class="col-xs-5 text-right">
-              <span class="glyphicon glyphicon-fire"></span> Powered by some a famous team<br>
+              <span class="glyphicon glyphicon-fire"></span> Powered by <strong>bdcluster.com</strong><br>
               <span class="glyphicon glyphicon-phone-alt"></span> 021-12345678
             </div>
           </div>
         </div>
       </div>
     </footer>
+    <div class="mask" data-ng-show="!showPage"></div>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>

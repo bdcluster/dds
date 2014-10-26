@@ -24,7 +24,7 @@
     };
   }])
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    var hosts, url, normalPrarms={}, sel = 1;
+    var hosts, url, normalPrarms={}, sel = 3;
     var storage = C.storage();
     switch(sel){
       case 1:
@@ -105,6 +105,22 @@
         }
       },*/
 
+      exportFile: function(o){
+        var url = $window.location.origin, obj = angular.extend({}, o), str = [];
+        if(obj.endpoint && obj.action){
+          url = url + '/' + obj.endpoint + '/' + obj.action;
+          delete obj.endpoint;
+          delete obj.action;
+          if(!angular.equals(obj, {})){
+            for(var p in obj){
+              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+            url = url + '?' + str.join("&");
+          }
+        }
+        $window.location.href = url;
+      },
+
       succ: function(chart){
         if (angular.isNumber(chart)) { return chart - 0 + 1; }
         else {
@@ -132,21 +148,19 @@
       mLength: function(){
         var monthDays = ["", 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         if (((this.year % 4 === 0) && (this.year % 100 !== 0)) || (this.year % 400 === 0)){
-          monthDays[1] = 29;
+          monthDays[2] = 29;
         }
         return monthDays;
       },
 
       getPeriod: function(){
-        var section = $location.path(), pickYear, firstDay, endDay;
-        // var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
-        // var curQuarter = Math.ceil(curMonth / 3);
+        var section = $location.path(), pickYear, firstDay, endDay, dp1, dp2;
         var params = arguments[0], period={};
         switch(section){
           case '/month-ord':
             period = {
-              startTime: params.year + '-' + params.month + '-01',
-              endTime: params.year + '-' + params.month + '-' + this.mLength()[params.month]
+              s: params.year + '-' + params.month + '-01',
+              e: params.year + '-' + params.month + '-' + this.mLength()[params.month]
             }
           break;
 
@@ -155,31 +169,29 @@
             firstDay = params ? (params.quarter * 3 - 2) + '-01' : (curQuarter * 3 - 2) + '-01';
             endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
             period = {
-              startTime: new Date(pickYear + '-' + firstDay),
-              endTime:   new Date(pickYear + '-' + endDay)
+              s: new Date(pickYear + '-' + firstDay),
+              e: new Date(pickYear + '-' + endDay)
             };
           break;
 
           case '/time-ord':
-            if(params && params.dp1 && params.dp2){
+            dp1 = params.dp1;
+            dp2 = params.dp2;
+            if(params && dp1 && dp2){
               if(params.dp1>params.dp2){
-                period = {
-                  startTime:params.dp2,
-                  endTime: params.dp1
-                }
+                dp1 = [dp1, dp2];
+                dp2 = dp1[0];
+                dp1 = dp1[1];
               }
-              else{
-                period = {
-                  startTime: params.dp1,
-                  endTime: params.dp2
-                }
+              period = {
+                s: dp1, e: dp2
               }
             }
           break;
         }
         return {
-          startTime: $filter('myDate')(period.startTime, 'yyyy-MM-dd'),
-          endTime:   $filter('date')(period.endTime, 'yyyy-MM-dd')
+          startTime: $filter('myDate')(period.s, 'yyyy-MM-dd'),
+          endTime:   $filter('date')(period.e, 'yyyy-MM-dd')
         };
       },
 

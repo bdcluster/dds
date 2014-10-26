@@ -1,3 +1,11 @@
 <div class="well">
-  <h1 class="home"><i class="iconfont icon-car"></i>欢迎进入代驾管理系统 <small>ver 1.0</small></h1>
+  <h1 class="home">欢迎进入代驾管理系统 <small>ver 1.0</small></h1>
+  <hr>
+  <div class="menu-item pull-left" data-ng-repeat="m in menus" data-ng-click="markOpen($index);keepOpenAccordion();">
+    <div class="menu-wrap">
+      <i class="iconfont icon-{{m.alias}}"></i><br>
+      <span>{{m.name}}</span>
+    </div>
+  </div>
+  <div class="clearfix"></div>
 </div>

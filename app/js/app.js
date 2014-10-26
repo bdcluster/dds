@@ -10,7 +10,6 @@
     'ui.bootstrap',
     'DdsControllers',
     'DdsDirectives',
-    'DdsTemplate',
     'DdsServices',
     'DdsFilters',
     'LocalStorageModule'

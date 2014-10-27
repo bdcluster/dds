@@ -6,30 +6,22 @@
     </button>
     <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
   </div>
-  {{formData}}
   <div class="modal-body">
     <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.roleName.$valid, 'has-error':roleForm.roleName.$invalid &amp;&amp; roleForm.roleName.$dirty}">
-      <label for="roleName" class="col-xs-2 control-label">角色名称</label>
+      <label for="roleName" class="col-xs-2 control-label">* 角色名</label>
       <div class="col-xs-9">
         <input type="text" class="form-control" name="roleName" data-ng-model="formData.roleName" required>
         <i class="glyphicon form-control-feedback" data-ng-show="roleForm.roleName.$dirty" data-ng-class="{'glyphicon-ok':roleForm.roleName.$valid, 'glyphicon-remove':roleForm.roleName.$invalid}"></i>
       </div>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.description.$valid, 'has-error':roleForm.description.$invalid &amp;&amp; roleForm.description.$dirty}">
-      <label for="description" class="col-xs-2 control-label">角色描述</label>
-      <div class="col-xs-9">
-        <input type="text" class="form-control" name="description" data-ng-model="formData.description" required>
-        <i class="glyphicon form-control-feedback" data-ng-show="roleForm.description.$dirty" data-ng-class="{'glyphicon-ok':roleForm.description.$valid, 'glyphicon-remove':roleForm.description.$invalid}"></i>
-      </div>
-    </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.menuIds.$valid, 'has-error':roleForm.menuIds.$invalid &amp;&amp; roleForm.menuIds.$dirty}">
-      <label for="menuIds" class="col-xs-2 control-label">菜单设定</label>
+      <label for="menuIds" class="col-xs-2 control-label">选择权限</label>
       <div class="col-xs-9">
-        <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIds" data-ng-options="menu.id as menu.name for menu in extraData" required></select>
+        <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIdArray" data-ng-options="menu.id as menu.name for menu in extraData"></select>
       </div>
     </div>
   </div>

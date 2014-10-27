@@ -1,15 +1,15 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">姓名</label>
+      <input type="text" class="form-control input-sm" name="userName" data-ng-model="search.userName" placeholder="姓名">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">客户编号</label>
+      <input type="text" class="form-control input-sm" name="customerId" data-ng-model="search.customerId" placeholder="客户编号">
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
@@ -22,27 +22,25 @@
       <td>客户编号</td>
       <td>姓名</td>
       <td>手机号</td>
-      <td>VIP</td>
       <td>常用目的地</td>
       <td>注册时间</td>
     </tr>
   </thead>
   <tbody>
     <tr data-ng-repeat="cust in customers">
-      <td data-ng-bind="cust.customerNo"></td>
-      <td data-ng-bind="cust.name"></td>
-      <td data-ng-bind="cust.emergencyPhone"></td>
-      <td data-ng-bind="cust.vip | isVIP"></td>
-      <td data-ng-bind="cust.commonDestination"></td>
-      <td data-ng-bind="cust.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
+      <td data-ng-bind="cust.id"></td>
+      <td data-ng-bind="cust.userName"></td>
+      <td data-ng-bind="cust.mobilePhone"></td>
+      <td data-ng-bind="cust.address"></td>
+      <td data-ng-bind="cust.createTime | myDate"></td>
     </tr>
   </tbody>
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

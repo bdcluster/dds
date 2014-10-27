@@ -1,20 +1,42 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">编号</label>
+      <input type="text" class="form-control input-sm" name="ruleId" data-ng-model="search.ruleId" placeholder="编号">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">开始时间</label>
+      <select name="ruleStartTime" class="form-control input-sm" data-ng-model="search.ruleStartTime" data-ng-options="t as (t + ':00') for t in range">
+        <option value="">-- 开始时间 --</option> 
+      </select>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <label class="sr-only">结束时间</label>
+      <select name="ruleEndTime" class="form-control input-sm" data-ng-model="search.ruleEndTime" data-ng-options="t as (t + ':00') for t in range">
+        <option value="">-- 结束时间 --</option> 
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">省份</label>
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city=''">
+        <option value="">-- 选择省份 --</option> 
+      </select>
+      <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
+    </div>
+    <div class="form-group">
+      <label class="sr-only"></label>
+      <select name="city" class="form-control input-sm" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="search.cityId=city.id">
+        <option value="">-- 选择城市 --</option> 
+      </select>
+      <input name="cityId" type="hidden" data-ng-model="search.cityId">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
   </form>
-  <button class="btn btn-primary" data-ng-click="saveRule()">
+  <button class="btn btn-primary btn-sm" data-ng-click="saveRule()">
     <i class="glyphicon glyphicon-plus"></i> 添加
   </button>
   <div class="clearfix"></div>
@@ -25,7 +47,8 @@
       <td>编号</td>
       <td>省份</td>
       <td>城市</td>
-      <td>时间段</td>
+      <td>开始时间</td>
+      <td>结束时间</td>
       <td>起步价</td>
       <td>加收金额</td>
       <td>规则描述</td>
@@ -34,19 +57,20 @@
   </thead>
   <tbody>
     <tr data-ng-repeat="rule in rules">
-      <td data-ng-bind="rule.ruleId"></td>
-      <td data-ng-bind="rule.province"></td>
-      <td data-ng-bind="rule.city"></td>
-      <td data-ng-bind="rule.period"></td>
-      <td data-ng-bind="rule.startPrice"></td>
-      <td data-ng-bind="rule.extraPrice"></td>
-      <td data-ng-bind="rule.description"></td>
+      <td data-ng-bind="rule.id"></td>
+      <td data-ng-bind="rule.provinceName"></td>
+      <td data-ng-bind="rule.cityName"></td>
+      <td data-ng-bind="rule.ruleStartTime"></td>
+      <td data-ng-bind="rule.ruleEndTime"></td>
+      <td data-ng-bind="rule.ruleStartPrice"></td>
+      <td data-ng-bind="rule.ruleExtraPrice"></td>
+      <td data-ng-bind="rule.ruleDesc"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
           <span class="glyphicon glyphicon-edit"></span>
           编辑
         </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.ruleId)">
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(rule.id)">
           <span class="glyphicon glyphicon-remove-circle"></span>
           删除
         </button>
@@ -56,9 +80,9 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

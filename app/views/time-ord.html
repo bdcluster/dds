@@ -19,27 +19,30 @@
       <input class="form-control input-sm" type="text" name="customerName" data-ng-model="search.customerName" placeholder="客户名称">
     </div>
     <div class="form-group">
-      <label class="sr-only">年份</label>
-      <select class="form-control input-sm" data-ng-model="search.year" data-ng-options="y for y in years">
-        <option value="">-- 选择年份 --</option>
-      </select>
+      <label class="sr-only">开始时间</label>
+      <div class="input-group input-group-sm dds-dp">
+        <input type="text" class="form-control input-sm" data-datepicker-popup data-ng-model="search.dp1" data-is-open="sOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
     </div>
     <div class="form-group">
-      <label class="sr-only">季度</label>
-      <div class="btn-group">
-        <label class="btn btn-default btn-sm" ng-model="search.quarter" btn-radio="1">Q1</label>
-        <label class="btn btn-default btn-sm" ng-model="search.quarter" btn-radio="2">Q2</label>
-        <label class="btn btn-default btn-sm" ng-model="search.quarter" btn-radio="3">Q3</label>
-        <label class="btn btn-default btn-sm" ng-model="search.quarter" btn-radio="4">Q4</label>
+      <label class="sr-only">结束时间</label>
+      <div class="input-group input-group-sm dds-dp">
+        <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp2" data-is-open="eOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="search.dp1">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
       </div>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
-        <span class="glyphicon glyphicon-search"></span> 搜素
+        <i class="glyphicon glyphicon-search"></i> 搜素
       </button>
       <button class="btn btn-primary btn-sm">
         <i class="glyphicon glyphicon-export"></i> 数据导出
-      </button>
+      </button>      
     </div>
   </form>
   <div class="clearfix"></div>

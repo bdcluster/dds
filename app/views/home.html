@@ -1,65 +1,11 @@
 <div class="well">
-  <form class="form-inline pull-right" role="form">
-    <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+  <h1 class="home">欢迎进入代驾管理系统 <small>ver 1.0</small></h1>
+  <hr>
+  <div class="menu-item pull-left" data-ng-repeat="m in menus" data-ng-click="markOpen($index);keepOpenAccordion();">
+    <div class="menu-wrap">
+      <i class="iconfont icon-{{m.alias}}"></i><br>
+      <span>{{m.name}}</span>
     </div>
-    <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">
-        <span class="glyphicon glyphicon-search"></span> 搜素
-      </button>
-    </div>
-  </form>
+  </div>
   <div class="clearfix"></div>
-</div>
-<table class="table table-bordered table-striped table-dds">
-  <thead>
-    <tr>
-      <td>姓名</td>
-      <td>账号</td>
-      <td>角色</td>
-      <td class="action">操作</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Tom Cruise</td>
-      <td>tomcat</td>
-      <td>admin</td>
-      <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="modify()">
-          <span class="glyphicon glyphicon-edit"></span>
-          编辑
-        </button>
-        <button class="btn btn-danger btn-xs" data-ng-click="remove()">
-          <span class="glyphicon glyphicon-remove-circle"></span>
-          删除
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <td>Jerry</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Andy</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-<div class="row">
-  <div class="col-xs-10">
-    <div data-pagination data-total-items="totleRecords" data-ng-model="currentPage" data-items-per-page="recordsPerPage" data-max-size="maxSize" class="pagination-sm" data-boundary-links="true" data-num-pages="numPages" data-ng-change="changePage()"  data-previous-text="Prev"></div>
-  </div>
-  <div class="col-xs-2 text-right pagination-tip">
-    Page: {{currentPage}} / {{numPages}}
-  </div>
 </div>

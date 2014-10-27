@@ -1,20 +1,20 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">用户名</label>
+      <input type="text" class="form-control input-sm" name="loginName" data-ng-model="search.loginName" placeholder="用户名">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">姓名</label>
+      <input type="text" class="form-control input-sm" name="userName" data-ng-model="search.userName" placeholder="姓名">
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
   </form>
-  <button class="btn btn-primary" data-ng-click="saveUser()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+  <button class="btn btn-primary btn-sm" data-ng-click="saveUser()"><i class="glyphicon glyphicon-plus"></i> 添加</button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -30,11 +30,11 @@
   </thead>
   <tbody>
     <tr data-ng-repeat="user in users">
-      <td data-ng-bind="user.userId"></td>
+      <td data-ng-bind="user.loginName"></td>
       <td data-ng-bind="user.userName"></td>
       <td data-ng-bind="user.role.roleName"></td>
       <td data-ng-bind="user.description"></td>
-      <td data-ng-bind="user.createTime | date: 'yyyy/MM/dd hh:mm:ss'"></td>
+      <td data-ng-bind="user.createTime | myDate"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveUser(user)">
           <span class="glyphicon glyphicon-edit"></span>
@@ -50,9 +50,9 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

@@ -157,7 +157,7 @@
   gulp.task('connect', $.connect.server({
     root: [_.app],
     livereload: true,
-    port: 9000
+    port: 8080
   }));
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -215,14 +215,14 @@
   //| ✓ environ
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('localhost', function() {
-    $.shelljs.exec('open http://localhost:9000/d.html');
+    $.shelljs.exec('open http://static.ddriver.com:8080/d.html');
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ alias
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('test', ['jsonlint', 'jshint']);
-  gulp.task('build', ['test', 'clean', 'html', 'json', 'tmpl2js', 'images', 'svg', 'copy']);
+  gulp.task('build', ['test', 'clean', 'html', 'tmpl2js', 'images', 'svg', 'copy']);
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ default

@@ -1,15 +1,24 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">名称</label>
-      <input type="text" class="form-control" name="demo1" data-ng-model="search.name" placeholder="名称">
+      <label class="sr-only">司机姓名</label>
+      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="司机姓名">
     </div>
     <div class="form-group">
-      <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="demo2" data-ng-model="search.account" placeholder="账号">
+      <label class="sr-only">司机工号</label>
+      <input type="text" class="form-control input-sm" name="driverNo" data-ng-model="search.driverNo" placeholder="司机工号">
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">
+      <label class="sr-only">状态</label>
+      <select name="workStatus" class="form-control input-sm" data-ng-model="search.workStatus">
+        <option value="">---司机状态---</option>
+        <option value="2">空闲</option>
+        <option value="1">忙碌</option>
+        <option value="3">代驾中</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>
@@ -31,24 +40,25 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="driver in drivers" data-ng-class="{success:driver.status==0, danger:driver.status==1, warning:driver.status==2, info:driver.status>2}">
+    <tr data-ng-repeat="driver in drivers">
       <td data-ng-bind="driver.driverNo"></td>
-      <td data-ng-bind="driver.name"></td>
-      <td data-ng-bind="driver.dMobile"></td>
-      <td data-ng-bind="driver.dLicence"></td>
-      <td data-ng-bind="driver.status | driveStatus"></td>
-      <td data-ng-bind="driver.dYears"></td>
+      <td data-ng-bind="driver.driverName"></td>
+      <td data-ng-bind="driver.driverPhone"></td>
+      <td data-ng-bind="driver.identityCard"></td>
+      <td data-ng-bind="driver.workStatus | driveStatus"></td>
+      <td data-ng-bind="driver.driveAge"></td>
       <td data-ng-bind="driver.nativePlace"></td>
-      <td data-ng-bind="driver.counts"></td>
-      <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.core"></td>
+      <td data-ng-bind="driver.driveCount"></td>
+      <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.starLevel"></td>
     </tr>
   </tbody>
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
+  {{maxPageSize}}
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNo}} / {{numPages}}
+    Page: {{pageNum}} / {{numPages}}
   </div>
 </div>

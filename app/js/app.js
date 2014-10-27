@@ -10,59 +10,91 @@
     'ui.bootstrap',
     'DdsControllers',
     'DdsDirectives',
-    'DdsTemplate',
     'DdsServices',
     'DdsFilters',
     'LocalStorageModule'
   ])
-  .config(['$routeProvider','$httpProvider', function($routeProvider,$httpProvider){
+  .run(['$rootScope', '$location', 'AuthService', 'C', function($rootScope, $location, AuthService, C) {
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+      var isLogged = AuthService.isLogged || C.storage().get('isLogged');
+      if (nextRoute.access && nextRoute.access.requiredLogin && !isLogged) {
+        $location.path('/login');
+      }
+    });
+  }])
+  .config(['$provide','$routeProvider','$httpProvider', 'localStorageServiceProvider', function($provide, $routeProvider, $httpProvider, localStorageServiceProvider){
+
+    // $httpProvider.interceptors.push('TokenInterceptor');
+
     $routeProvider
+      .when('/login', {
+        templateUrl: viewPath + 'login.html',
+        controller:  'AdminController',
+        access: { requiredLogin: false }
+      })
       .when('/chgpwd', {
         templateUrl: viewPath + 'chgpwd.html',
-        controller:  'ChangePasswordController'
+        controller:  'ChangePasswordController',
+        access: { requiredLogin: true }
       })
       .when('/home', {
         templateUrl: viewPath + 'home.html',
-        controller:  'HomeController'
+        controller:  'HomeController',
+        access: { requiredLogin: true }
       })
       .when('/user', {
         templateUrl: viewPath + 'user.html',
-        controller:  'UserController'
+        controller:  'UserController',
+        access: { requiredLogin: true }
       })
       .when('/role', {
         templateUrl: viewPath + 'role.html',
-        controller:  'RoleController'
+        controller:  'RoleController',
+        access: { requiredLogin: true }
       })
       .when('/customer', {
         templateUrl: viewPath + 'cust.html',
-        controller:  'CustomerController'
+        controller:  'CustomerController',
+        access: { requiredLogin: true }
       })
       .when('/driver', {
         templateUrl: viewPath + 'driv.html',
-        controller:  'DriverController'
+        controller:  'DriverController',
+        access: { requiredLogin: true }
       })
       .when('/order', {
         templateUrl: viewPath + 'order.html',
-        controller:  'OrderController'
+        controller:  'OrderController',
+        access: { requiredLogin: true }
       })
       .when('/month-ord', {
         templateUrl: viewPath + 'month-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/quarter-ord', {
         templateUrl: viewPath + 'quarter-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/time-ord', {
         templateUrl: viewPath + 'time-ord.html',
-        controller:  'OrderFilterController'
+        controller:  'OrderFilterController',
+        access: { requiredLogin: true }
       })
       .when('/rule', {
         templateUrl: viewPath + 'rule.html',
-        controller:  'RuleController'
+        controller:  'RuleController',
+        access: { requiredLogin: true }
       })
-      .when('/page2', {
-        templateUrl: viewPath + 'form.login.html'
+      .when('/help', {
+        templateUrl: viewPath + 'help.html',
+        access: { requiredLogin: true }
+      })
+      .when('/demo', {
+        templateUrl: viewPath + 'demo.html',
+        controller:  'DemoController',
+        access: { requiredLogin: true }
       })
       .otherwise({redirectTo: '/home'});
 
@@ -72,11 +104,16 @@
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
       }
       return str.join("&");
-    }
+    };
 
     // HTTP POST
     $httpProvider.defaults.headers.post = {
       'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    };
+
+    //set localStorage type as sessionStorage
+    localStorageServiceProvider.setStorageType('sessionStorage');
+
+    $httpProvider.defaults.withCredentials = true;
   }]);
 })();

@@ -1,24 +1,44 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
+      <label class="sr-only">省份</label>
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city=''">
+        <option value="">-- 选择省份 --</option> 
+      </select>
+      <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
+    </div>
+    <div class="form-group">
+      <label class="sr-only"></label>
+      <select name="city" class="form-control input-sm" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="search.cityId=city.id">
+        <option value="">-- 选择城市 --</option> 
+      </select>
+      <input name="cityId" type="hidden" data-ng-model="search.cityId">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">客户名称</label>
+      <input class="form-control input-sm" type="text" name="customerName" data-ng-model="search.customerName" placeholder="客户名称">
+    </div>
+    <div class="form-group">
       <label class="sr-only">年份</label>
-      <select class="form-control" data-ng-model="search.year" data-ng-options="y for y in years">
+      <select class="form-control input-sm" data-ng-model="search.year" data-ng-options="y for y in years">
         <option value="">-- 选择年份 --</option>
       </select>
     </div>
     <div class="form-group">
       <label class="sr-only">月份</label>
-      <select class="form-control" data-ng-model="search.month" data-ng-options="m for m in [1,2,3,4,5,6,7,8,9,10,11,12]">
+      <select class="form-control input-sm" data-ng-model="search.month" data-ng-options="m for m in [1,2,3,4,5,6,7,8,9,10,11,12]">
         <option value="">-- 选择月份 --</option>
       </select>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary" data-ng-click="getSearch(search)">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+      <button class="btn btn-primary btn-sm" data-ng-click="staticsExport(search)">
+        <i class="glyphicon glyphicon-export"></i> 数据导出
       </button>
     </div>
   </form>
-  {{search}}
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -36,17 +56,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr data-ng-repeat="ord in status">
-      <td data-ng-bind="ord.province"></td>
-      <td data-ng-bind="ord.city"></td>
-      <td data-ng-bind="ord.cName"></td>
-      <td data-ng-bind="ord.cMobile"></td>
-      <td data-ng-bind="ord.totalCounts"></td>
-      <td data-ng-bind="ord.averageAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalAmount | currency: '￥'"></td>
-      <td data-ng-bind="ord.totalHours"></td>
+    <tr data-ng-repeat="ord in orders">
+      <td data-ng-bind="ord.provinceName"></td>
+      <td data-ng-bind="ord.cityName"></td>
+      <td data-ng-bind="ord.customerName"></td>
+      <td data-ng-bind="ord.customerPhone"></td>
+      <td data-ng-bind="ord.orderCount"></td>
+      <td data-ng-bind="ord.average | currency: '￥'"></td>
+      <td data-ng-bind="ord.costCount | currency: '￥'"></td>
+      <td data-ng-bind="ord.timeCount"></td>
       <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="">
+        <button class="btn btn-primary btn-xs" data-ng-click="orderByCust(ord.customerName)">
           查看明细
           <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
@@ -56,7 +76,7 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNo" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{pageNo}} / {{numPages}}

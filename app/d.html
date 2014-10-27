@@ -19,24 +19,26 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-
-          <a class="navbar-brand" href="#"><i class="iconfont icon-car"></i> 代驾管理系统 <small>v 1.0</small></a>
+          <a class="navbar-brand" href="#/home">
+            <i class="iconfont icon-vehicle"></i> 代驾管理系统 <small>v 0.1</small>
+          </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a class="dropdown-toggle">
               <i class="iconfont icon-yonghu"></i>
-              欢迎您，{{loginInfo.userId}}
+              欢迎您，<span data-ng-bind="userId"></span>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
               <li>
-                <a href="#"><i class="iconfont icon-yonghu"></i> 修改资料</a>
+                <a href="#/home"><i class="glyphicon glyphicon-home"></i> 返回首页</a>
               </li>
               <li>
                 <a href="#/chgpwd"><i class="iconfont icon-mima"></i> 修改密码</a>
-              </li>              <li>
-                <a href="#"><i class="iconfont icon-help"></i> 帮助文档</a>
+              </li>
+              <li>
+                <a href="#/help"><i class="iconfont icon-help"></i> 帮助文档</a>
               </li>
               <li class="divider"></li>
               <li>
@@ -44,16 +46,14 @@
               </li>
             </ul>
           </li>
-          <!-- <li class="navbar-text"><span class="iconfont icon-yonghu"></span> 欢迎您， <span class="username">admin</span></li>
-          <li><a href="#"><span class="iconfont icon-help"></span> 帮助</a></li>
-          <li><a href="#"><span class="iconfont icon-exit"></span> 退出</a></li> -->
         </ul>
+      </div>
     </nav>
     <div class="container-fluid">
       <div class="row">
         <!-- menu loaded -->
         <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
-        <section class="col-xs-9">
+        <section class="col-xs-10">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
             <i class="iconfont icon-{{alert.type}}"></i>
             <span data-ng-bind="alert.msg"></span>
@@ -71,13 +71,14 @@
               Copyright &copy; Globel International Group 2014. 
             </div>
             <div class="col-xs-5 text-right">
-              <span class="glyphicon glyphicon-fire"></span> Powered by some a famous team<br>
+              <span class="glyphicon glyphicon-fire"></span> Powered by <strong>bdcluster.com</strong><br>
               <span class="glyphicon glyphicon-phone-alt"></span> 021-12345678
             </div>
           </div>
         </div>
       </div>
     </footer>
+    <div class="mask" data-ng-show="!showPage"></div>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>

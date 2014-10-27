@@ -1,23 +1,58 @@
 (function(){
   'use strict';
   var app = angular.module('DdsServices', [])
-  .factory('DDS', ['$resource', function($resource){
-    var normalPrarms = {local:1, mock:1, enforce:1};
-    // var url = 'http://10.10.40.219:8080/ddrive-platform-web/:endpoint/:action/:id';
-    var url = 'http://127.0.0.1:8084/:endpoint/:action/:id'
-    // normalPrarms = {};
+
+  .factory('AuthService', [function(){
+    var auth = {
+        isLogged: false
+    };
+    return auth;
+  }])
+  /*.factory('TokenInterceptor', ['$q', '$window', function ($q, $window) {
+    return {
+      request: function (config) {
+        config.headers = config.headers || {};
+        if($window.sessionStorage['ls.token']){
+          config.headers.Authorization = $window.sessionStorage['ls.token'];
+        }
+        return config;
+      },
+
+      response: function (response) {
+        return response || $q.when(response);
+      }
+    };
+  }])*/
+  .factory('DDS', ['$resource', 'C', function($resource, C){
+    var hosts, url, normalPrarms={}, sel = 3;
+    var storage = C.storage();
+    switch(sel){
+      case 1:
+        url = 'http://10.10.40.55:8080/ddrive-platform-web/:endpoint/:action/:id';
+        break;
+      case 2:
+        url = 'http://ddriver.com:8080/:endpoint/:action/:id';
+        break;
+      default:
+        url = 'http://10.10.40.14:8084/:endpoint/:action/:id';
+        angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
+    }
+    if(storage.get('token')){
+      // angular.extend(normalPrarms, {userId:storage.get('userId')})
+    }
+
     return $resource(url, normalPrarms, {
       login:{
         method:'GET',
-        params:{endpoint:'user', action:'login'}
+        params:{endpoint:'login-index'}
       },
       signOut:{
-        method:'POST',
-        params:{endpoint:'user', action:'signOut'}
+        method:'GET',
+        params:{endpoint:'logout'}
       },
       savePwd:{
         method:'POST',
-        params:{endpoint:'user', action:'editPassword'}
+        params:{endpoint:'password', action:'change'}
       },
       delUser:{
         method:'POST',
@@ -47,7 +82,7 @@
   }])
   .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
-      runtimeEvn: function(){
+      /*runtimeEvn: function(){
         //0开发 1测试 2生产 3其他
         var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
@@ -68,6 +103,22 @@
         else {
           return 3;
         }
+      },*/
+
+      exportFile: function(o){
+        var url = $window.location.origin, obj = angular.extend({}, o), str = [];
+        if(obj.endpoint && obj.action){
+          url = url + '/' + obj.endpoint + '/' + obj.action;
+          delete obj.endpoint;
+          delete obj.action;
+          if(!angular.equals(obj, {})){
+            for(var p in obj){
+              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
+            url = url + '?' + str.join("&");
+          }
+        }
+        $window.location.href = url;
       },
 
       succ: function(chart){
@@ -97,44 +148,51 @@
       mLength: function(){
         var monthDays = ["", 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         if (((this.year % 4 === 0) && (this.year % 100 !== 0)) || (this.year % 400 === 0)){
-          monthDays[1] = 29;
+          monthDays[2] = 29;
         }
         return monthDays;
       },
 
       getPeriod: function(){
-        var section = $location.path(), period, pickYear, firstDay, endDay;
-        var curYear = new Date().getFullYear(), curMonth = new Date().getMonth()+1;
-        var curQuarter = Math.ceil(curMonth / 3);
-        var params = arguments[0];
+        var section = $location.path(), pickYear, firstDay, endDay, dp1, dp2;
+        var params = arguments[0], period={};
         switch(section){
           case '/month-ord':
-            if(params && params.year && params.month){
-              pickYear = params.year;
-              firstDay = params.month + '-01';
-              endDay   = params.month + '-' + this.mLength()[params.month];
-            }
-            else{
-              pickYear = curYear;
-              firstDay = curMonth + '-01';
-              endDay   = curMonth + '-'+ this.mLength()[curMonth];
-            }
             period = {
-              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
-              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
-            }
-            break;
+              s: params.year + '-' + params.month + '-01',
+              e: params.year + '-' + params.month + '-' + this.mLength()[params.month]
+            };
+          break;
+
           case '/quarter-ord':
             pickYear = params ? params.year : curYear;
-            firstDay = params ? (params.quarter * 3 - 2) + '-1' : (curQuarter * 3 - 2) + '-1';
+            firstDay = params ? (params.quarter * 3 - 2) + '-01' : (curQuarter * 3 - 2) + '-01';
             endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
             period = {
-              startTime: $filter('date')(new Date(pickYear + '-' + firstDay), 'yyyy-MM-dd'),
-              endTime:   $filter('date')(new Date(pickYear + '-' + endDay), 'yyyy-MM-dd')
+              s: new Date(pickYear + '-' + firstDay),
+              e: new Date(pickYear + '-' + endDay)
+            };
+          break;
+
+          case '/time-ord':
+            dp1 = params.dp1;
+            dp2 = params.dp2;
+            if(params && dp1 && dp2){
+              if(params.dp1>params.dp2){
+                dp1 = [dp1, dp2];
+                dp2 = dp1[0];
+                dp1 = dp1[1];
+              }
+              period = {
+                s: dp1, e: dp2
+              };
             }
-            break;
+          break;
         }
-        return period;
+        return {
+          startTime: $filter('myDate')(period.s, 'yyyy-MM-dd'),
+          endTime:   $filter('date')(period.e, 'yyyy-MM-dd')
+        };
       },
 
       alert: function(scope, opts, alone){
@@ -159,7 +217,7 @@
             }
           }
           else{
-            return 'errorCode = ' + res.header.errorCode
+            return 'errorCode = ' + res.header.errorCode;
           }
         }
         else{
@@ -173,7 +231,7 @@
           templateUrl: 'views/modal.'+ m +'.html',
           controller: 'ModalController',
           resolve: {
-            modalSet: function(){ return modalSet }
+            modalSet: function(){ return modalSet; }
           }
         };
         if(m  === 'general.remove'){
@@ -197,27 +255,29 @@
       cancelModal: function(modalInstance){ // 取消modal 默认没有callback
         modalInstance.dismiss('dismiss');
       },
+
       storage: function(){
         var store, now = new Date();
         ls.isSupported ? store = ls : store = ls.cookie;
+      
         return {
           set: function(key, val){
-            return ls.set(key, val);
+            return store.set(key, val);
           },
           get: function(key){
-            return ls.get(key);
+            return store.get(key);
           },
           remove: function(key){
-            return ls.remove(key);
+            return store.remove(key);
           },
           clear: function(){
-            return ls.clearAll();
+            return store.clearAll();
           }
-        }
+        };
       },
 
       back2Login:function(){
-        $window.location='login.html';
+        $location.path('/login');
       },
 
       back2Home: function(delay){
@@ -239,6 +299,11 @@
             angular.extend(scope, data);
             scope.showPagination = true;
           }
+          else{
+            self.alert(scope, {type:'danger', msg:data});
+          }
+        }, function(res){
+          self.alert(scope, {type:'danger', msg:'网络错误！'});
         });
       },
 
@@ -263,17 +328,19 @@
             var data = self.validResponse(res);
             if(typeof data!=='string'){
               storage.set(key, data);
-              console.log('data cache success!');
             }
             else{
               return false;
-              console.log('data cache error!');
             }
           });
         };
         if(!storage.get(key)){
           $timeout(storeData, 200);
         }
+      },
+
+      goOrderList: function(cName){
+        $location.path('/order').search('cName', cName);
       }
     };
   }]);

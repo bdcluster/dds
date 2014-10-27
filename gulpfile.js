@@ -222,7 +222,7 @@
   //| ✓ alias
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('test', ['jsonlint', 'jshint']);
-  gulp.task('build', ['test', 'clean', 'html', 'json', 'tmpl2js', 'images', 'svg', 'copy']);
+  gulp.task('build', ['test', 'clean', 'html', 'tmpl2js', 'images', 'svg', 'copy']);
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ default

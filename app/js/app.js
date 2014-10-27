@@ -22,9 +22,9 @@
       }
     });
   }])
-  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider, $httpProvider, localStorageServiceProvider){
+  .config(['$provide','$routeProvider','$httpProvider', 'localStorageServiceProvider', function($provide, $routeProvider, $httpProvider, localStorageServiceProvider){
 
-    $httpProvider.interceptors.push('TokenInterceptor');
+    // $httpProvider.interceptors.push('TokenInterceptor');
 
     $routeProvider
       .when('/login', {
@@ -85,6 +85,10 @@
       .when('/rule', {
         templateUrl: viewPath + 'rule.html',
         controller:  'RuleController',
+        access: { requiredLogin: true }
+      })
+      .when('/help', {
+        templateUrl: viewPath + 'help.html',
         access: { requiredLogin: true }
       })
       .when('/demo', {

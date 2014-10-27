@@ -5,16 +5,16 @@
   .factory('AuthService', [function(){
     var auth = {
         isLogged: false
-    }
+    };
     return auth;
   }])
-  .factory('TokenInterceptor', ['$q', '$window', function ($q, $window) {
+  /*.factory('TokenInterceptor', ['$q', '$window', function ($q, $window) {
     return {
       request: function (config) {
         config.headers = config.headers || {};
-        /*if($window.sessionStorage['ls.token']){
+        if($window.sessionStorage['ls.token']){
           config.headers.Authorization = $window.sessionStorage['ls.token'];
-        }*/
+        }
         return config;
       },
 
@@ -22,19 +22,19 @@
         return response || $q.when(response);
       }
     };
-  }])
+  }])*/
   .factory('DDS', ['$resource', 'C', function($resource, C){
     var hosts, url, normalPrarms={}, sel = 3;
     var storage = C.storage();
     switch(sel){
       case 1:
-        url = 'http://10.10.40.125:8080/ddrive-platform-web/:endpoint/:action/:id';
+        url = 'http://10.10.40.55:8080/ddrive-platform-web/:endpoint/:action/:id';
         break;
       case 2:
         url = 'http://ddriver.com:8080/:endpoint/:action/:id';
         break;
       default:
-        url = 'http://127.0.0.1:8084/:endpoint/:action/:id';
+        url = 'http://10.10.40.14:8084/:endpoint/:action/:id';
         angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
     if(storage.get('token')){
@@ -161,7 +161,7 @@
             period = {
               s: params.year + '-' + params.month + '-01',
               e: params.year + '-' + params.month + '-' + this.mLength()[params.month]
-            }
+            };
           break;
 
           case '/quarter-ord':
@@ -185,7 +185,7 @@
               }
               period = {
                 s: dp1, e: dp2
-              }
+              };
             }
           break;
         }

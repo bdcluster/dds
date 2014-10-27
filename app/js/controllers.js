@@ -8,7 +8,6 @@
     var isLogged = AuthService.isLogged || storage.get('isLogged');
     /*rootscope setting*/
     angular.extend($rootScope, {
-      // showNav:$location.path()!=='/login' ? true : false,
       showPage:isLogged,
       menus:storage.get('menus'),
       userId:storage.get('userId'),
@@ -53,8 +52,13 @@
   /* 登陆页面 */
   .controller('AdminController', ['$rootScope', '$filter', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $filter, $scope, $location, C, DDS, AuthService){
     var storage = C.storage();
-    storage.clear();
-    $rootScope.menus=[];
+    if(storage.get('isLogged')){
+      $location.path('/home');
+    }
+    else{
+      storage.clear();
+      $rootScope.menus=[];
+    }
 
     $scope.checkLogin = function(){
       /*login success:
@@ -268,7 +272,7 @@
     var paramsInit = {
       endpoint:'customer', action:'select',
       pageNum:$scope.pageNum
-    }
+    };
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
@@ -285,7 +289,7 @@
     var paramsInit = {
       endpoint:'driver', action:'select',
       pageNum:$scope.pageNum,
-    }
+    };
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
@@ -305,7 +309,11 @@
     angular.extend(paramsInit, $routeParams);
     angular.extend($scope, {
       syncStatus: '同步订单',
-      rotate:false,
+      sync:{
+        primary:true,
+        success:false,
+        danger:false
+      },
       search:{},
       changePage: function(){
         C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
@@ -315,27 +323,38 @@
           C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
         }
       },
-      syncOrder: function(){
-        var self = this;
-        self.syncStatus = '正在同步';
-        self.rotate = true;
-        DDS.get({endpoint:'bill', action:'synchOrder', chaos: Math.random()}, function(res){
-          var data = C.validResponse(res);
-          $timeout(function(){
-            if(typeof data!=='string'){
-              if(data.returnValue){
-                self.syncStatus = '同步成功';
+      // 订单同步
+      syncOrder: function(orderId){
+        var self = this, syncParams;
+        if(!self.sync.success){
+          self.syncStatus = '正在同步';
+          syncParams = angular.extend({
+            endpoint:'order', action:'synchOrder', 
+            orderId: orderId, chaos: Math.random()
+          });
+          DDS.get(syncParams, function(res){
+            var data = C.validResponse(res);
+            $timeout(function(){
+              if(typeof data!=='string'){
+                self.sync = {
+                  primary:false,
+                  success:true,
+                  danger:false
+                };
+                self.syncStatus = data.message;
               }
               else{
                 self.syncStatus = '同步失败';
+                self.sync = {
+                  primary:false,
+                  success:false,
+                  danger:true
+                };
               }
-            }
-            else{
-              self.syncStatus = '同步失败';
-            }
-            self.rotate = false;
-          }, 2000);
-        });
+            }, 2000);
+          });
+          
+        }
       },
       orderExport: function(){
         C.exportFile(angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
@@ -354,6 +373,7 @@
       dp1: curYear + '-' + (curMonth+1) + '-1',
       dp2: curYear + '-' + (curMonth+1) + '-' + C.mLength()[curMonth]
     };
+    $scope.areas = C.storage().get('provinces');
 
     var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
     /* datepicker setting*/
@@ -372,7 +392,8 @@
     };
 
     $scope.dateOptions = {
-      showWeeks:false
+      showWeeks:false,
+      startingDay:1
     };
 
     $scope.changePage = function(){
@@ -381,7 +402,7 @@
     $scope.changePage();
 
     $scope.doSearch = function(o){
-      var s = angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1})
+      var s = angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1});
       delete s.dp1; 
       delete s.dp2;
       C.list($scope, DDS, s);
@@ -389,14 +410,14 @@
 
     $scope.orderByCust = function(cName){
       C.goOrderList(cName);
-    }
+    };
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
     var paramsInit = {
       endpoint:'rule', action:'select',
       pageNum:$scope.pageNum
-    }
+    };
     var storage = C.storage(), extraData = {areas: storage.get('provinces')};
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
@@ -408,6 +429,9 @@
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
       }
     };
+
+    $scope.range = C.range(1,24);
+    $scope.areas = C.storage().get('provinces');
 
     $scope.saveRule = function(rule){
       var params={pageNum:$scope.pageNum}, ruleInfo;
@@ -423,7 +447,7 @@
       var modalSet = {
         modalTitle: '计费规则定义', // modal 窗体标题
         formData: ruleInfo || {},
-        extraData: angular.extend(extraData,{scale: C.range(1,24)}),
+        extraData: angular.extend(extraData,{scale: $scope.range}),
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveRule(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);

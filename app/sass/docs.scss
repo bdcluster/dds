@@ -10,13 +10,13 @@ html{
   width:100%; height:100%;
   padding-top: $navbar-height + $grid-gutter-width / 2 + 5;
   overflow-x: hidden;
-  min-width: 1000px;
+  min-width: 1200px;
   & > nav{
     background-color: rgba($navbar-inverse-bg, 0.85);
     .navbar-brand{
       color: white;
-      .icon-car{
-        font-size:28px;
+      .icon-vehicle{
+        font-size:2em;
       }
       small{
         font-size:0.8em;
@@ -28,10 +28,6 @@ html{
   }
 }
 
-/* .fix-md-width{
-  width:$container-md;
-}
- */
 .mask{
   position: fixed;
   top:0; left:0;
@@ -88,18 +84,20 @@ html{
   text-align:center;
   .menu-wrap{
     width:130px;
+    background: $panel-default-border;
+    border-radius:20px;
+    cursor:pointer;
     @extend .center-block;
+    &:hover{
+      color: $state-success-text;
+    }
   }
   i{
     font-size:8em;
     line-height:1em;
-    cursor:pointer;
   }
   span{
     font-size:1.2em;
-  }
-  &:hover{
-    color: $state-success-text;
   }
 }
 

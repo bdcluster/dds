@@ -1,32 +1,46 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
+      <label class="sr-only">省份</label>
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city=''">
+        <option value="">-- 选择省份 --</option> 
+      </select>
+      <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
+    </div>
+    <div class="form-group">
+      <label class="sr-only"></label>
+      <select name="city" class="form-control input-sm" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="search.cityId=city.id">
+        <option value="">-- 选择城市 --</option> 
+      </select>
+      <input name="cityId" type="hidden" data-ng-model="search.cityId">
+    </div>
+    <div class="form-group">
       <label class="sr-only">客户名称</label>
-      <input class="form-control" type="text" name="cName" data-ng-model="search.cName" placeholder="客户名称">
+      <input class="form-control input-sm" type="text" name="customerName" data-ng-model="search.customerName" placeholder="客户名称">
     </div>
     <div class="form-group">
       <label class="sr-only">开始时间</label>
-      <div class="input-group dds-dp">
-        <input type="text" class="form-control" datepicker-popup ng-model="search.dp1" is-open="sOpen" datepicker-options="dateOptions" show-button-bar="false">
+      <div class="input-group input-group-sm dds-dp">
+        <input type="text" class="form-control input-sm" data-datepicker-popup data-ng-model="search.dp1" data-is-open="sOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default" style="height:34px;" ng-click="toggleDP1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>
     <div class="form-group">
       <label class="sr-only">结束时间</label>
-      <div class="input-group dds-dp">
-        <input type="text" class="form-control" datepicker-popup ng-model="search.dp2" is-open="eOpen" datepicker-options="dateOptions" show-button-bar="false" min-date="search.dp1">
+      <div class="input-group input-group-sm dds-dp">
+        <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp2" data-is-open="eOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="search.dp1">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default" style="height:34px;" ng-click="toggleDP2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <i class="glyphicon glyphicon-search"></i> 搜素
       </button>
-      <button class="btn btn-primary">
+      <button class="btn btn-primary btn-sm">
         <i class="glyphicon glyphicon-export"></i> 数据导出
       </button>      
     </div>
@@ -68,7 +82,7 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{pageNum}} / {{numPages}}

@@ -2,33 +2,29 @@
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
       <label class="sr-only">客户名称</label>
-      <input type="text" class="form-control" name="cName" data-ng-model="search.cName" placeholder="客户名称">
+      <input type="text" class="form-control input-sm" name="customerName" data-ng-model="search.customerName" placeholder="客户名称">
     </div>
     <div class="form-group">
       <label class="sr-only">账号</label>
-      <input type="text" class="form-control" name="dName" data-ng-model="search.dName" placeholder="司机名称">
+      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="司机名称">
     </div>
     <div class="form-group">
       <label class="sr-only">订单号</label>
-      <input type="text" class="form-control" name="billNo" data-ng-model="search.billNo" placeholder="订单号">
+      <input type="text" class="form-control input-sm" name="orderId" data-ng-model="search.orderId" placeholder="订单号">
     </div>
     <div class="form-group">
       <label class="sr-only">状态</label>
-      <select name="status" class="form-control" data-ng-model="search.status">
+      <select name="status" class="form-control input-sm" data-ng-model="search.billStatus">
         <option value="">---订单状态---</option>
-        <option value="0">确认订单</option>
-        <option value="1">取消订单</option>
+        <option value="1">确认订单</option>
+        <option value="0">取消订单</option>
       </select>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary" data-ng-click="doSearch(search)">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
-      <button class="btn btn-primary" data-ng-click="syncOrder()" data-ng-class="{'sync-ing':rotate}">
-        <i class="glyphicon glyphicon-refresh"></i>
-        <span data-ng-bind="syncStatus"></span>
-      </button>
-      <button class="btn btn-primary" data-ng-click="orderExport(search)">
+      <button class="btn btn-primary btn-sm" data-ng-click="orderExport(search)">
         <i class="glyphicon glyphicon-export"></i> 数据导出
       </button>
     </div>
@@ -39,42 +35,43 @@
   <thead>
     <tr>
       <td>订单号</td>
-      <td>客户信息</td>
-      <td>司机信息</td>
+      <td colspan="2">客户信息</td>
+      <td colspan="2">司机信息</td>
+      <td colspan="2">起始时间</td>
       <td>费用</td>
       <td>创建时间</td>
-      <td>起始时间</td>
-      <td>服务时段</td>
+      <td>服务时长</td>
       <td>状态</td>
+      <td>同步订单</td>
     </tr>
   </thead>
   <tbody>
     <tr data-ng-repeat="ord in orders">
       <td data-ng-bind="ord.orderId"></td>
-      <td>
-        <span data-ng-bind="ord.customerName"></span><br>
-        <span data-ng-bind="ord.customerPhone"></span>
-      </td>
-      <td>
-        <span data-ng-bind="ord.driverName"></span><br>
-        <span data-ng-bind="ord.driverPhone"></span>
-      </td>
+      <td data-ng-bind="ord.customerName"></td>
+      <td data-ng-bind="ord.customerPhone"></td>
+      <td data-ng-bind="ord.driverName"></td>
+      <td data-ng-bind="ord.driverPhone"></td>
+      <td data-ng-bind="ord.driveStartTime | myDate: 'hh:mm:ss'"></td>
+      <td data-ng-bind="ord.driveEndTime | myDate: 'hh:mm:ss'"></td>
       <td data-ng-bind="ord.serviceCost | currency: '￥'"></td>
       <td data-ng-bind="ord.billCreateTime | myDate"></td>
-      <td>
-        <span data-ng-bind="ord.driveStartTime"></span><br>
-        <span data-ng-bind="ord.driveEndTime"></span>
-      </td>
       <td><span data-ng-bind="ord.serviceTime"></span> 小时</td>
       <td>
         <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':ord.billStatus==1, 'glyphicon-remove-sign text-danger':ord.billStatus==0, 'glyphicon-question-sign':ord.billStatus>1}"></i>
+      </td>
+      <td>
+        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus">
+          <i class="glyphicon glyphicon-refresh"></i>
+          <span data-ng-bind="syncStatus"></span>
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
     Page: {{pageNum}} / {{numPages}}

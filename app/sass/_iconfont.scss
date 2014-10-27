@@ -39,7 +39,8 @@ $icons: (
   driver:"\e601",
   oldpwd:"\e611",
   newpwd:"\e613",
-  newpwd2:"\e612"
+  newpwd2:"\e612",
+  vehicle:"\e614"
   );
 @each $icon-name, $icon-content in $icons{
   .icon-#{$icon-name}:before{

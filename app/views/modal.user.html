@@ -12,14 +12,14 @@
       <span data-ng-bind="alert.msg"></span>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.loginName.$valid, 'has-error':userForm.loginName.$invalid &amp;&amp; userForm.loginName.$dirty}">
-      <label for="username" class="col-xs-2 control-label">用户名</label>
+      <label for="username" class="col-xs-2 control-label">* 用户名</label>
       <div class="col-xs-9">
         <input type="text" class="form-control" name="loginName" data-ng-model="formData.loginName" required>
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.loginName.$dirty" data-ng-class="{'glyphicon-ok':userForm.loginName.$valid, 'glyphicon-remove':userForm.loginName.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.userName.$valid, 'has-error':userForm.userName.$invalid &amp;&amp; userForm.userName.$dirty}">
-      <label for="userfullname" class="col-xs-2 control-label">用户姓名</label>
+      <label for="userfullname" class="col-xs-2 control-label">* 姓名</label>
       <div class="col-xs-9">
         <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" required>
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.userName.$dirty" data-ng-class="{'glyphicon-ok':userForm.userName.$valid, 'glyphicon-remove':userForm.userName.$invalid}"></i>
@@ -28,14 +28,14 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.mobilePhone.$valid, 'has-error':userForm.mobilePhone.$invalid &amp;&amp; userForm.mobilePhone.$dirty}">
       <label for="usermobile" class="col-xs-2 control-label">手机</label>
       <div class="col-xs-9">
-        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone" required>
+        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone">
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.mobilePhone.$dirty" data-ng-class="{'glyphicon-ok':userForm.mobilePhone.$valid, 'glyphicon-remove':userForm.mobilePhone.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.email.$valid, 'has-error':userForm.email.$invalid &amp;&amp; userForm.email.$dirty}">
       <label for="usermobile" class="col-xs-2 control-label">邮箱</label>
       <div class="col-xs-9">
-        <input type="email" class="form-control" name="email" data-ng-model="formData.email" required>
+        <input type="email" class="form-control" name="email" data-ng-model="formData.email">
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.email.$dirty" data-ng-class="{'glyphicon-ok':userForm.email.$valid, 'glyphicon-remove':userForm.email.$invalid}"></i>
       </div>
     </div>
@@ -45,12 +45,6 @@
         <label class="radio-inline" data-ng-repeat="role in extraData">
           <input type="radio" name="role" data-ng-value="role.id" data-ng-model="formData.roleId" required> {{role.roleName}}
         </label>
-      </div>
-    </div>
-    <div class="form-group has-feedback">
-      <label class="col-xs-2 control-label" for="userdesc">用户描述</label>
-      <div class="col-xs-9">
-        <textarea class="form-control" name="description" rows="3" data-ng-model="formData.description"></textarea>
       </div>
     </div>
   </div>

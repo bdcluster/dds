@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">
-            <i class="iconfont icon-car"></i> 代驾管理系统 <small>v 1.0</small>
+            <i class="iconfont icon-vehicle"></i> 代驾管理系统 <small>v 0.1</small>
           </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -32,12 +32,13 @@
             </a>
             <ul class="dropdown-menu" role="menu">
               <li>
-                <a href="#"><i class="iconfont icon-yonghu"></i> 修改资料</a>
+                <a href="#/home"><i class="glyphicon glyphicon-home"></i> 返回首页</a>
               </li>
               <li>
                 <a href="#/chgpwd"><i class="iconfont icon-mima"></i> 修改密码</a>
-              </li>              <li>
-                <a href="#"><i class="iconfont icon-help"></i> 帮助文档</a>
+              </li>
+              <li>
+                <a href="#/help"><i class="iconfont icon-help"></i> 帮助文档</a>
               </li>
               <li class="divider"></li>
               <li>
@@ -52,7 +53,7 @@
       <div class="row">
         <!-- menu loaded -->
         <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
-        <section class="col-xs-9">
+        <section class="col-xs-10">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
             <i class="iconfont icon-{{alert.type}}"></i>
             <span data-ng-bind="alert.msg"></span>

@@ -1,5 +1,9 @@
 <div class="panel panel-default login-area">
   <div class="panel-body">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in login-alert">
+      <i class="iconfont icon-{{alert.type}}"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
     <div class="row">
       <div class="login-cover col-xs-6">
         <img src="img/designall.jpeg" class="img-responsive">

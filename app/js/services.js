@@ -24,9 +24,12 @@
     };
   }])*/
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    var hosts, url, normalPrarms={}, sel = 3;
+    var hosts, url, normalPrarms={};
     var storage = C.storage();
-    if(C.runtimeEvn() === 0){
+    if(window.API){
+      url = window.API;
+    }
+    else if(C.runtimeEvn() === 1){
       url = 'http://10.10.40.250:8080/ddrive-platform-web/:endpoint/:action/:id';
     }
     else{
@@ -34,9 +37,9 @@
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
     
-    if(storage.get('token')){
-      // angular.extend(normalPrarms, {userId:storage.get('userId')})
-    }
+    /*if(storage.get('token')){
+      angular.extend(normalPrarms, {userId:storage.get('userId')})
+    }*/
 
     return $resource(url, normalPrarms, {
       login:{
@@ -96,20 +99,32 @@
         }
       },
 
-      exportFile: function(o){
-        var url = $window.location.origin, obj = angular.extend({}, o), str = [];
+      exportFile: function(scope, resource, options){
+        var url = $window.API.split('/:endpoint')[0], 
+            obj = angular.extend({}, options), 
+            str = [],
+            self= this; 
         if(obj.endpoint && obj.action){
-          url = url + '/' + obj.endpoint + '/' + obj.action;
           delete obj.endpoint;
           delete obj.action;
           if(!angular.equals(obj, {})){
             for(var p in obj){
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             }
-            url = url + '?' + str.join("&");
           }
         }
-        $window.location.href = url;
+        var apiHost = $window.API.split('/:endpoint')[0]; 
+        resource.get(options, function(res){
+          var data = self.validResponse(res);
+          if(typeof data!=='string'){
+            $window.location = url + data.message + '?' + str.join('&');
+          }
+          else{
+            self.alert(scope, {type:'danger', msg:data});
+          }
+        }, function(res){
+          self.alert(scope, {type:'danger', msg:'网络错误！'});
+        });
       },
 
       succ: function(chart){

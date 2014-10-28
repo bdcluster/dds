@@ -8,6 +8,7 @@
     var isLogged = AuthService.isLogged || storage.get('isLogged');
     /*rootscope setting*/
     angular.extend($rootScope, {
+      version: 'ver. 0.1',
       showPage:isLogged,
       menus:storage.get('menus'),
       userId:storage.get('userId'),

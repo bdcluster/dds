@@ -11,8 +11,14 @@
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleName.$valid, 'has-error':ruleForm.ruleName.$invalid &amp;&amp; ruleForm.ruleName.$dirty}">
+      <label for="ruleName" class="col-xs-2 control-label">* 规则名称</label>
+      <div class="col-xs-9">
+        <input type="text" class="form-control" name="ruleName" data-ng-model="formData.ruleName" data-ng-maxlength="4" required placeholder="长度小于等于 12 位">
+      </div>
+    </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.city.$valid}">
-      <label for="province" class="col-xs-2 control-label">省市名称</label>
+      <label for="province" class="col-xs-2 control-label">* 省市名称</label>
       <div class="col-xs-9">
         <p class="form-control-static">
           {{province.name || formData.provinceName }} - {{city.name || formData.cityName}}
@@ -33,7 +39,7 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleStartTime.$valid}">
-      <label for="time1" class="col-xs-2 control-label">时间段</label>
+      <label for="time1" class="col-xs-2 control-label">* 时间段</label>
       <div class="col-xs-5">
         <select name="time1" class="form-control" data-ng-model="formData.ruleStartTime" data-ng-options="t as (t + ':00') for t in extraData.scale" required>
           <option value="">-- 请选择 --</option> 
@@ -46,21 +52,21 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleStartPrice.$valid, 'has-error':ruleForm.ruleStartPrice.$invalid &amp;&amp; ruleForm.ruleStartPrice.$dirty}">
-      <label for="ruleStartPrice" class="col-xs-2 control-label">起步价格</label>
+      <label for="ruleStartPrice" class="col-xs-2 control-label">* 起步价格</label>
       <div class="col-xs-9">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
-          <input type="number" class="form-control" name="ruleStartPrice" data-ng-model="formData.ruleStartPrice" required placeholder="一小时内">
+          <input type="number" class="form-control" name="ruleStartPrice" data-ng-model="formData.ruleStartPrice" data-ng-maxlength="4" required placeholder="一小时内">
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.ruleStartPrice.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.ruleStartPrice.$valid, 'glyphicon-remove':ruleForm.ruleStartPrice.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleExtraPrice.$valid, 'has-error':ruleForm.ruleExtraPrice.$invalid &amp;&amp; ruleForm.ruleExtraPrice.$dirty}">
-      <label for="ruleExtraPrice" class="col-xs-2 control-label">加收金额</label>
+      <label for="ruleExtraPrice" class="col-xs-2 control-label">* 加收金额</label>
       <div class="col-xs-9">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
-          <input type="number" class="form-control" name="ruleExtraPrice" data-ng-model="formData.ruleExtraPrice" required placeholder="超过1小时每小时加收金额">
+          <input type="number" class="form-control" name="ruleExtraPrice" data-ng-model="formData.ruleExtraPrice" data-ng-maxlength="4" required placeholder="超过1小时每小时加收金额">
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.ruleExtraPrice.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.ruleExtraPrice.$valid, 'glyphicon-remove':ruleForm.ruleExtraPrice.$invalid}"></i>
       </div>
@@ -68,7 +74,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleDesc.$dirty, 'has-error':ruleForm.ruleDesc.$invalid &amp;&amp; ruleForm.ruleDesc.$dirty}">
       <label for="ruleDesc" class="col-xs-2 control-label">规则描述</label>
       <div class="col-xs-9">
-        <textarea class="form-control" name="ruleDesc" rows="3" data-ng-model="formData.ruleDesc"></textarea>
+        <textarea class="form-control" name="ruleDesc" rows="3" data-ng-model="formData.ruleDesc" data-ng-maxlength="100" placeholder="长度小于 100 位"></textarea>
       </div>
     </div>
   </div>

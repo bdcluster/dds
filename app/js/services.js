@@ -26,7 +26,7 @@
   .factory('DDS', ['$resource', 'C', function($resource, C){
     var hosts, url, normalPrarms={}, sel = 3;
     var storage = C.storage();
-    if(C.runtimeEvn()===0){
+    if(C.runtimeEvn() === 0){
       url = 'http://10.10.40.250:8080/ddrive-platform-web/:endpoint/:action/:id';
     }
     else{

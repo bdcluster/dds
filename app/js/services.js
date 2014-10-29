@@ -109,7 +109,8 @@
       },
 
       exportFile: function(scope, resource, options){
-        var url = $window.API.split('/:endpoint')[0], 
+        var url = $window.location.origin, 
+            prj = '/ddrive-platform-web',
             obj = angular.extend({}, options), 
             str = [],
             self= this; 
@@ -122,11 +123,10 @@
             }
           }
         }
-        var apiHost = $window.API.split('/:endpoint')[0]; 
         resource.get(options, function(res){
           var data = self.validResponse(res);
           if(typeof data!=='string'){
-            $window.location = url + data.message + '?' + str.join('&');
+            $window.location = url + prj + data.message + '?' + str.join('&');
           }
           else{
             self.alert(scope, {type:'danger', msg:data});
@@ -359,7 +359,7 @@
       },
 
       goOrderList: function(cName){
-        $location.path('/order').search('cName', cName);
+        $location.path('/order').search('customerName', cName);
       }
     };
   }]);

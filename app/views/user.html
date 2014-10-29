@@ -22,8 +22,8 @@
     <tr>
       <td>用户名</td>
       <td>姓名</td>
+      <td>手机</td>
       <td>角色</td>
-      <td>备注</td>
       <td>添加时间</td>
       <td class="action">操作</td>
     </tr>
@@ -32,8 +32,8 @@
     <tr data-ng-repeat="user in users">
       <td data-ng-bind="user.loginName"></td>
       <td data-ng-bind="user.userName"></td>
+      <td data-ng-bind="user.mobilePhone"></td>
       <td data-ng-bind="user.role.roleName"></td>
-      <td data-ng-bind="user.description"></td>
       <td data-ng-bind="user.createTime | myDate"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveUser(user)">

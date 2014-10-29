@@ -23,20 +23,19 @@
       }
     };
   }])*/
-  .factory('DDS', ['$resource', 'C', function($resource, C){
-    var hosts, url, normalPrarms={};
-    var storage = C.storage();
-    if(window.API){
-      url = window.API;
-    }
-    else if(C.runtimeEvn() === 1){
-      url = 'http://10.10.40.250:8080/ddrive-platform-web/:endpoint/:action/:id';
-    }
-    else{
-      url = 'http://localhost:8084/:endpoint/:action/:id';
+  .factory('DDS', ['$resource', '$location', 'C', function($resource, $location, C){
+    var http = $location.protocol(), 
+        host = $location.host(), 
+        port = $location.port()==='' ? '' : ':' + $location.port(), 
+        proj = '/ddrive-platform-web';
+    var storage = C.storage(), url, normalPrarms={};
+    // 前端开发环境
+    if(C.runtimeEvn() === 0) {
+      port = ':8084';
+      proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    
+    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/
@@ -83,19 +82,17 @@
   .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
       runtimeEvn: function(){
-        //0本地开发 1局域网开发 2生产 10其他
+        //0前端环境， 10其他
         var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
+            port = $location.port(),
             local= /^(localhost|127\.0)/i,
             dev = /^10\.10\.40\.250/i;
-        if(local.test(host)) {
+        if(port === 9000) {
           return 0;
-        }
-        else if(dev.test(host)){
-          return 1;
         }
         else {
-          return 0;
+          return 10;
         }
       },
 
@@ -318,6 +315,10 @@
         if(typeof data!=='string'){
           modalInstance.close(function(){ // close modal
             angular.extend(ctrlScope, data);
+            //如果role数据变更，更新role的缓存
+            if(data.roles){
+              self.storage().set('role', data);
+            }
             self.alert(ctrlScope, {type:'success', msg:data.message || '操作成功！'});
           });
         }

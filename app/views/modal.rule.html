@@ -12,14 +12,14 @@
       <span data-ng-bind="alert.msg"></span>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.city.$valid}">
-      <label for="province" class="col-xs-2 control-label">* 省市名称</label>
-      <div class="col-xs-9">
+      <label for="province" class="col-xs-3 control-label">* 省市名称</label>
+      <div class="col-xs-8">
         <p class="form-control-static">
           {{province.name || formData.provinceName }} - {{city.name || formData.cityName}}
           <i class="glyphicon glyphicon-edit show-edit" data-ng-show="extraData.showEdit" data-ng-click="extraData.showAreaSel=!extraData.showAreaSel"></i>
         </p>
       </div>
-      <div class="col-xs-5 col-xs-offset-2" data-ng-show="extraData.showAreaSel">
+      <div class="col-xs-4 col-xs-offset-3" data-ng-show="extraData.showAreaSel">
         <select name="province" class="form-control" data-ng-model="province" data-ng-options="prov.name for prov in extraData.areas" data-ng-change="formData.provinceId=province.id; city=''" required>
           <option value="">-- 请选择 --</option> 
         </select>
@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleStartTime.$valid}">
-      <label for="time1" class="col-xs-2 control-label">* 时间段</label>
-      <div class="col-xs-5">
+      <label for="time1" class="col-xs-3 control-label">* 时间段</label>
+      <div class="col-xs-4">
         <select name="time1" class="form-control" data-ng-model="formData.ruleStartTime" data-ng-options="t as (t + ':00') for t in extraData.scale" required>
           <option value="">-- 请选择 --</option> 
         </select>
@@ -45,9 +45,9 @@
         </select>
       </div>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleStartPrice.$valid, 'has-error':ruleForm.ruleStartPrice.$invalid &amp;&amp; ruleForm.ruleStartPrice.$dirty}">
-      <label for="ruleStartPrice" class="col-xs-2 control-label">* 起步价格</label>
-      <div class="col-xs-9">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleStartPrice.$valid &amp;&amp; ruleForm.ruleStartPrice.$dirty, 'has-error':ruleForm.ruleStartPrice.$invalid &amp;&amp; ruleForm.ruleStartPrice.$dirty}">
+      <label for="ruleStartPrice" class="col-xs-3 control-label">* 起步价格</label>
+      <div class="col-xs-8">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
           <input type="number" class="form-control" name="ruleStartPrice" data-ng-model="formData.ruleStartPrice" data-ng-maxlength="4" required placeholder="一小时内">
@@ -55,9 +55,9 @@
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.ruleStartPrice.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.ruleStartPrice.$valid, 'glyphicon-remove':ruleForm.ruleStartPrice.$invalid}"></i>
       </div>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleExtraPrice.$valid, 'has-error':ruleForm.ruleExtraPrice.$invalid &amp;&amp; ruleForm.ruleExtraPrice.$dirty}">
-      <label for="ruleExtraPrice" class="col-xs-2 control-label">* 加收金额</label>
-      <div class="col-xs-9">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleExtraPrice.$valid &amp;&amp; ruleForm.ruleExtraPrice.$dirty, 'has-error':ruleForm.ruleExtraPrice.$invalid &amp;&amp; ruleForm.ruleExtraPrice.$dirty}">
+      <label for="ruleExtraPrice" class="col-xs-3 control-label">* 加收金额</label>
+      <div class="col-xs-8">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
           <input type="number" class="form-control" name="ruleExtraPrice" data-ng-model="formData.ruleExtraPrice" data-ng-maxlength="4" required placeholder="超过1小时每小时加收金额">
@@ -66,15 +66,15 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleName.$valid &amp;&amp; ruleForm.ruleName.$dirty, 'has-error':ruleForm.ruleName.$invalid &amp;&amp; ruleForm.ruleName.$dirty}">
-      <label for="ruleName" class="col-xs-2 control-label">规则名称</label>
-      <div class="col-xs-9">
+      <label for="ruleName" class="col-xs-3 control-label">规则名称</label>
+      <div class="col-xs-8">
         <input type="text" class="form-control" name="ruleName" data-ng-model="formData.ruleName" data-ng-maxlength="12" placeholder="长度小于等于 12 位">
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.ruleName.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.ruleName.$valid, 'glyphicon-remove':ruleForm.ruleName.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleDesc.$dirty, 'has-error':ruleForm.ruleDesc.$invalid &amp;&amp; ruleForm.ruleDesc.$dirty}">
-      <label for="ruleDesc" class="col-xs-2 control-label">规则描述</label>
-      <div class="col-xs-9">
+      <label for="ruleDesc" class="col-xs-3 control-label">规则描述</label>
+      <div class="col-xs-8">
         <textarea class="form-control" name="ruleDesc" rows="3" data-ng-model="formData.ruleDesc" data-ng-maxlength="100" placeholder="长度小于 100 位"></textarea>
       </div>
     </div>

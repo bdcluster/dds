@@ -279,6 +279,30 @@
     };
     $scope.changePage(); // default: load pageNum:1
 
+    $scope.saveCust = function(cust){
+      var params={pageNum:$scope.pageNum}, custInfo;
+      console.log(cust)
+      if(cust){
+        custInfo = angular.extend({},cust);
+        angular.extend(params, {action:'edit', id:custInfo.id});
+      }
+      else{
+        angular.extend(params, {action:'add'});
+        custInfo = {};
+      }
+      var modalSet = {
+        modalTitle: '客户信息', // modal 窗体标题
+        formData: custInfo || {},
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.saveUser(angular.extend(params, scope.formData), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+        // ,cancel: C.cancelModal
+      };
+      C.openModal(modalSet, 'cust');
+    };
+
     $scope.doSearch = function(o){
       if(o){
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));

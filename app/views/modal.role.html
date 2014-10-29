@@ -11,16 +11,16 @@
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.roleName.$valid, 'has-error':roleForm.roleName.$invalid &amp;&amp; roleForm.roleName.$dirty}">
-      <label for="roleName" class="col-xs-2 control-label">* 角色名</label>
-      <div class="col-xs-9">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.roleName.$valid &amp;&amp; roleForm.roleName.$dirty, 'has-error':roleForm.roleName.$invalid &amp;&amp; roleForm.roleName.$dirty}">
+      <label for="roleName" class="col-xs-3 control-label">* 角色名称</label>
+      <div class="col-xs-8">
         <input type="text" class="form-control" name="roleName" data-ng-model="formData.roleName" data-ng-maxlength="10" placeholder="长度小于等于 10 位" required>
         <i class="glyphicon form-control-feedback" data-ng-show="roleForm.roleName.$dirty" data-ng-class="{'glyphicon-ok':roleForm.roleName.$valid, 'glyphicon-remove':roleForm.roleName.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.menuIds.$valid &amp;&amp; roleForm.menuIds.$dirty, 'has-error':roleForm.menuIds.$invalid &amp;&amp; roleForm.menuIds.$dirty}">
-      <label for="menuIds" class="col-xs-2 control-label">选择权限</label>
-      <div class="col-xs-9">
+      <label for="menuIds" class="col-xs-3 control-label">选择权限</label>
+      <div class="col-xs-8">
         <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIdArray" data-ng-options="menu.id as menu.name for menu in extraData"></select>
       </div>
     </div>

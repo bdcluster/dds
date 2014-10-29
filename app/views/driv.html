@@ -12,8 +12,8 @@
       <label class="sr-only">状态</label>
       <select name="workStatus" class="form-control input-sm" data-ng-model="search.workStatus">
         <option value="">---司机状态---</option>
-        <option value="2">空闲</option>
         <option value="1">忙碌</option>
+        <option value="2">空闲</option>
         <option value="3">代驾中</option>
       </select>
     </div>
@@ -23,6 +23,9 @@
       </button>
     </div>
   </form>
+  <button class="btn btn-primary btn-sm" data-ng-click="saveDriver()">
+    <i class="glyphicon glyphicon-plus"></i> 添加
+  </button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -37,6 +40,7 @@
       <td>籍贯</td>
       <td>代驾次数</td>
       <td>服务评级</td>
+      <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +54,16 @@
       <td data-ng-bind="driver.nativePlace"></td>
       <td data-ng-bind="driver.driveCount"></td>
       <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.starLevel"></td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="saveDriver(driver)">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(driver.id)">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>

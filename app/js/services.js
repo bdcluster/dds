@@ -69,6 +69,18 @@
         method:'POST',
         params:{endpoint:'role', action:'@action', id:'@id'}
       },
+      saveCust:{
+        method:'POST',
+        params:{endpoint:'customer', action:'@action', id:'@id'}
+      },
+      saveDriv:{
+        method:'POST',
+        params:{endpoint:'driver', action:'@action', id:'@id'}
+      },
+      delDriv:{
+        method:'POST',
+        params:{endpoint:'driver', action:'delete', id:'@id'}
+      },
       saveRule:{
         method:'POST',
         params:{endpoint:'rule', action:'@action', id:'@id'}

@@ -281,7 +281,6 @@
 
     $scope.saveCust = function(cust){
       var params={pageNum:$scope.pageNum}, custInfo;
-      console.log(cust)
       if(cust){
         custInfo = angular.extend({},cust);
         angular.extend(params, {action:'edit', id:custInfo.id});
@@ -294,7 +293,7 @@
         modalTitle: '客户信息', // modal 窗体标题
         formData: custInfo || {},
         confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.saveUser(angular.extend(params, scope.formData), function(res){
+          DDS.saveCust(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           });
         }
@@ -315,10 +314,48 @@
       endpoint:'driver', action:'select',
       pageNum:$scope.pageNum,
     };
+
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage(); // default: load pageNum:1
+
+    $scope.saveDriver = function(driv){
+      var params={pageNum:$scope.pageNum}, drivInfo;
+      if(driv){
+        drivInfo = angular.extend({},driv);
+        angular.extend(params, {action:'edit', id:drivInfo.id});
+      }
+      else{
+        angular.extend(params, {action:'add'});
+        drivInfo = {};
+      }
+      var modalSet = {
+        modalTitle: '司机信息', // modal 窗体标题
+        formData: drivInfo || {},
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.saveDriv(angular.extend(params, scope.formData), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+        // ,cancel: C.cancelModal
+      };
+      C.openModal(modalSet, 'driv');
+    };
+
+    $scope.remove = function(id){
+      var modalSet = {
+        removeText: '确定要删除这个司机的信息？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.delDriv({pageNum:$scope.pageNum, id: id}, function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+        // ,cancel: C.cancelModal
+      };
+      C.openModal(modalSet);
+    }; 
+
     $scope.doSearch = function(o){
       if(o){
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));

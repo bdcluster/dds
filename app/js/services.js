@@ -24,22 +24,22 @@
     };
   }])*/
   .factory('DDS', ['$resource', 'C', function($resource, C){
-    var hosts, url, normalPrarms={}, sel = 3;
+    var hosts, url, normalPrarms={};
     var storage = C.storage();
-    switch(sel){
-      case 1:
-        url = 'http://10.10.40.55:8080/ddrive-platform-web/:endpoint/:action/:id';
-        break;
-      case 2:
-        url = 'http://ddriver.com:8080/:endpoint/:action/:id';
-        break;
-      default:
-        url = 'http://10.10.40.14:8084/:endpoint/:action/:id';
-        angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
+    if(window.API){
+      url = window.API;
     }
-    if(storage.get('token')){
-      // angular.extend(normalPrarms, {userId:storage.get('userId')})
+    else if(C.runtimeEvn() === 1){
+      url = 'http://10.10.40.250:8080/ddrive-platform-web/:endpoint/:action/:id';
     }
+    else{
+      url = 'http://localhost:8084/:endpoint/:action/:id';
+      angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
+    }
+    
+    /*if(storage.get('token')){
+      angular.extend(normalPrarms, {userId:storage.get('userId')})
+    }*/
 
     return $resource(url, normalPrarms, {
       login:{
@@ -82,43 +82,49 @@
   }])
   .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
-      /*runtimeEvn: function(){
-        //0开发 1测试 2生产 3其他
+      runtimeEvn: function(){
+        //0本地开发 1局域网开发 2生产 10其他
         var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
-            path = $window.location.pathname,
-            local= /^(localhost|10\.10|127\.0|192\.168)/i;
-        if(window.DEBUG){
+            local= /^(localhost|127\.0)/i,
+            dev = /^10\.10\.40\.250/i;
+        if(local.test(host)) {
           return 0;
         }
-        if(local.test(host) && /^\/d.html/.test(path)) {
-          return 0;
-        }
-        else if(local.test(host) && (/^\//.test(path) || /^\/index.html/.test(path))){
+        else if(dev.test(host)){
           return 1;
         }
-        else if(/github.io$/.test(host)){
-          return 2;
-        }
         else {
-          return 3;
+          return 0;
         }
-      },*/
+      },
 
-      exportFile: function(o){
-        var url = $window.location.origin, obj = angular.extend({}, o), str = [];
+      exportFile: function(scope, resource, options){
+        var url = $window.API.split('/:endpoint')[0], 
+            obj = angular.extend({}, options), 
+            str = [],
+            self= this; 
         if(obj.endpoint && obj.action){
-          url = url + '/' + obj.endpoint + '/' + obj.action;
           delete obj.endpoint;
           delete obj.action;
           if(!angular.equals(obj, {})){
             for(var p in obj){
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             }
-            url = url + '?' + str.join("&");
           }
         }
-        $window.location.href = url;
+        var apiHost = $window.API.split('/:endpoint')[0]; 
+        resource.get(options, function(res){
+          var data = self.validResponse(res);
+          if(typeof data!=='string'){
+            $window.location = url + data.message + '?' + str.join('&');
+          }
+          else{
+            self.alert(scope, {type:'danger', msg:data});
+          }
+        }, function(res){
+          self.alert(scope, {type:'danger', msg:'网络错误！'});
+        });
       },
 
       succ: function(chart){

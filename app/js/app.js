@@ -1,7 +1,5 @@
 (function(){
   'use strict';
-  window.DEBUG = true;
-  // var viewPath = window.DEBUG ? 'views/' : 'dist/views/';
   var viewPath = 'views/';
   var app = angular.module('DdsApp', [
     'ngMd5',
@@ -10,6 +8,7 @@
     'ui.bootstrap',
     'DdsControllers',
     'DdsDirectives',
+    'DdsTemplate',
     'DdsServices',
     'DdsFilters',
     'LocalStorageModule'

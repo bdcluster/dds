@@ -1,8 +1,12 @@
 <div class="panel panel-default login-area">
   <div class="panel-body">
+    <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in login-alert">
+      <i class="iconfont icon-{{alert.type}}"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
     <div class="row">
       <div class="login-cover col-xs-6">
-        <img src="dist/img/designall.jpeg" class="img-responsive">
+        <img src="img/designall.jpeg" class="img-responsive">
       </div>
       <div class="login-form col-xs-6">
         <form class="form-horizontal" role="form" name="loginForm" novalidate>

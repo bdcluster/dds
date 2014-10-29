@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
       <label class="sr-only">省份</label>
-      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city=''">
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city='';">
         <option value="">-- 选择省份 --</option> 
       </select>
       <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
@@ -45,6 +45,7 @@
   <thead>
     <tr>
       <td>编号</td>
+      <td>规则名称</td>
       <td>省份</td>
       <td>城市</td>
       <td>开始时间</td>
@@ -58,6 +59,7 @@
   <tbody>
     <tr data-ng-repeat="rule in rules">
       <td data-ng-bind="rule.id"></td>
+      <td data-ng-bind="rule.ruleName"></td>
       <td data-ng-bind="rule.provinceName"></td>
       <td data-ng-bind="rule.cityName"></td>
       <td data-ng-bind="rule.ruleStartTime"></td>
@@ -80,9 +82,9 @@
 </table>
 <div class="row" data-ng-show="showPagination">
   <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="Prev"></div>
+    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    Page: {{pageNum}} / {{numPages}}
+    页码: {{pageNum}} / {{numPages}}
   </div>
 </div>

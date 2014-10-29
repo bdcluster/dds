@@ -8,6 +8,7 @@
     var isLogged = AuthService.isLogged || storage.get('isLogged');
     /*rootscope setting*/
     angular.extend($rootScope, {
+      version: 'ver. 0.1',
       showPage:isLogged,
       menus:storage.get('menus'),
       userId:storage.get('userId'),
@@ -357,7 +358,7 @@
         }
       },
       orderExport: function(){
-        C.exportFile(angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
+        C.exportFile($scope, DDS, angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
       }
     });
     $scope.changePage();
@@ -388,7 +389,11 @@
       $scope.eOpen = !$scope.eOpen;
     };
     $scope.staticsExport = function(){
-      C.exportFile(angular.extend({endpoint:'order', action:'exportStatis'}, $scope.search));
+      C.exportFile($scope, DDS, angular.extend(
+        {endpoint:'order', action:'exportStatis'}, 
+        C.getPeriod($scope.search),
+        $scope.search
+      ));
     };
 
     $scope.dateOptions = {
@@ -418,6 +423,7 @@
       endpoint:'rule', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.search = {};
     var storage = C.storage(), extraData = {areas: storage.get('provinces')};
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
@@ -426,6 +432,9 @@
 
     $scope.doSearch = function(o){
       if(o){
+        if(!o.provinceId && o.cityId){
+          delete o.cityId;
+        }
         C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
       }
     };

@@ -215,7 +215,7 @@
   //| ✓ environ
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('localhost', function() {
-    $.shelljs.exec('open http://static.ddriver.com:8080/d.html');
+    $.shelljs.exec('open http://localhost:8080/');
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <title>代驾平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="dist/css/docs.css">
+    <!-- build:css css/docs.css -->
+    <link rel="stylesheet" href="./css/docs.css">
+    <!-- endbuild -->
 
-    <!--[if lte IE 8]>
+    <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <![endif]-->
-    <!--[if lte IE 7]>
+    <!--[if lt IE 8]>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>
     <![endif]-->
   </head>
@@ -18,7 +20,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">
-            <i class="iconfont icon-car"></i> 代驾管理系统 <small>v 1.0</small>
+            <i class="iconfont icon-vehicle"></i> 代驾管理系统 <small data-ng-bind="version"></small>
           </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -30,12 +32,13 @@
             </a>
             <ul class="dropdown-menu" role="menu">
               <li>
-                <a href="#"><i class="iconfont icon-yonghu"></i> 修改资料</a>
+                <a href="#/home"><i class="glyphicon glyphicon-home"></i> 返回首页</a>
               </li>
               <li>
                 <a href="#/chgpwd"><i class="iconfont icon-mima"></i> 修改密码</a>
-              </li>              <li>
-                <a href="#"><i class="iconfont icon-help"></i> 帮助文档</a>
+              </li>
+              <li>
+                <a href="#/help"><i class="iconfont icon-help"></i> 帮助文档</a>
               </li>
               <li class="divider"></li>
               <li>
@@ -50,7 +53,7 @@
       <div class="row">
         <!-- menu loaded -->
         <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
-        <section class="col-xs-9">
+        <section class="col-xs-10">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
             <i class="iconfont icon-{{alert.type}}"></i>
             <span data-ng-bind="alert.msg"></span>
@@ -76,6 +79,22 @@
       </div>
     </footer>
     <div class="mask" data-ng-show="!showPage"></div>
-    <script src="dist/js/docs.js"></script>
+    <script>
+      window.API = 'http://localhost:8084/:endpoint/:action/:id';
+    </script>
+    <!-- build:js js/docs.js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>    
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>    
+    <script src="js/templates.js"></script>    
+    <!-- endbuild -->
   </body>
 </html>

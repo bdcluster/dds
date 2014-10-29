@@ -35,6 +35,17 @@
       }
     };
   })
+  /* 代驾时长 */
+  .filter('serveTime', function(){
+    return function(hour){
+      if(angular.isNumber(hour)){
+        return hour + '小时';
+      }
+      else{
+        return '';
+      }
+    };
+  })
   /*  1=是； 2=否*/
   .filter('isVIP', function(){
     return function(vip){

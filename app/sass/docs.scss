@@ -28,6 +28,7 @@ html{
   }
 }
 
+
 .mask{
   position: fixed;
   top:0; left:0;
@@ -39,6 +40,13 @@ html{
 
 .login-area{
   border-width: 0;
+  .login-alert{
+    position: absolute;
+    z-index:12000;
+    top:0; margin-left: -$grid-gutter-width/2;
+    width: 100%;
+    border-radius:0;
+  }
   .panel-body{
     $w: 800px; $h: 400px;
     @include box-shadow(5px 5px 15px $panel-default-border);

@@ -32,9 +32,9 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.identityCard.$valid &amp;&amp; drivForm.identityCard.$dirty, 'has-error':drivForm.identityCard.$invalid &amp;&amp; drivForm.identityCard.$dirty}">
-      <label for="usermobile" class="col-xs-3 control-label">驾驶证</label>
+      <label for="usermobile" class="col-xs-3 control-label">* 驾驶证</label>
       <div class="col-xs-8">
-        <input type="tex" class="form-control" name="identityCard" data-ng-model="formData.identityCard">
+        <input type="tex" class="form-control" name="identityCard" data-ng-model="formData.identityCard" required>
         <i class="glyphicon form-control-feedback" data-ng-show="drivForm.identityCard.$dirty" data-ng-class="{'glyphicon-ok':drivForm.identityCard.$valid, 'glyphicon-remove':drivForm.identityCard.$invalid}"></i>
       </div>
     </div>

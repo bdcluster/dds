@@ -3,9 +3,15 @@
   var app = angular.module('DdsFilters', [])
   .filter('myDate', ['$filter', function($filter){
     return function(d){
-      var mydate = new Date(d);
-      var argu = arguments[1] || 'yyyy-MM-dd hh:mm:ss';
-      return $filter('date')(mydate, argu);
+      var mydate, argu;
+      if(d === null){
+        return '';
+      }
+      else {
+        mydate = new Date(d);
+        argu = arguments[1] || 'yyyy-MM-dd hh:mm:ss';
+        return $filter('date')(mydate, argu);
+      }
     };
   }])
   /* 司机状态 0:空闲, 1:忙碌, 2:代驾中 */

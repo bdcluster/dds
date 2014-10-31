@@ -72,7 +72,7 @@
         <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':ord.billStatus==1, 'glyphicon-remove-sign text-danger':ord.billStatus==0, 'glyphicon-question-sign':ord.billStatus>1}"></i>
       </td>
       <td>
-        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="!ord.syncStatus">
+        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
           <i class="glyphicon glyphicon-refresh"></i>
           <span data-ng-bind="syncStatus"></span>
         </button>

@@ -11,7 +11,7 @@
     <div class="form-group">
       <label class="sr-only">状态</label>
       <select name="workStatus" class="form-control input-sm" data-ng-model="search.workStatus">
-        <option value="">---司机状态---</option>
+        <option value="">---工作状态---</option>
         <option value="1">忙碌</option>
         <option value="2">空闲</option>
         <option value="3">代驾中</option>
@@ -35,7 +35,7 @@
       <td>姓名</td>
       <td>手机号</td>
       <td>驾驶证</td>
-      <td>状态</td>
+      <td>工作状态</td>
       <td>驾龄</td>
       <td>籍贯</td>
       <td>代驾次数</td>
@@ -46,7 +46,10 @@
   <tbody>
     <tr data-ng-repeat="driver in drivers">
       <td data-ng-bind="driver.driverNo"></td>
-      <td data-ng-bind="driver.driverName"></td>
+      <td>
+        <span data-ng-bind="driver.driverName"></span>
+        <span class="label label-danger" data-ng-show="driver.driverStatus==1">已停用</span>
+      </td>
       <td data-ng-bind="driver.driverPhone"></td>
       <td data-ng-bind="driver.identityCard"></td>
       <td data-ng-bind="driver.workStatus | driveStatus"></td>

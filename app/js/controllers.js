@@ -171,7 +171,7 @@
       }
       var modalSet = {
         modalTitle: '用户信息', // modal 窗体标题
-        extraData: storage.get('role').roles,
+        extraData: {roles:storage.get('role').roles, editMode:params.action==='edit'},
         formData: userInfo || {},
         confirm: function(modalInstance, scope){ // 确认modal callback
           delete scope.formData.role;
@@ -432,8 +432,8 @@
       year: curYear,
       month: curMonth + 1,
       quarter: Math.ceil((new Date().getMonth()+1)/3),
-      dp1: curYear + '-' + (curMonth+1) + '-1',
-      dp2: curYear + '-' + (curMonth+1) + '-' + C.mLength()[curMonth]
+      dp1: curYear + '-' + C.twiNum(curMonth+1) + '-01',
+      dp2: curYear + '-' + C.twiNum(curMonth+1) + '-' + C.mLength()[curMonth]
     };
     $scope.areas = C.storage().get('provinces');
 

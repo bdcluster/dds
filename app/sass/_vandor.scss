@@ -2,7 +2,7 @@
 // Core variables and mixins
 @import "variables";
 
-// Mixins import start
+// Mixins import start ( ===mixins完整引用，无需修改=== )
 // --------------------------------------------------
 // Utilities
 @import "mixins/hide-text", "mixins/opacity", "mixins/image", 
@@ -34,7 +34,7 @@ $panel-border-radius:       0;
 @import "scaffolding", "type", "code", "grid", "tables", "forms", "buttons";
 
 // Components
-@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close", "button-groups";
+@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close", "button-groups", "labels";
 
 // Utility classes
 @import "utilities";

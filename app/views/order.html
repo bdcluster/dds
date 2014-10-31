@@ -31,6 +31,14 @@
   </form>
   <div class="clearfix"></div>
 </div>
+<p class="text-right">
+  <span class="text-success">
+    <i class="glyphicon glyphicon-ok-sign"></i> 确认订单&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="text-danger">
+    <i class="glyphicon glyphicon-remove-sign "></i> 取消订单
+  </span>
+</p>
 <table class="table table-bordered table-striped table-dds">
   <thead>
     <tr>
@@ -55,8 +63,8 @@
       <td data-ng-bind="ord.customerPhone"></td>
       <td data-ng-bind="ord.driverName"></td>
       <td data-ng-bind="ord.driverPhone"></td>
-      <td data-ng-bind="ord.driveStartTime | myDate: 'hh:mm:ss'"></td>
-      <td data-ng-bind="ord.driveEndTime | myDate: 'hh:mm:ss'"></td>
+      <td data-ng-bind="ord.driveStartTime | myDate"></td>
+      <td data-ng-bind="ord.driveEndTime | myDate"></td>
       <td data-ng-bind="ord.serviceCost | currency: '￥'"></td>
       <td data-ng-bind="ord.orderCreateTime | myDate"></td>
       <td data-ng-bind="ord.serviceTime | serveTime"></td>
@@ -64,11 +72,11 @@
         <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':ord.billStatus==1, 'glyphicon-remove-sign text-danger':ord.billStatus==0, 'glyphicon-question-sign':ord.billStatus>1}"></i>
       </td>
       <td>
-        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus">
+        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="!ord.syncStatus">
           <i class="glyphicon glyphicon-refresh"></i>
           <span data-ng-bind="syncStatus"></span>
         </button>
-        <span data-ng-show="ord.syncStatus==0">已同步</span>
+        <span data-ng-show="ord.syncStatus==1">已同步</span>
       </td>
     </tr>
   </tbody>

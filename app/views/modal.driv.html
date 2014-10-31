@@ -66,6 +66,16 @@
         </label>
       </div>
     </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':dirvForm.driverStatus.$valid &amp;&amp; dirvForm.driverStatus.$dirty, 'has-error':dirvForm.driverStatus.$invalid &amp;&amp; dirvForm.driverStatus.$dirty}">
+      <label class="col-xs-3 control-label">* 司机状态</label>
+      <div class="col-xs-8">
+        <label class="radio-inline">
+          <input type="radio" name="driverStatus" data-ng-value="1" data-ng-model="formData.driverStatus" required> 停用
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="driverStatus" data-ng-value="0" data-ng-model="formData.driverStatus" required> 启用
+        </label>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" data-ng-disabled="drivForm.$invalid" data-ng-click="confirm()">

@@ -13,9 +13,12 @@
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.loginName.$valid &amp;&amp; userForm.loginName.$dirty, 'has-error':userForm.loginName.$invalid &amp;&amp; userForm.loginName.$dirty}">
       <label for="username" class="col-xs-3 control-label">* 用户名</label>
-      <div class="col-xs-8">
+      <div class="col-xs-8" data-ng-hide="extraData.editMode">
         <input type="text" class="form-control" name="loginName" data-ng-model="formData.loginName" placeholder="5-12位字母或数字" data-ng-pattern="/^[A-Za-z0-9]{5,12}$/" required>
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.loginName.$dirty" data-ng-class="{'glyphicon-ok':userForm.loginName.$valid, 'glyphicon-remove':userForm.loginName.$invalid}"></i>
+      </div>
+      <div class="col-xs-8" data-ng-show="extraData.editMode">
+        <p class="form-control-static" data-ng-bind="formData.loginName"></p>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.userName.$valid &amp;&amp; userForm.userName.$dirty, 'has-error':userForm.userName.$invalid &amp;&amp; userForm.userName.$dirty}">
@@ -42,7 +45,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.role.$valid &amp;&amp; userForm.role.$dirty, 'has-error':userForm.role.$invalid &amp;&amp; userForm.role.$dirty}">
       <label class="col-xs-3 control-label">角色</label>
       <div class="col-xs-8">
-        <label class="radio-inline" data-ng-repeat="role in extraData">
+        <label class="radio-inline" data-ng-repeat="role in extraData.roles">
           <input type="radio" name="role" data-ng-value="role.id" data-ng-model="formData.roleId" required> {{role.roleName}}
         </label>
       </div>

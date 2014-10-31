@@ -169,24 +169,38 @@
         return monthDays;
       },
 
+      twiNum: function(num){
+        if(angular.isNumber(num)){
+          if(num < 10){
+            return "0" + num;
+          }
+          else{
+            return num;
+          }
+        } 
+        else{
+          return "00";
+        }
+      },
+
       getPeriod: function(){
         var section = $location.path(), pickYear, firstDay, endDay, dp1, dp2;
         var params = arguments[0], period={};
         switch(section){
           case '/month-ord':
             period = {
-              s: params.year + '-' + params.month + '-01',
-              e: params.year + '-' + params.month + '-' + this.mLength()[params.month]
+              s: params.year + '-' + this.twiNum(params.month) + '-01',
+              e: params.year + '-' + this.twiNum(params.month) + '-' + this.mLength()[params.month]
             };
           break;
 
           case '/quarter-ord':
             pickYear = params ? params.year : curYear;
-            firstDay = params ? (params.quarter * 3 - 2) + '-01' : (curQuarter * 3 - 2) + '-01';
-            endDay   = params ? params.quarter * 3 + '-' + this.mLength()[params.quarter * 3] : curQuarter * 3 + '-' + this.mLength()[curQuarter * 3];
+            firstDay = params ? this.twiNum(params.quarter * 3 - 2) + '-01' : this.twiNum(curQuarter * 3 - 2) + '-01';
+            endDay   = params ? this.twiNum(params.quarter * 3) + '-' + this.mLength()[params.quarter * 3] : this.twiNum(curQuarter * 3) + '-' + this.mLength()[curQuarter * 3];
             period = {
-              s: new Date(pickYear + '-' + firstDay),
-              e: new Date(pickYear + '-' + endDay)
+              s: pickYear + '-' + firstDay,
+              e: pickYear + '-' + endDay
             };
           break;
 
@@ -207,7 +221,7 @@
         }
         return {
           startTime: $filter('myDate')(period.s, 'yyyy-MM-dd'),
-          endTime:   $filter('date')(period.e, 'yyyy-MM-dd')
+          endTime:   $filter('myDate')(period.e, 'yyyy-MM-dd')
         };
       },
 

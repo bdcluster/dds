@@ -89,6 +89,14 @@
       delRule:{
         method:'POST',
         params:{endpoint:'rule', action:'delete', id:'@id'}
+      },
+      saveRuleTemp:{
+        method:'POST',
+        params:{endpoint:'template', action:'@action', id:'@id'}
+      },
+      delRuleTemp:{
+        method:'POST',
+        params:{endpoint:'template', action:'delete', id:'@id'}
       }
     });
   }])
@@ -220,9 +228,13 @@
           break;
         }
         return {
-          startTime: $filter('myDate')(period.s, 'yyyy-MM-dd'),
-          endTime:   $filter('myDate')(period.e, 'yyyy-MM-dd')
+          startTime: this.formatDate(period.s),
+          endTime:   this.formatDate(period.e)
         };
+      },
+
+      formatDate:function(d){
+        return $filter('myDate')(d, 'yyyy-MM-dd')
       },
 
       alert: function(scope, opts, alone){

@@ -1,0 +1,119 @@
+<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate data-ng-init="rules=[0]">
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+  {{formData}}, {{rules}}
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempName.$valid &amp;&amp; ruleForm.tempName.$dirty, 'has-error':ruleForm.tempName.$invalid &amp;&amp; ruleForm.tempName.$dirty}">
+      <label for="tempName" class="col-xs-3 control-label">* 模板名称</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="tempName" data-ng-model="formData.tempName" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.tempName.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.tempName.$valid, 'glyphicon-remove':ruleForm.tempName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.openTime.$valid &amp;&amp; ruleForm.openTime.$dirty, 'has-error':ruleForm.openTime.$invalid &amp;&amp; ruleForm.openTime.$dirty}">
+      <label for="openTime" class="col-xs-3 control-label">* 生效日期</label>
+      <div class="col-xs-8">
+        <div class="input-group dds-dp">
+          <span class="input-group-addon" ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </span>
+          <input type="text" name="openTime" class="form-control" data-datepicker-popup data-ng-model="formData.openTime" data-is-open="sOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false" data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')" required>
+        </div>
+        <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.openTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.openTime.$valid, 'glyphicon-remove':ruleForm.openTime.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.closeTime.$valid &amp;&amp; ruleForm.closeTime.$dirty, 'has-error':ruleForm.closeTime.$invalid &amp;&amp; ruleForm.closeTime.$dirty}">
+      <label for="closeTime" class="col-xs-3 control-label">* 停用日期</label>
+      <div class="col-xs-8">
+        <div class="input-group dds-dp">
+          <span class="input-group-addon" ng-click="toggleCal($event);eOpen=!eOpen; sOpen=false;">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </span>
+          <input type="text" name="closeTime" class="form-control" data-datepicker-popup data-ng-model="formData.closeTime" data-is-open="eOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="formData.startTime" data-ng-change="formData.closeTime=(formData.closeTime | date: 'yyyy-MM-dd')" required>
+        </div>
+        <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.closeTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.closeTime.$valid, 'glyphicon-remove':ruleForm.closeTime.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">* 规则填充</label>
+      <div class="col-xs-8 rule-unit" data-ng-class="{'col-xs-offset-3':!$first}" data-ng-repeat="a in rules">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="input-group">
+              <input type="number" name="ruleStartTime" class="form-control" data-ng-model="formData.ruleStartTime[$index]" placeholder="开始时间" required>
+              <span class="input-group-addon">点</span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <span class="input-group-addon">￥</span>
+              <input type="number" class="form-control" data-ng-model="formData.ruleStartPrice[$index]" placeholder="起步价(一小时内)" required>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <input type="number" class="form-control" data-ng-model="formData.ruleEndTime[$index]" placeholder="结束时间" required>
+              <span class="input-group-addon">点</span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <span class="input-group-addon">￥</span>
+              <input type="number" class="form-control" data-ng-model="formData.ruleExtraPrice[$index]" placeholder="加价" required>
+            </div>
+          </div>
+          <div class="col-xs-4 text-right col-xs-offset-8">
+            <button type="button" class="btn btn-danger btn-xs" data-ng-show="!$first &amp;&amp; $last" data-ng-click="formData.ruleStartTime[$index]=null; rules.splice($index, 1)">
+              <i class="glyphicon glyphicon-minus"></i>
+            </button>
+            <button type="button" class="btn btn-info btn-xs" 
+              data-ng-show="$last" 
+              data-ng-click="rules.push($index+1)" >
+              <i class="glyphicon glyphicon-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.status.$valid &amp;&amp; ruleForm.status.$dirty, 'has-error':ruleForm.status.$invalid &amp;&amp; ruleForm.status.$dirty}">
+      <label class="col-xs-3 control-label">* 状态</label>
+      <div class="col-xs-8">
+        <label class="radio-inline">
+          <input type="radio" name="status" data-ng-value="0" data-ng-model="formData.status" required> 启用
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="status" data-ng-value="1" data-ng-model="formData.status" required> 停用
+        </label>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleDesc.$dirty, 'has-error':ruleForm.ruleDesc.$invalid &amp;&amp; ruleForm.ruleDesc.$dirty}">
+      <label for="ruleDesc" class="col-xs-3 control-label">描述</label>
+      <div class="col-xs-8">
+        <textarea class="form-control" name="ruleDesc" rows="3" data-ng-model="formData.ruleDesc" data-ng-maxlength="100" placeholder="长度小于 100 位"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <p class="col-xs-10 col-xs-offset-1">
+        <small>整个时间段需填充满24小时才能提交、中间不能隔断、除了第一段的开始时间可以编辑，其他的开始时间都不能编辑，第二段的
+开始时间是第一段的结束时间</small>
+      </p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="ruleForm.$invalid" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

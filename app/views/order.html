@@ -31,14 +31,6 @@
   </form>
   <div class="clearfix"></div>
 </div>
-<p class="text-right">
-  <span class="text-success">
-    <i class="glyphicon glyphicon-ok-sign"></i> 确认订单&nbsp;&nbsp;&nbsp;&nbsp;
-  </span>
-  <span class="text-danger">
-    <i class="glyphicon glyphicon-remove-sign "></i> 取消订单
-  </span>
-</p>
 <table class="table table-bordered table-striped table-dds">
   <thead>
     <tr>
@@ -69,7 +61,9 @@
       <td data-ng-bind="ord.orderCreateTime | myDate"></td>
       <td data-ng-bind="ord.serviceTime | serveTime"></td>
       <td>
-        <i class="glyphicon" data-ng-class="{'glyphicon-ok-sign text-success':ord.billStatus==1, 'glyphicon-remove-sign text-danger':ord.billStatus==0, 'glyphicon-question-sign':ord.billStatus>1}"></i>
+        <span class="label label-success" data-ng-show="ord.billStatus==1">已确认</span>
+        <span class="label label-danger" data-ng-show="ord.billStatus==0">已取消</span>
+        <span class="label label-warning" data-ng-show="ord.billStatus>1">未知</span>
       </td>
       <td>
         <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-primary':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">

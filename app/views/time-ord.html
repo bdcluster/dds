@@ -21,9 +21,9 @@
     <div class="form-group">
       <label class="sr-only">开始时间</label>
       <div class="input-group input-group-sm dds-dp">
-        <input type="text" class="form-control input-sm" data-datepicker-popup data-ng-model="search.dp1" data-is-open="sOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+        <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp1" data-is-open="sOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false">
+        <span class="input-group-btn" data-ng-click="toggleCal($event);sOpen=!sOpen">
+          <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>
@@ -32,7 +32,7 @@
       <div class="input-group input-group-sm dds-dp">
         <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp2" data-is-open="eOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="search.dp1">
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-click="toggleDP2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>

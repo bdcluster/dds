@@ -10,6 +10,14 @@
     angular.extend($rootScope, {
       version: 'ver 0.3',
       showPage:isLogged,
+      dateOptions: {
+        showWeeks:false,
+        startingDay:1
+      },
+      toggleCal: function(event){
+        event.preventDefault();
+        event.stopPropagation();
+      },
       menus:storage.get('menus'),
       userId:storage.get('userId'),
       isActivedMenu: function(viewLocation){
@@ -438,28 +446,13 @@
     $scope.areas = C.storage().get('provinces');
 
     var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
-    /* datepicker setting*/
-    $scope.toggleDP1 = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.sOpen = !$scope.sOpen;
-    };
-    $scope.toggleDP2 = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.eOpen = !$scope.eOpen;
-    };
+    
     $scope.staticsExport = function(){
       C.exportFile($scope, DDS, angular.extend(
         {endpoint:'order', action:'exportStatis'}, 
         C.getPeriod($scope.search),
         $scope.search
       ));
-    };
-
-    $scope.dateOptions = {
-      showWeeks:false,
-      startingDay:1
     };
 
     $scope.changePage = function(){
@@ -477,6 +470,68 @@
     $scope.orderByCust = function(cName){
       C.goOrderList(cName);
     };
+  }])
+  /* 计费规则模板 */
+  .controller('RuleTemplateController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    var paramsInit = {
+      endpoint:'template', action:'select',
+      pageNum:$scope.pageNum
+    };
+    $scope.search = {};
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage();
+
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
+
+    $scope.saveRuleTemp = function(ruleTemp){
+      var params={pageNum:$scope.pageNum}, tempInfo;
+      if(ruleTemp){
+        tempInfo = angular.extend({}, ruleTemp);
+        angular.extend(params, {action:'edit', id:tempInfo.id});
+      }
+      else{
+        angular.extend(params, {action:'add'});
+      }
+      var modalSet = {
+        modalTitle: '计费模板定义', // modal 窗体标题
+        formData: tempInfo || {},
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.saveRuleTemp(angular.extend(params, scope.formData), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      };
+      C.openModal(modalSet, 'temp');
+    };
+
+    $scope.remove = function(id){
+      var modalSet = {
+        removeText: '确定要删除这个计费模板？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.delRuleTemp({pageNum:$scope.pageNum, id: id}, function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      };
+      C.openModal(modalSet);
+    };
+
+  }])
+  /* 计费模板明细 */
+  .controller('RuleTemplateDetailController', ['$scope', '$routeParams', 'DDS', 'C', function($scope, $routeParams, DDS, C){
+    C.list($scope, DDS, {
+      endpoint:'template', action:'detail',
+      id:$routeParams.id
+    });
+    $scope.goBack = function(){
+      history.back();
+    }
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
@@ -500,7 +555,6 @@
       }
     };
 
-    $scope.range = C.range(1,24);
     $scope.areas = C.storage().get('provinces');
 
     $scope.saveRule = function(rule){
@@ -538,6 +592,16 @@
       };
       C.openModal(modalSet);
     };
+  }])
+  /* 规则明细 */
+  .controller('RuleDetailController', ['$scope', '$routeParams', 'DDS', 'C',function($scope, $routeParams, DDS, C){
+    C.list($scope, DDS, {
+      endpoint:'rule', action:'detail',
+      id:$routeParams.id
+    });
+    $scope.goBack = function(){
+      history.back();
+    }
   }])
   /* demo */
   .controller('DemoController', ['$scope', '$modal', 'C', function($scope, $modal, C){

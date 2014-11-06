@@ -95,7 +95,7 @@
             $timeout(function(){
               $location.path('/home');
               $rootScope.showPage=AuthService.isLogged;
-            }, 1000)
+            }, 500)
           });
         }
         else{

@@ -68,7 +68,11 @@
           <div class="col-xs-6">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              <input type="number" name="ruleEndTime" class="form-control" data-ng-model="formData.arrayStr[$index][1]" placeholder="结束时间" min="0" max="24" required>
+              <input type="number" name="ruleEndTime" class="form-control" 
+                placeholder="结束时间" min="0" max="24" 
+                data-ng-model="formData.arrayStr[$index][1]" 
+                data-ng-change="" 
+                required>
             </div>
           </div>
           <div class="col-xs-6">
@@ -90,7 +94,7 @@
               <i class="glyphicon glyphicon-minus"></i>
             </button>
             <button type="button" class="btn btn-info btn-xs" 
-              data-ng-show="$last" 
+              data-ng-show="$last &amp;&amp; ruleForm.ruleStartTime.$valid &amp;&amp; ruleForm.ruleEndTime.$valid &amp;&amp; ruleForm.ruleStartPrice.$valid &amp;&amp; ruleForm.ruleExtraPrice.$valid" 
               data-ng-click="extraData.rules.push($index+1)">
               <i class="glyphicon glyphicon-plus"></i>
             </button>

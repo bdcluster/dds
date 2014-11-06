@@ -578,11 +578,12 @@
             var params={pageNum:$scope.pageNum}, ruleInfo;
             for(var i=0; i<templates.length; i++){
               templates[i].rules = C.range(0, templates[i].arrayStr.split(';').length-1);
-              // templates[i].arrayStr = C.ruleStr2Json(templates[i].arrayStr);
               angular.extend(templates[i], {arrayStr:C.ruleStr2Json(templates[i].arrayStr)})
             }
             if(rule){
               ruleInfo = angular.extend({}, rule);
+              ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
+              ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
               angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
               angular.extend(
                 extraData, 

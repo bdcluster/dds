@@ -86,8 +86,8 @@
         controller:  'RuleController',
         access: { requiredLogin: true }
       })
-      .when('/ruleTemp', {
-        templateUrl: viewPath + 'ruleTemp.html',
+      .when('/template', {
+        templateUrl: viewPath + 'template.html',
         controller:  'RuleTemplateController',
         access: { requiredLogin: true }
       })

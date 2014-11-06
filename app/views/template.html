@@ -65,8 +65,8 @@
       </td>
       <td data-ng-bind="t.tempName"></td>
       <td data-ng-bind="t.description"></td>
-      <td data-ng-bind="t.openTime"></td>
-      <td data-ng-bind="t.closeTime"></td>
+      <td data-ng-bind="t.openTime | myDate:'yyyy-MM-dd'"></td>
+      <td data-ng-bind="t.closeTime | myDate:'yyyy-MM-dd'"></td>
       <td>
         <span class="label label-success" data-ng-show="t.status==0">已启用</span>
         <span class="label label-danger" data-ng-show="t.status==1">已停用</span>

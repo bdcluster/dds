@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate data-ng-init="rules=[0]">
+<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate>
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -7,7 +7,6 @@
     <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
   </div>
   <div class="modal-body">
-  {{formData}}, {{rules}}
     <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
@@ -26,7 +25,13 @@
           <span class="input-group-addon" ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;">
             <i class="glyphicon glyphicon-calendar"></i>
           </span>
-          <input type="text" name="openTime" class="form-control" data-datepicker-popup data-ng-model="formData.openTime" data-is-open="sOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false" data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')" required>
+          <input type="text" name="openTime" class="form-control"
+           data-datepicker-popup 
+           data-ng-model="formData.openTime" 
+           data-is-open="sOpen" 
+           data-datepicker-options="dateOptions"  
+           data-show-button-bar="false" 
+           data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')" required>
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.openTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.openTime.$valid, 'glyphicon-remove':ruleForm.openTime.$invalid}"></i>
       </div>
@@ -38,46 +43,55 @@
           <span class="input-group-addon" ng-click="toggleCal($event);eOpen=!eOpen; sOpen=false;">
             <i class="glyphicon glyphicon-calendar"></i>
           </span>
-          <input type="text" name="closeTime" class="form-control" data-datepicker-popup data-ng-model="formData.closeTime" data-is-open="eOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="formData.startTime" data-ng-change="formData.closeTime=(formData.closeTime | date: 'yyyy-MM-dd')" required>
+          <input type="text" name="closeTime" class="form-control" 
+            data-datepicker-popup 
+            data-ng-model="formData.closeTime" 
+            data-is-open="eOpen" 
+            data-datepicker-options="dateOptions"  
+            data-show-button-bar="false"  
+            data-min-date="formData.startTime" 
+            data-ng-change="formData.closeTime=(formData.closeTime | date: 'yyyy-MM-dd')" required>
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.closeTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.closeTime.$valid, 'glyphicon-remove':ruleForm.closeTime.$invalid}"></i>
       </div>
     </div>
     <div class="form-group">
       <label class="col-xs-3 control-label">* 规则填充</label>
-      <div class="col-xs-8 rule-unit" data-ng-class="{'col-xs-offset-3':!$first}" data-ng-repeat="a in rules">
+      <div class="col-xs-8 rule-unit" data-ng-class="{'col-xs-offset-3':!$first}" data-ng-repeat="rule in extraData.rules">
         <div class="row">
           <div class="col-xs-6">
             <div class="input-group">
-              <input type="number" name="ruleStartTime" class="form-control" data-ng-model="formData.ruleStartTime[$index]" placeholder="开始时间" required>
-              <span class="input-group-addon">点</span>
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              <input type="number" name="ruleStartTime" class="form-control" data-ng-model="formData.arrayStr[$index][0]" placeholder="开始时间" min="0" max="24" required>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              <input type="number" name="ruleEndTime" class="form-control" data-ng-model="formData.arrayStr[$index][1]" placeholder="结束时间" min="0" max="24" required>
             </div>
           </div>
           <div class="col-xs-6">
             <div class="input-group">
               <span class="input-group-addon">￥</span>
-              <input type="number" class="form-control" data-ng-model="formData.ruleStartPrice[$index]" placeholder="起步价(一小时内)" required>
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <div class="input-group">
-              <input type="number" class="form-control" data-ng-model="formData.ruleEndTime[$index]" placeholder="结束时间" required>
-              <span class="input-group-addon">点</span>
+              <input type="number" name="ruleStartPrice" class="form-control" data-ng-model="formData.arrayStr[$index][2]" placeholder="起步价" required>
             </div>
           </div>
           <div class="col-xs-6">
             <div class="input-group">
               <span class="input-group-addon">￥</span>
-              <input type="number" class="form-control" data-ng-model="formData.ruleExtraPrice[$index]" placeholder="加价" required>
+              <input type="number" name="ruleExtraPrice" class="form-control" data-ng-model="formData.arrayStr[$index][3]" placeholder="加价" required>
             </div>
           </div>
           <div class="col-xs-4 text-right col-xs-offset-8">
-            <button type="button" class="btn btn-danger btn-xs" data-ng-show="!$first &amp;&amp; $last" data-ng-click="formData.ruleStartTime[$index]=null; rules.splice($index, 1)">
+            <button type="button" class="btn btn-danger btn-xs" 
+              data-ng-show="!$first &amp;&amp; $last" 
+              data-ng-click="formData.arrayStr[$index]=undefined; extraData.rules.splice($index, 1)">
               <i class="glyphicon glyphicon-minus"></i>
             </button>
             <button type="button" class="btn btn-info btn-xs" 
               data-ng-show="$last" 
-              data-ng-click="rules.push($index+1)" >
+              data-ng-click="extraData.rules.push($index+1)">
               <i class="glyphicon glyphicon-plus"></i>
             </button>
           </div>
@@ -95,10 +109,10 @@
         </label>
       </div>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.ruleDesc.$dirty, 'has-error':ruleForm.ruleDesc.$invalid &amp;&amp; ruleForm.ruleDesc.$dirty}">
-      <label for="ruleDesc" class="col-xs-3 control-label">描述</label>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.description.$dirty, 'has-error':ruleForm.description.$invalid &amp;&amp; ruleForm.description.$dirty}">
+      <label for="description" class="col-xs-3 control-label">描述</label>
       <div class="col-xs-8">
-        <textarea class="form-control" name="ruleDesc" rows="3" data-ng-model="formData.ruleDesc" data-ng-maxlength="100" placeholder="长度小于 100 位"></textarea>
+        <input name="description" class="form-control" data-ng-model="formData.description">
       </div>
     </div>
     <div class="form-group">

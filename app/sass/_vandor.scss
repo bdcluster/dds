@@ -56,5 +56,6 @@ $enable-all-modules:      true;
 // Import Utilities
 @import 'utilities/functions',
         'utilities/mixins',
+        'animations/bouncing-exits/bounce-out-right',
         'animations/fading-exits/fade-out',
         'animations/fading-entrances/fade-in';

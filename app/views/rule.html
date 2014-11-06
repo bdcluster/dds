@@ -64,8 +64,8 @@
       <td data-ng-bind="rule.tempNo"></td>
       <td data-ng-bind="rule.provinceName"></td>
       <td data-ng-bind="rule.cityName"></td>
-      <td data-ng-bind="rule.ruleStartTime"></td>
-      <td data-ng-bind="rule.ruleEndTime"></td>
+      <td data-ng-bind="rule.openTime | myDate:'yyyy-MM-dd'"></td>
+      <td data-ng-bind="rule.closeTime | myDate:'yyyy-MM-dd'"></td>
       <td>
         <span class="label label-success" data-ng-show="rule.status==0">已启用</span>
         <span class="label label-danger" data-ng-show="rule.status==1">已停用</span>

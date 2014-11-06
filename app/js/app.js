@@ -21,7 +21,7 @@
       }
     });
   }])
-  .config(['$provide','$routeProvider','$httpProvider', 'localStorageServiceProvider', function($provide, $routeProvider, $httpProvider, localStorageServiceProvider){
+  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider, $httpProvider, localStorageServiceProvider){
 
     // $httpProvider.interceptors.push('TokenInterceptor');
 
@@ -84,6 +84,21 @@
       .when('/rule', {
         templateUrl: viewPath + 'rule.html',
         controller:  'RuleController',
+        access: { requiredLogin: true }
+      })
+      .when('/template', {
+        templateUrl: viewPath + 'template.html',
+        controller:  'RuleTemplateController',
+        access: { requiredLogin: true }
+      })
+      .when('/tempDetail/:id', {
+        templateUrl: viewPath + 'tempDetail.html',
+        controller:  'RuleTemplateDetailController',
+        access: { requiredLogin: true }
+      })
+      .when('/ruleDetail/:id', {
+        templateUrl: viewPath + 'ruleDetail.html',
+        controller:  'RuleDetailController',
         access: { requiredLogin: true }
       })
       .when('/help', {

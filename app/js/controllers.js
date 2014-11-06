@@ -10,6 +10,14 @@
     angular.extend($rootScope, {
       version: 'ver 0.3',
       showPage:isLogged,
+      dateOptions: {
+        showWeeks:false,
+        startingDay:1
+      },
+      toggleCal: function(event){
+        event.preventDefault();
+        event.stopPropagation();
+      },
       menus:storage.get('menus'),
       userId:storage.get('userId'),
       isActivedMenu: function(viewLocation){
@@ -51,7 +59,7 @@
     });
   }])
   /* 登陆页面 */
-  .controller('AdminController', ['$rootScope', '$filter', '$scope', '$location', 'C', 'DDS', 'AuthService', function($rootScope, $filter, $scope, $location, C, DDS, AuthService){
+  .controller('AdminController', ['$rootScope', '$filter', '$scope', '$location','$timeout', 'C', 'DDS', 'AuthService', function($rootScope, $filter, $scope, $location, $timeout, C, DDS, AuthService){
     var storage = C.storage();
     if(storage.get('isLogged')){
       $location.path('/home');
@@ -74,7 +82,7 @@
         if(typeof data!=='string'){
           AuthService.isLogged = true;
           storage.set('isLogged', true);
-          $rootScope.showPage=AuthService.isLogged;
+          
           //缓存登录信息
           storage.set('token', data.sessionId);
           storage.set('userId', data.user.userId);
@@ -83,7 +91,11 @@
           //缓存
           DDS.get({endpoint:'menu', action:'select', type:2, userId:data.user.userId}, function(result){
             storage.set('menus', result.data);
-            $location.path('/home');
+            $scope.hideLogin=true;
+            $timeout(function(){
+              $location.path('/home');
+              $rootScope.showPage=AuthService.isLogged;
+            }, 1000)
           });
         }
         else{
@@ -438,28 +450,13 @@
     $scope.areas = C.storage().get('provinces');
 
     var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
-    /* datepicker setting*/
-    $scope.toggleDP1 = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.sOpen = !$scope.sOpen;
-    };
-    $scope.toggleDP2 = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.eOpen = !$scope.eOpen;
-    };
+    
     $scope.staticsExport = function(){
       C.exportFile($scope, DDS, angular.extend(
         {endpoint:'order', action:'exportStatis'}, 
         C.getPeriod($scope.search),
         $scope.search
       ));
-    };
-
-    $scope.dateOptions = {
-      showWeeks:false,
-      startingDay:1
     };
 
     $scope.changePage = function(){
@@ -477,6 +474,77 @@
     $scope.orderByCust = function(cName){
       C.goOrderList(cName);
     };
+  }])
+  /* 计费规则模板 */
+  .controller('RuleTemplateController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
+    var paramsInit = {
+      endpoint:'template', action:'select',
+      pageNum:$scope.pageNum
+    };
+    $scope.search = {};
+    $scope.changePage = function(){
+      C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+    };
+    $scope.changePage();
+
+    $scope.doSearch = function(o){
+      if(o){
+        C.list($scope, DDS, angular.extend(paramsInit, o, {pageNum: 1}));
+      }
+    };
+
+    $scope.saveRuleTemp = function(ruleTemp){
+      var params={pageNum:$scope.pageNum}, tempInfo={}, extraData={};
+      if(ruleTemp){
+        tempInfo = angular.extend({}, ruleTemp);
+        angular.extend(params, {action:'edit', id:tempInfo.id});
+        
+        tempInfo.arrayStr = C.ruleStr2Json(ruleTemp.arrayStr);
+        extraData.rules = C.range(0, ruleTemp.arrayStr.split(';').length-1);
+        tempInfo.openTime = C.formatDate(tempInfo.openTime);
+        tempInfo.closeTime = C.formatDate(tempInfo.closeTime);
+      }
+      else{
+        angular.extend(params, {action:'add'});
+        tempInfo.arrayStr = {'0':{}};
+        extraData.rules = [0];
+      }
+      var modalSet = {
+        modalTitle: '计费模板定义', // modal 窗体标题
+        formData: tempInfo || {},
+        extraData:extraData,
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          var str = C.json2RuleStr(scope.formData.arrayStr);
+          DDS.saveRuleTemp(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      };
+      C.openModal(modalSet, 'temp');
+    };
+
+    $scope.remove = function(id){
+      var modalSet = {
+        removeText: '确定要删除这个计费模板？', // modal 删除提示语
+        confirm: function(modalInstance, scope){ // 确认modal callback
+          DDS.delRuleTemp({pageNum:$scope.pageNum, id: id}, function(res){
+            C.responseHandler(scope, $scope, modalInstance, res);
+          });
+        }
+      };
+      C.openModal(modalSet);
+    };
+
+  }])
+  /* 计费模板明细 */
+  .controller('RuleTemplateDetailController', ['$scope', '$routeParams', 'DDS', 'C', function($scope, $routeParams, DDS, C){
+    C.list($scope, DDS, {
+      endpoint:'template', action:'detail',
+      id:$routeParams.id
+    });
+    $scope.goBack = function(){
+      history.back();
+    }
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
@@ -500,31 +568,46 @@
       }
     };
 
-    $scope.range = C.range(1,24);
     $scope.areas = C.storage().get('provinces');
 
     $scope.saveRule = function(rule){
-      var params={pageNum:$scope.pageNum}, ruleInfo;
-      if(rule){
-        ruleInfo = angular.extend({}, rule);
-        angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
-        angular.extend(extraData, {showEdit:true, showAreaSel:false});
-      }
-      else{
-        angular.extend(params, {action:'add'});
-        angular.extend(extraData, {showEdit:false, showAreaSel:true});
-      }
-      var modalSet = {
-        modalTitle: '计费规则定义', // modal 窗体标题
-        formData: ruleInfo || {},
-        extraData: angular.extend(extraData,{scale: $scope.range}),
-        confirm: function(modalInstance, scope){ // 确认modal callback
-          DDS.saveRule(angular.extend(params, scope.formData), function(res){
-            C.responseHandler(scope, $scope, modalInstance, res);
-          });
-        }
-      };
-      C.openModal(modalSet, 'rule');
+      DDS.get({endpoint: 'template', action: 'select', status: '0'}).$promise.then(function(result){
+          var data = C.validResponse(result);
+          if(typeof data !== 'string'){
+            var templates=data.templates;
+            var params={pageNum:$scope.pageNum}, ruleInfo;
+            for(var i=0; i<templates.length; i++){
+              templates[i].rules = C.range(0, templates[i].arrayStr.split(';').length-1);
+              angular.extend(templates[i], {arrayStr:C.ruleStr2Json(templates[i].arrayStr)})
+            }
+            if(rule){
+              ruleInfo = angular.extend({}, rule);
+              ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
+              ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
+              angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
+              angular.extend(
+                extraData, 
+                {showEdit:true, showAreaSel:false}
+              );
+            }
+            else{
+              angular.extend(params, {action:'add'});
+              angular.extend(extraData, {showEdit:false, showAreaSel:true});
+            }
+            var modalSet = {
+              modalTitle: '计费规则定义', // modal 窗体标题
+              formData: ruleInfo || {},
+              extraData: angular.extend(extraData,{templates: templates}),
+              confirm: function(modalInstance, scope){ // 确认modal callback
+                var str = C.json2RuleStr(scope.formData.arrayStr);
+                DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
+                  C.responseHandler(scope, $scope, modalInstance, res);
+                });
+              }
+            };
+            C.openModal(modalSet, 'rule');
+          }
+      });
     };
 
     $scope.remove = function(id){
@@ -538,6 +621,16 @@
       };
       C.openModal(modalSet);
     };
+  }])
+  /* 规则明细 */
+  .controller('RuleDetailController', ['$scope', '$routeParams', 'DDS', 'C',function($scope, $routeParams, DDS, C){
+    C.list($scope, DDS, {
+      endpoint:'rule', action:'detail',
+      id:$routeParams.id
+    });
+    $scope.goBack = function(){
+      history.back();
+    }
   }])
   /* demo */
   .controller('DemoController', ['$scope', '$modal', 'C', function($scope, $modal, C){

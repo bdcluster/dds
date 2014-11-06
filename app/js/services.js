@@ -35,8 +35,8 @@
       proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
-    // url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
+    // url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
+    url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/
@@ -89,6 +89,14 @@
       delRule:{
         method:'POST',
         params:{endpoint:'rule', action:'delete', id:'@id'}
+      },
+      saveRuleTemp:{
+        method:'POST',
+        params:{endpoint:'template', action:'@action', id:'@id'}
+      },
+      delRuleTemp:{
+        method:'POST',
+        params:{endpoint:'template', action:'delete', id:'@id'}
       }
     });
   }])
@@ -220,9 +228,13 @@
           break;
         }
         return {
-          startTime: $filter('myDate')(period.s, 'yyyy-MM-dd'),
-          endTime:   $filter('myDate')(period.e, 'yyyy-MM-dd')
+          startTime: this.formatDate(period.s),
+          endTime:   this.formatDate(period.e)
         };
+      },
+
+      formatDate:function(d){
+        return $filter('myDate')(d, 'yyyy-MM-dd')
       },
 
       alert: function(scope, opts, alone){
@@ -375,6 +387,32 @@
 
       goOrderList: function(cName){
         $location.path('/order').search('customerName', cName);
+      },
+
+      ruleStr2Json: function(str){
+        var obj1={}, obj2={}, ruleRecord=[], ruleDetail=[];
+        ruleRecord = str.split(';');
+        for(var p = 0; p < ruleRecord.length; p++){
+          obj1[p] = {};
+          ruleDetail = ruleRecord[p].split(',');
+          for(var q = 0; q < ruleDetail.length; q++){
+            obj2[q] = ruleDetail[q] - 0;
+            obj1[p][q] = obj2[q];
+          }
+        }
+        return obj1;
+      },
+
+      json2RuleStr: function(json){
+        var ruleRecord=[], ruleDetail=[], obj = json;
+        for(var p in obj){
+          ruleDetail = [];
+          for(var q in obj[p]){
+            ruleDetail.push(obj[p][q]);
+          }
+          ruleRecord.push(ruleDetail.join(','));
+        }
+        return ruleRecord.join(';');
       }
     };
   }]);

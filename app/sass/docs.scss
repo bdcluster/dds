@@ -166,6 +166,11 @@ html{
       margin-left: 5px;
     }
   }
+  tbody td{
+    a{
+      text-decoration:underline;
+    }
+  }
 }
 
 .pagination{
@@ -202,16 +207,37 @@ html{
   cursor: pointer;
 }
 
-.dds-dp .dropdown-menu{
-  padding: 5px;
-  table{
-    @extend .table-bordered;
-    outline-width: 0;
-    button{
-      border-radius:0;
-      border-width: 0;
+.dds-dp {
+  .form-control{
+    &:not(:first-child):not(:last-child) {
+      @include border-right-radius($border-radius-base);
     }
-    
+  }
+  .input-group-addon{
+    cursor:pointer;
+  }
+  .dropdown-menu{
+    padding: 5px;
+    table{
+      @extend .table-bordered;
+      outline-width: 0;
+      button{
+        border-radius:0;
+        border-width: 0;
+      }
+    }
+  }
+}
+
+.rule-unit{
+  .row{
+    div.col-xs-6{
+      margin-bottom:15px;
+    }
+  }
+  & + .rule-unit .row{
+    border-top:1px dashed $gray-light;
+    padding-top:15px;
   }
 }
 

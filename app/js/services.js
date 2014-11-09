@@ -35,8 +35,8 @@
       proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
-    // url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
+    // url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
+    url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/
@@ -407,10 +407,12 @@
         var ruleRecord=[], ruleDetail=[], obj = json;
         for(var p in obj){
           ruleDetail = [];
-          for(var q in obj[p]){
-            ruleDetail.push(obj[p][q]);
+          if(obj[p]){
+            for(var q in obj[p]){
+              ruleDetail.push(obj[p][q]);
+            }
+            ruleRecord.push(ruleDetail.join(','));
           }
-          ruleRecord.push(ruleDetail.join(','));
         }
         return ruleRecord.join(';');
       },

@@ -23,9 +23,14 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="saveDriver()">
-    <i class="glyphicon glyphicon-plus"></i> 添加
-  </button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="saveDriver()">
+      <i class="glyphicon glyphicon-plus"></i> 添加
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>    
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">

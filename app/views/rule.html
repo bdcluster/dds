@@ -37,9 +37,14 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="saveRule()">
-    <i class="glyphicon glyphicon-plus"></i> 添加
-  </button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="saveRule()">
+      <i class="glyphicon glyphicon-plus"></i> 添加
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>    
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -70,7 +75,7 @@
         <span class="label label-success" data-ng-show="rule.status==0">已启用</span>
         <span class="label label-danger" data-ng-show="rule.status==1">已停用</span>
       </td>
-      <td data-ng-bind="rule.ruleDesc"></td>
+      <td data-ng-bind="rule.description"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
           <span class="glyphicon glyphicon-edit"></span>

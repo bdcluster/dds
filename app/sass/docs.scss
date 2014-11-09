@@ -148,6 +148,24 @@ html{
   margin-right: 5px;
 }
 
+.role-pool{
+  .check-wrap{
+    height:250px;
+    overflow-y: scroll;
+    padding:0 $grid-gutter-width/2;
+    border: 1px solid $input-border;
+    border-radius: $input-border-radius;
+  }
+}
+
+.many-checkbox:first-child{
+  margin-left:10px;
+}
+
+.sub-label{
+  margin-left:$grid-gutter-width;
+}
+
 .table-dds{
   thead > tr {
     background: $brand-info;
@@ -208,6 +226,9 @@ html{
 }
 
 .dds-dp {
+  input[readonly]{
+    background-color: white;
+  }
   .form-control{
     &:not(:first-child):not(:last-child) {
       @include border-right-radius($border-radius-base);

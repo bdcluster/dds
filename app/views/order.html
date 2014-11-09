@@ -29,7 +29,14 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="goBack()" data-ng-hide="hideBack"><i class="glyphicon glyphicon-chevron-left"></i> 返回</button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="goBack()" data-ng-hide="hideBack">
+      <i class="glyphicon glyphicon-chevron-left"></i> 返回
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -52,7 +59,7 @@
   </thead>
   <tbody>
     <tr data-ng-repeat="ord in orders">
-      <td data-ng-bind="ord.orderId"></td>
+      <td data-ng-bind="ord.orderNo"></td>
       <td data-ng-bind="ord.customerName"></td>
       <td data-ng-bind="ord.customerPhone"></td>
       <td data-ng-bind="ord.driverName"></td>

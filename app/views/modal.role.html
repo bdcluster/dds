@@ -6,7 +6,6 @@
     </button>
     <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
   </div>
-  {{formData}}
   <div class="modal-body">
     <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
       <i class="iconfont icon-danger"></i>
@@ -21,8 +20,21 @@
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.menuIds.$valid &amp;&amp; roleForm.menuIds.$dirty, 'has-error':roleForm.menuIds.$invalid &amp;&amp; roleForm.menuIds.$dirty}">
       <label for="menuIds" class="col-xs-3 control-label">选择权限</label>
-      <div class="col-xs-8">
-        <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIdArray" data-ng-options="menu.id as menu.name for menu in extraData"></select>
+      <div class="col-xs-8 role-pool">
+        <!-- <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIdArray" data-ng-options="menu.id as menu.name for menu in extraData"></select> -->
+        <div class="check-wrap">
+          <div class="checkbox" data-ng-repeat="role in extraData">
+            <label>
+              <input type="checkbox" data-ng-model="formData.menuIdArray[role.id]"> <strong>{{role.name}}</strong>
+            </label>
+            <div class="checkbox" data-ng-repeat="sub in role.subname">
+              <label class="sub-label">
+                <input type="checkbox" data-ng-model="formData.menuIdArray[sub.id]" data-ng-change="formData.menuIdArray[role.id]=formData.menuIdArray[sub.id] || true"> {{sub.name}}
+              </label>
+            </div>
+          </div>
+          
+        </div>
       </div>
     </div>
   </div>

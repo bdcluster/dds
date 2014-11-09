@@ -21,7 +21,14 @@
     <div class="form-group">
       <label class="sr-only">开始时间</label>
       <div class="input-group input-group-sm dds-dp">
-        <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp1" data-is-open="sOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false">
+        <input type="text" class="form-control" 
+          data-datepicker-popup 
+          data-ng-model="search.dp1" 
+          data-is-open="sOpen"
+          data-datepicker-options="dateOptions"  
+          data-show-button-bar="false"
+          data-ng-click="toggleCal($event);sOpen=!sOpen"
+          readonly>
         <span class="input-group-btn" data-ng-click="toggleCal($event);sOpen=!sOpen">
           <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
@@ -30,7 +37,15 @@
     <div class="form-group">
       <label class="sr-only">结束时间</label>
       <div class="input-group input-group-sm dds-dp">
-        <input type="text" class="form-control" data-datepicker-popup data-ng-model="search.dp2" data-is-open="eOpen"  data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="search.dp1">
+        <input type="text" class="form-control" 
+          data-datepicker-popup 
+          data-ng-model="search.dp2" 
+          data-is-open="eOpen" 
+          data-datepicker-options="dateOptions"  
+          data-show-button-bar="false"  
+          data-min-date="search.dp1"
+          data-ng-click="toggleCal($event);eOpen=!eOpen"
+          readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
@@ -45,6 +60,9 @@
       </button>      
     </div>
   </form>
+  <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+    <i class="glyphicon glyphicon-refresh"></i> 刷新
+  </button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">

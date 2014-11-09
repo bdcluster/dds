@@ -44,6 +44,10 @@
       closeAlert: function(index){
         this.alerts.splice(index, 1);
       },
+      refresh: function(){
+        var path = $location.path();
+        window.location.reload();
+      },
       signOut: function(){
         DDS.signOut(function(res){
           var data = C.validResponse(res);
@@ -229,22 +233,16 @@
       DDS.get({endpoint:'menu', action:'select', type:'1'}, function(res){
         var data = C.validResponse(res), roleInfo;
         if(typeof data!=='string'){
-          var flatMenu=[];
-          for(var m in data){
-            flatMenu.push({
-              id:data[m].id,
-              name:'' + data[m].name
-            });
-            for(var sm in data[m].subname){
-              flatMenu.push({
-                id: data[m].subname[sm].id,
-                name:'　---' + data[m].subname[sm].name
-              });
-            }
-          }
           var params={pageNum:$scope.pageNum};
           if(role){
-            roleInfo = angular.extend({}, role);
+            var menuIdArray=function(){
+              var obj={};
+              for(var i=0; i<role.menuIdArray.length; i++){
+                obj[role.menuIdArray[i]] = true;
+              }
+              return obj;
+            };
+            roleInfo = angular.extend({}, role, {menuIdArray:menuIdArray()});
             angular.extend(params, {action:'edit', id:roleInfo.id});
           }
           else{
@@ -253,9 +251,19 @@
           var modalSet = {
             modalTitle: '角色定义', // modal 窗体标题
             formData: roleInfo || {},
-            extraData:flatMenu,
+            extraData:data,
             confirm: function(modalInstance, scope){ // 确认modal callback
               delete scope.formData.permitList;
+              var m = scope.formData.menuIdArray, n=[];
+              var menuIdArray = function(){
+                for(var x in m){
+                  if(m[x]){
+                    n.push(x);
+                  }
+                }
+                return n;
+              };
+              scope.formData.menuIdArray = menuIdArray();
               DDS.saveRole(angular.extend(params, scope.formData), function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
               });
@@ -517,7 +525,7 @@
       if(ruleTemp){
         tempInfo = angular.extend({}, ruleTemp);
         angular.extend(params, {action:'edit', id:tempInfo.id});
-        
+
         tempInfo.arrayStr = C.ruleStr2Json(ruleTemp.arrayStr);
         extraData.rules = C.range(0, ruleTemp.arrayStr.split(';').length-1);
         tempInfo.openTime = C.formatDate(tempInfo.openTime);
@@ -533,6 +541,7 @@
         formData: tempInfo || {},
         extraData:extraData,
         confirm: function(modalInstance, scope){ // 确认modal callback
+          // console.log(scope.formData.arrayStr)
           var str = C.json2RuleStr(scope.formData.arrayStr);
           DDS.saveRuleTemp(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
@@ -605,8 +614,10 @@
             // 格式化日期
             ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
             ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
+
+            ruleInfo.cityStr = {};
+            ruleInfo.cityStr[ruleInfo.cityId]=true;
             // 将规则字符串json化
-            ruleInfo.cityStr=C.getKeyJson(ruleInfo.cityStr);
             ruleInfo.arrayStr=C.ruleStr2Json(ruleInfo.arrayStr);
             for(i=0; i<extraData.areas.length; i++){
               if(extraData.areas[i].name===ruleInfo.provinceName){
@@ -622,12 +633,12 @@
             }
             angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
             angular.extend(
-              extraData, {provinceOrder: provinceOrder, tempOrder: tempOrder}
+              extraData, {provinceOrder: provinceOrder, tempOrder: tempOrder, editMode:true}
             );
           }
           else{
             angular.extend(params, {action:'add'});
-            angular.extend(extraData, {provinceOrder: '', tempOrder: ''});
+            angular.extend(extraData, {provinceOrder: '', tempOrder: '', editMode:false});
           }
           var modalSet = {
             modalTitle: '计费规则定义', // modal 窗体标题

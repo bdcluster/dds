@@ -156,7 +156,7 @@
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('zip', function () {
     return gulp.src(_.dist + '/**/*')
-    .pipe($.zip('dds.zip'))
+    .pipe($.zip('dds_'+new Date().getTime()+'.zip'))
     .pipe(gulp.dest('zipfiles'), {
       comment: Date.parse(new Date())
     })

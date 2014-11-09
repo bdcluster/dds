@@ -5,31 +5,39 @@
       <input type="text" class="form-control input-sm" name="tempNo" data-ng-model="search.tempNo" placeholder="模板编号">
     </div>
     <div class="form-group">
-      <label class="sr-only">生效时间</label>
+      <label>生效时间：</label>
       <div class="input-group input-group-sm dds-dp">
-        <input type="text" class="form-control" name="openTime" 
-          data-ng-model="search.openTime" 
+        <input type="text" class="form-control" name="startTime"
+          placeholder="开始时间"
+          data-ng-model="search.startTime" 
           data-datepicker-popup 
           data-is-open="sOpen"  
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false" 
-          data-ng-change="search.openTime=(search.openTime | date: 'yyyy-MM-dd')">
+          data-ng-change="search.startTime=(search.startTime | date: 'yyyy-MM-dd')"
+          data-ng-click="toggleCal($event);sOpen=!sOpen"
+          readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);sOpen=!sOpen"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>
     <div class="form-group">
-      <label class="sr-only">停用时间</label>
+      至
+    </div>
+    <div class="form-group">
       <div class="input-group input-group-sm dds-dp">
-        <input type="text" class="form-control" name="closeTime" 
-          data-ng-model="search.closeTime" 
+        <input type="text" class="form-control" name="endTime" 
+          placeholder="结束时间"
+          data-ng-model="search.endTime" 
           data-datepicker-popup 
           data-is-open="eOpen"  
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false"  
           data-min-date="search.openTime"
-          data-ng-change="search.closeTime=(search.closeTime | date: 'yyyy-MM-dd')">
+          data-ng-change="search.endTime=(search.endTime | date: 'yyyy-MM-dd')"
+          data-ng-click="toggleCal($event);sOpen=!sOpen"
+          readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
@@ -41,9 +49,14 @@
       </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="saveRuleTemp()">
-    <i class="glyphicon glyphicon-plus"></i> 添加
-  </button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="saveRuleTemp()">
+      <i class="glyphicon glyphicon-plus"></i> 添加
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">

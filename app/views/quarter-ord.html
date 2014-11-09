@@ -2,7 +2,7 @@
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
       <label class="sr-only">省份</label>
-      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city=''">
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city='';search.cityId=undefinde">
         <option value="">-- 选择省份 --</option> 
       </select>
       <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
@@ -21,7 +21,6 @@
     <div class="form-group">
       <label class="sr-only">年份</label>
       <select class="form-control input-sm" data-ng-model="search.year" data-ng-options="y for y in years">
-        <option value="">-- 选择年份 --</option>
       </select>
     </div>
     <div class="form-group">

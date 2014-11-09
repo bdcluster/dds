@@ -35,8 +35,8 @@
       proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    // url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
-    url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
+    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
+    // url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/
@@ -234,7 +234,7 @@
       },
 
       formatDate:function(d){
-        return $filter('myDate')(d, 'yyyy-MM-dd')
+        return $filter('myDate')(d, 'yyyy-MM-dd');
       },
 
       alert: function(scope, opts, alone){
@@ -385,8 +385,8 @@
         }
       },
 
-      goOrderList: function(cName){
-        $location.path('/order').search('customerName', cName);
+      goOrderList: function(opts){
+        $location.path('/order').search(opts);
       },
 
       ruleStr2Json: function(str){
@@ -413,6 +413,22 @@
           ruleRecord.push(ruleDetail.join(','));
         }
         return ruleRecord.join(';');
+      },
+
+      getKeyStr:function(json){
+        var arr=[], obj=json;
+        for(var p in obj){
+          if(obj[p]!==false) arr.push(p);
+        }
+        return arr.join(',');
+      },
+
+      getKeyJson:function(str){
+        var arr = str.split(','), obj={};
+        for(var i=0; i<arr.length; i++){
+          obj[arr[i]]=true;
+        }
+        return obj;
       }
     };
   }]);

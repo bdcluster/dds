@@ -95,7 +95,7 @@
             $timeout(function(){
               $location.path('/home');
               $rootScope.showPage=AuthService.isLogged;
-            }, 1000)
+            }, 500);
           });
         }
         else{
@@ -381,16 +381,29 @@
       pageNum:$scope.pageNum
     };
     angular.extend(paramsInit, $routeParams);
+
     angular.extend($scope, {
+      hideBack:angular.equals($routeParams,{}),
+      search:{},
+      orderStatus:[
+        {'s':'1','n':'预约','c':'warning'},
+        {'s':'2','n':'取消','c':'default'},
+        {'s':'3','n':'准备代驾','c':'info'},
+        {'s':'4','n':'代驾中','c':'primary'},
+        {'s':'5','n':'代驾完成','c':'success'},
+        {'s':'6','n':'已超时','c':'danger'}
+      ],
       syncStatus: '同步订单',
       sync:{
         primary:true,
         success:false,
         danger:false
       },
-      search:{},
       changePage: function(){
         C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
+      },
+      goBack:function(){
+        history.back();
       },
       doSearch: function(o){
         if(o){
@@ -468,11 +481,17 @@
       var s = angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1});
       delete s.dp1; 
       delete s.dp2;
+      $scope.search.startTime=s.startTime;
+      $scope.search.endTime=s.endTime;
       C.list($scope, DDS, s);
     };
 
     $scope.orderByCust = function(cName){
-      C.goOrderList(cName);
+      C.goOrderList({
+        customerName: cName,
+        startTime: $scope.search.startTime || $scope.search.dp1,
+        endTime: $scope.search.endTime || $scope.search.dp2
+      });
     };
   }])
   /* 计费规则模板 */
@@ -544,7 +563,7 @@
     });
     $scope.goBack = function(){
       history.back();
-    }
+    };
   }])
   /* 计费规则 */
   .controller('RuleController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
@@ -572,41 +591,63 @@
 
     $scope.saveRule = function(rule){
       DDS.get({endpoint: 'template', action: 'select', status: '0'}).$promise.then(function(result){
-          var data = C.validResponse(result);
-          if(typeof data !== 'string'){
-            var templates=data.templates;
-            var params={pageNum:$scope.pageNum}, ruleInfo;
-            for(var i=0; i<templates.length; i++){
-              templates[i].rules = C.range(0, templates[i].arrayStr.split(';').length-1);
-              angular.extend(templates[i], {arrayStr:C.ruleStr2Json(templates[i].arrayStr)})
+        var data = C.validResponse(result), provinceOrder, tempOrder='';
+        if(typeof data !== 'string'){
+          var templates=data.templates;
+          var params={pageNum:$scope.pageNum}, ruleInfo;
+          //把模板中的arrayStr json化备用
+          for(var i=0; i<templates.length; i++){
+            templates[i].rules = C.range(0, templates[i].arrayStr.split(';').length-1);
+            angular.extend(templates[i], {arrayStr:C.ruleStr2Json(templates[i].arrayStr)});
+          }
+          if(rule){
+            ruleInfo = angular.extend({}, rule);
+            // 格式化日期
+            ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
+            ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
+            // 将规则字符串json化
+            ruleInfo.cityStr=C.getKeyJson(ruleInfo.cityStr);
+            ruleInfo.arrayStr=C.ruleStr2Json(ruleInfo.arrayStr);
+            for(i=0; i<extraData.areas.length; i++){
+              if(extraData.areas[i].name===ruleInfo.provinceName){
+                provinceOrder=i;
+                break;
+              }
             }
-            if(rule){
-              ruleInfo = angular.extend({}, rule);
-              ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
-              ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
-              angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
-              angular.extend(
-                extraData, 
-                {showEdit:true, showAreaSel:false}
-              );
+            for(i=0; i<templates.length; i++){
+              if(templates[i].tempNo===ruleInfo.tempNo){
+                tempOrder=i;
+                break;
+              }
             }
-            else{
-              angular.extend(params, {action:'add'});
-              angular.extend(extraData, {showEdit:false, showAreaSel:true});
-            }
-            var modalSet = {
-              modalTitle: '计费规则定义', // modal 窗体标题
-              formData: ruleInfo || {},
-              extraData: angular.extend(extraData,{templates: templates}),
-              confirm: function(modalInstance, scope){ // 确认modal callback
-                var str = C.json2RuleStr(scope.formData.arrayStr);
-                DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
+            angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
+            angular.extend(
+              extraData, {provinceOrder: provinceOrder, tempOrder: tempOrder}
+            );
+          }
+          else{
+            angular.extend(params, {action:'add'});
+            angular.extend(extraData, {provinceOrder: '', tempOrder: ''});
+          }
+          var modalSet = {
+            modalTitle: '计费规则定义', // modal 窗体标题
+            formData: ruleInfo || {},
+            extraData: angular.extend(extraData,{templates: templates, now: new Date()}),
+            confirm: function(modalInstance, scope){ // 确认modal callback
+              var str = C.json2RuleStr(scope.formData.arrayStr);
+              var cityStr = C.getKeyStr(scope.formData.cityStr);
+              if(cityStr===''){
+                C.alert(scope, {msg: '至少选择一个城市', show:true}, true);
+              }
+              else{
+                DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str, cityStr:cityStr}), function(res){
                   C.responseHandler(scope, $scope, modalInstance, res);
                 });
               }
-            };
-            C.openModal(modalSet, 'rule');
-          }
+            }
+          };
+          C.openModal(modalSet, 'rule');
+        }
       });
     };
 
@@ -630,7 +671,7 @@
     });
     $scope.goBack = function(){
       history.back();
-    }
+    };
   }])
   /* demo */
   .controller('DemoController', ['$scope', '$modal', 'C', function($scope, $modal, C){

@@ -14,7 +14,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempName.$valid &amp;&amp; ruleForm.tempName.$dirty, 'has-error':ruleForm.tempName.$invalid &amp;&amp; ruleForm.tempName.$dirty}">
       <label for="tempName" class="col-xs-3 control-label">* 模板名称</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="tempName" data-ng-model="formData.tempName" required>
+        <input type="text" class="form-control" name="tempName" data-ng-maxlength="12" data-ng-model="formData.tempName" required placeholder="长度小于等于12位">
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.tempName.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.tempName.$valid, 'glyphicon-remove':ruleForm.tempName.$invalid}"></i>
       </div>
     </div>
@@ -62,7 +62,10 @@
           <div class="col-xs-6">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              <input type="number" name="ruleStartTime" class="form-control" data-ng-model="formData.arrayStr[$index][0]" placeholder="开始时间" min="0" max="24" required>
+              <input type="number" name="ruleStartTime" class="form-control" placeholder="开始时间" min="0" max="24"
+               data-ng-model="formData.arrayStr[$index][0]"
+               data-ng-readonly="!$first"
+               required>
             </div>
           </div>
           <div class="col-xs-6">
@@ -71,7 +74,6 @@
               <input type="number" name="ruleEndTime" class="form-control" 
                 placeholder="结束时间" min="0" max="24" 
                 data-ng-model="formData.arrayStr[$index][1]" 
-                data-ng-change="" 
                 required>
             </div>
           </div>
@@ -94,8 +96,11 @@
               <i class="glyphicon glyphicon-minus"></i>
             </button>
             <button type="button" class="btn btn-info btn-xs" 
-              data-ng-show="$last &amp;&amp; ruleForm.ruleStartTime.$valid &amp;&amp; ruleForm.ruleEndTime.$valid &amp;&amp; ruleForm.ruleStartPrice.$valid &amp;&amp; ruleForm.ruleExtraPrice.$valid" 
-              data-ng-click="extraData.rules.push($index+1)">
+              data-ng-show="$last"
+              data-ng-click="
+                extraData.rules.push($index+1);
+                formData.arrayStr[$index+1][0]=formData.arrayStr[$index][1]
+              ">
               <i class="glyphicon glyphicon-plus"></i>
             </button>
           </div>

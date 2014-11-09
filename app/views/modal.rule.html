@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate>
+<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate ng-init="province=extraData.areas[extraData.provinceOrder]; tempObj=extraData.templates[extraData.tempOrder]">
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -6,37 +6,36 @@
     </button>
     <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
   </div>
-  {{tempObj.id}},{{formData.tempId}}
   <div class="modal-body">
     <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.city.$valid}">
-      <label for="province" class="col-xs-3 control-label">* 省市名称</label>
+      <label for="province" class="col-xs-3 control-label">* 省份选择</label>
       <div class="col-xs-8">
-        <p class="form-control-static">
-          {{province.name || formData.provinceName || '未选择' }} - {{city.name || formData.cityName || '未选择'}}
-          <i class="glyphicon glyphicon-edit show-edit" data-ng-show="extraData.showEdit" data-ng-click="extraData.showAreaSel=!extraData.showAreaSel"></i>
-        </p>
-      </div>
-      <div class="col-xs-4 col-xs-offset-3" data-ng-show="extraData.showAreaSel">
-        <select name="province" class="form-control" data-ng-model="province" data-ng-options="prov.name for prov in extraData.areas" data-ng-change="formData.provinceId=province.id; city=''" required>
-          <option value="">-- 请选择 --</option> 
-        </select>
-        <input name="provinceId" type="hidden" data-ng-model="formData.provinceId">
-      </div>
-      <div class="col-xs-4" data-ng-show="extraData.showAreaSel">
-        <select name="city" class="form-control" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="formData.cityId=city.id" required>
-          <option value="">-- 请选择 --</option> 
-        </select>
-        <input name="cityId" type="hidden" data-ng-model="formData.cityId">
+       <select name="province" class="form-control"
+        data-ng-model="province" 
+        data-ng-options="prov.name for prov in extraData.areas" 
+        data-ng-change="formData.provinceId=province.id; city=''" 
+        required>
+          <option value="">-- 请选择 --</option>
+        </select> 
+        <input type="hidden" name="provinceId" data-ng-model="provinceId">
       </div>
     </div>
     <div class="form-group">
-      <label for="openTime" class="col-xs-3 control-label">计费模板</label>
+      <label class="col-xs-3 control-label">城市选择</label>
       <div class="col-xs-8">
-        <select name="tempObj" class="form-control" 
+        <label class="checkbox-inline" ng-repeat="city in province.subname">
+          <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}
+        </label>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempObj.$valid}">
+      <label for="openTime" class="col-xs-3 control-label">* 计费模板</label>
+      <div class="col-xs-8">
+        <select name="tempObj" class="form-control" required
           data-ng-model="tempObj" 
           data-ng-options="t.tempNo for t in extraData.templates" 
           data-ng-change="formData.openTime=(tempObj.openTime | myDate:'yyyy-MM-dd');formData.closeTime=(tempObj.closeTime | myDate:'yyyy-MM-dd');formData.tempId=tempObj.id;formData.arrayStr=tempObj.arrayStr">
@@ -52,7 +51,15 @@
           <span class="input-group-addon" ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;">
             <i class="glyphicon glyphicon-calendar"></i>
           </span>
-          <input type="text" name="openTime" class="form-control" data-datepicker-popup data-ng-model="formData.openTime" data-is-open="sOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false" data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')" required>
+          <input type="text" name="openTime" class="form-control" 
+            data-datepicker-popup 
+            data-ng-model="formData.openTime" 
+            data-is-open="sOpen" 
+            data-datepicker-options="dateOptions"  
+            data-show-button-bar="false"
+            data-min-date="extraData.now"
+            data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')" 
+            required>
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.openTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.openTime.$valid, 'glyphicon-remove':ruleForm.openTime.$invalid}"></i>
       </div>
@@ -64,7 +71,15 @@
           <span class="input-group-addon" ng-click="toggleCal($event);eOpen=!eOpen; sOpen=false;">
             <i class="glyphicon glyphicon-calendar"></i>
           </span>
-          <input type="text" name="closeTime" class="form-control" data-datepicker-popup data-ng-model="formData.closeTime" data-is-open="eOpen" data-datepicker-options="dateOptions"  data-show-button-bar="false"  data-min-date="formData.startTime" data-ng-change="formData.closeTime=(formData.closeTime | date: 'yyyy-MM-dd')" required>
+          <input type="text" name="closeTime" class="form-control" 
+            data-datepicker-popup 
+            data-ng-model="formData.closeTime" 
+            data-is-open="eOpen" 
+            data-datepicker-options="dateOptions" 
+            data-show-button-bar="false"  
+            data-min-date="formData.openTime" 
+            data-ng-change="formData.closeTime=(formData.closeTime | date: 'yyyy-MM-dd')" 
+            required>
         </div>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.closeTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.closeTime.$valid, 'glyphicon-remove':ruleForm.closeTime.$invalid}"></i>
       </div>
@@ -76,7 +91,10 @@
           <div class="col-xs-6">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              <input type="number" name="ruleStartTime" class="form-control" data-ng-model="formData.arrayStr[$index][0]" placeholder="开始时间" min="0" max="24" required>
+              <input type="number" name="ruleStartTime" class="form-control" placeholder="开始时间" min="0" max="24"
+                data-ng-model="formData.arrayStr[$index][0]"
+                data-ng-readonly="!$first"
+                required>
             </div>
           </div>
           <div class="col-xs-6">
@@ -105,7 +123,10 @@
             </button>
             <button type="button" class="btn btn-info btn-xs" 
               data-ng-show="$last" 
-              data-ng-click="tempObj.rules.push($index+1)">
+              data-ng-click="
+                tempObj.rules.push($index+1);
+                formData.arrayStr[$index+1][0]=formData.arrayStr[$index][1]
+              ">
               <i class="glyphicon glyphicon-plus"></i>
             </button>
           </div>
@@ -128,6 +149,12 @@
       <div class="col-xs-8">
         <input class="form-control" name="ruleDesc" data-ng-model="formData.ruleDesc">
       </div>
+    </div>
+    <div class="form-group">
+      <p class="col-xs-10 col-xs-offset-1">
+        <small>整个时间段需填充满24小时才能提交、中间不能隔断、除了第一段的开始时间可以编辑，其他的开始时间都不能编辑，第二段的
+开始时间是第一段的结束时间</small>
+      </p>
     </div>
   </div>
   <div class="modal-footer">

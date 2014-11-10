@@ -35,8 +35,8 @@
       proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    // url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
-    url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
+    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
+    // url = 'http://10.10.40.88:8080/ddrive-platform-web/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/

@@ -18,7 +18,7 @@
           data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;"
           readonly>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);sOpen=!sOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>
@@ -39,7 +39,7 @@
           data-ng-click="toggleCal($event);eOpen=!eOpen;sOpen=false;"
           readonly>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+          <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen;sOpen=false;"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
       </div>
     </div>

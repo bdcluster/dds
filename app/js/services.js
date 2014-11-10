@@ -359,6 +359,9 @@
               self.storage().set('role', data);
             }
             self.alert(ctrlScope, {type:'success', msg:data.message || '操作成功！'});
+            angular.extend(ctrlScope, {
+              search:{}, province:{}, city:{}
+            });
           });
         }
         else{

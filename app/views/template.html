@@ -15,7 +15,7 @@
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false" 
           data-ng-change="search.startTime=(search.startTime | date: 'yyyy-MM-dd')"
-          data-ng-click="toggleCal($event);sOpen=!sOpen"
+          data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;"
           readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);sOpen=!sOpen"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="form-group">
-      至
+      <strong>至</strong>
     </div>
     <div class="form-group">
       <div class="input-group input-group-sm dds-dp">
@@ -36,7 +36,7 @@
           data-show-button-bar="false"  
           data-min-date="search.startTime"
           data-ng-change="search.endTime=(search.endTime | date: 'yyyy-MM-dd')"
-          data-ng-click="toggleCal($event);eOpen=!eOpen"
+          data-ng-click="toggleCal($event);eOpen=!eOpen;sOpen=false;"
           readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>

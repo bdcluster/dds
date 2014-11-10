@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="drivForm" novalidate>
+<form class="form-horizontal form-modal" role="form" name="drivForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder];city=province.subname[extraData.cityOrder]">
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -11,10 +11,10 @@
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group" data-ng-show="formData.driverNo">
       <label class="col-xs-3 control-label">司机工号</label>
       <div class="col-xs-8">
-        <p class="form-control-static" data-ng-bind="formData.driverNo || '(添加后生成)'"></p>
+        <p class="form-control-static" data-ng-bind="formData.driverNo"></p>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.driverName.$valid &amp;&amp; drivForm.driverName.$dirty, 'has-error':drivForm.driverName.$invalid &amp;&amp; drivForm.driverName.$dirty}">
@@ -22,6 +22,31 @@
       <div class="col-xs-8">
         <input type="text" class="form-control" name="driverName" data-ng-model="formData.driverName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位">
         <i class="glyphicon form-control-feedback" data-ng-show="drivForm.driverName.$dirty" data-ng-class="{'glyphicon-ok':drivForm.driverName.$valid, 'glyphicon-remove':drivForm.driverName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.province.$valid &amp;&amp; drivForm.province.$dirty &amp;&amp; drivForm.city.$dirty &amp;&amp; drivForm.city.$valid, 'has-error':(drivForm.province.$invalid &amp;&amp; drivForm.province.$dirty) || (drivForm.city.$invalid &amp;&amp; drivForm.city.$dirty)}">
+      <label for="province" class="col-xs-3 control-label">* 地区</label>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6">
+            <select name="province" class="form-control"
+              data-ng-model="province" 
+              data-ng-options="prov.name for prov in extraData.areas"
+              data-ng-change="formData.provinceId=province.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+          <div class="col-xs-6">
+            <select name="city" class="form-control"
+              data-ng-model="city"
+              data-ng-options="city.name for city in province.subname"
+              data-ng-change="formData.cityId=city.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.driverPhone.$valid &amp;&amp; drivForm.driverPhone.$dirty, 'has-error':drivForm.driverPhone.$invalid &amp;&amp; drivForm.driverPhone.$dirty}">

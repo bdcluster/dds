@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="custForm" novalidate>
+<form class="form-horizontal form-modal" role="form" name="custForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder];city=province.subname[extraData.cityOrder]">
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -18,10 +18,35 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.userName.$valid &amp;&amp; custForm.userName.$dirty, 'has-error':custForm.userName.$invalid &amp;&amp; custForm.userName.$dirty}">
-      <label for="userfullname" class="col-xs-3 control-label">姓名</label>
+      <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
       <div class="col-xs-8">
         <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位">
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.userName.$dirty" data-ng-class="{'glyphicon-ok':custForm.userName.$valid, 'glyphicon-remove':custForm.userName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.province.$valid &amp;&amp; custForm.province.$dirty &amp;&amp; custForm.city.$dirty &amp;&amp; custForm.city.$valid, 'has-error':(custForm.province.$invalid &amp;&amp; custForm.province.$dirty) || (custForm.city.$invalid &amp;&amp; custForm.city.$dirty)}">
+      <label for="province" class="col-xs-3 control-label">* 地区</label>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6">
+            <select name="province" class="form-control"
+              data-ng-model="province" 
+              data-ng-options="prov.name for prov in extraData.areas"
+              data-ng-change="formData.provinceId=province.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+          <div class="col-xs-6">
+            <select name="city" class="form-control"
+              data-ng-model="city"
+              data-ng-options="city.name for city in province.subname"
+              data-ng-change="formData.cityId=city.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.mobilePhone.$valid &amp;&amp; custForm.mobilePhone.$dirty, 'has-error':custForm.mobilePhone.$invalid &amp;&amp; custForm.mobilePhone.$dirty}">

@@ -294,16 +294,33 @@
       endpoint:'customer', action:'select',
       pageNum:$scope.pageNum
     };
+    var areas = C.storage().get('provinces');
+    $scope.areas = areas;
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage(); // default: load pageNum:1
 
     $scope.saveCust = function(cust){
-      var params={pageNum:$scope.pageNum}, custInfo;
+      var params={pageNum:$scope.pageNum},
+          provinceOrder, cityOrder, custInfo;
       if(cust){
         custInfo = angular.extend({},cust);
         angular.extend(params, {action:'edit', id:custInfo.id});
+        if(custInfo.provinceName){
+          for(var i=0; i<areas.length; i++){
+            if(areas[i].name===custInfo.provinceName){
+              provinceOrder=i;
+              break;
+            }
+          }
+          for(i=0; i<areas[provinceOrder].subname.length; i++){
+            if(areas[provinceOrder].subname[i].name===custInfo.cityName){
+              cityOrder=i;
+              break;
+            }
+          }
+        }
       }
       else{
         angular.extend(params, {action:'add'});
@@ -312,6 +329,7 @@
       var modalSet = {
         modalTitle: '客户信息', // modal 窗体标题
         formData: custInfo || {},
+        extraData:{areas: areas, cityOrder:cityOrder, provinceOrder:provinceOrder},
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveCust(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
@@ -334,17 +352,34 @@
       endpoint:'driver', action:'select',
       pageNum:$scope.pageNum,
     };
-
+    var areas = C.storage().get('provinces');
+    $scope.areas = areas;
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage(); // default: load pageNum:1
 
     $scope.saveDriver = function(driv){
-      var params={pageNum:$scope.pageNum}, drivInfo;
+      var params={pageNum:$scope.pageNum}, drivInfo, provinceOrder, cityOrder;
       if(driv){
-        drivInfo = angular.extend({},driv);
+        drivInfo = angular.extend(driv);
         angular.extend(params, {action:'edit', id:drivInfo.id});
+        if(drivInfo.provinceName){
+          for(var i=0; i<areas.length; i++){
+            if(areas[i].name===drivInfo.provinceName){
+              provinceOrder=i;
+              break;
+            }
+          }
+          console.log(provinceOrder)
+          for(i=0; i<areas[provinceOrder].subname.length; i++){
+            if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
+              cityOrder=i;
+              break;
+            }
+          }
+        }
+        
       }
       else{
         angular.extend(params, {action:'add'});
@@ -353,6 +388,7 @@
       var modalSet = {
         modalTitle: '司机信息', // modal 窗体标题
         formData: drivInfo || {},
+        extraData:{areas: areas, cityOrder:cityOrder, provinceOrder:provinceOrder},
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveDriv(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
@@ -388,18 +424,24 @@
       endpoint:'order', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.areas = C.storage().get('provinces');
     angular.extend(paramsInit, $routeParams);
 
     angular.extend($scope, {
       hideBack:angular.equals($routeParams,{}),
       search:{},
       orderStatus:[
-        {'s':'1','n':'预约','c':'warning'},
-        {'s':'2','n':'取消','c':'default'},
-        {'s':'3','n':'准备代驾','c':'info'},
+        {'s':'1','n':'已预约','c':'warning'},
+        {'s':'2','n':'已取消','c':'default'},
+        {'s':'3','n':'准备中','c':'info'},
         {'s':'4','n':'代驾中','c':'primary'},
-        {'s':'5','n':'代驾完成','c':'success'},
+        {'s':'5','n':'已完成','c':'success'},
         {'s':'6','n':'已超时','c':'danger'}
+      ],
+      billStatus:[
+        {'n':'代驾中', 's':'0', 'c':'warning'},
+        {'n':'未结算', 's':'1', 'c':'default'},
+        {'n':'已结算', 's':'2', 'c':'success'}
       ],
       syncStatus: '同步订单',
       sync:{
@@ -453,6 +495,14 @@
       },
       orderExport: function(){
         C.exportFile($scope, DDS, angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
+      },
+      ordDetail: function(ord){
+        var modalSet = {
+          modalTitle: '订单详情', // modal 窗体标题
+          formData:ord,
+          extraData:{orderStatus:$scope.orderStatus, billStatus:$scope.billStatus}
+        };
+        C.openModal(modalSet, 'order');
       }
     });
     $scope.changePage();

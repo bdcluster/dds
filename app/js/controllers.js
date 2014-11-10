@@ -371,7 +371,6 @@
               break;
             }
           }
-          console.log(provinceOrder)
           for(i=0; i<areas[provinceOrder].subname.length; i++){
             if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
               cityOrder=i;

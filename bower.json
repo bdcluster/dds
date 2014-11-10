@@ -12,6 +12,7 @@
     "angular-route": "~1.2.25",
     "bootstrap-sass-only": "~3.2.0",
     "angular-md5": "~0.1.7",
-    "angular-local-storage": "~0.1.1"
+    "angular-local-storage": "~0.1.1",
+    "angular-locale_zh-cn": "*"
   }
 }

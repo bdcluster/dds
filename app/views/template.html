@@ -34,9 +34,9 @@
           data-is-open="eOpen"  
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false"  
-          data-min-date="search.openTime"
+          data-min-date="search.startTime"
           data-ng-change="search.endTime=(search.endTime | date: 'yyyy-MM-dd')"
-          data-ng-click="toggleCal($event);sOpen=!sOpen"
+          data-ng-click="toggleCal($event);eOpen=!eOpen"
           readonly>
         <span class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm" data-ng-click="toggleCal($event);eOpen=!eOpen"><i class="glyphicon glyphicon-calendar"></i></button>

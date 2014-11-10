@@ -4,6 +4,7 @@
   var app = angular.module('DdsApp', [
     'ngMd5',
     'ngRoute',
+    'ngLocale',
     'ngResource',
     'ui.bootstrap',
     'DdsControllers',

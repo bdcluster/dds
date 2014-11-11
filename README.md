@@ -53,18 +53,12 @@
 ├──app
 │   ├──index.html
 │   ├──js
-│   │   ├──app.coffee
 │   │   ├──app.js
-│   │   ├──directives.coffee
 │   │   ├──directives.js
-│   │   ├──filters.coffee
 │   │   ├──filters.js
-│   │   ├──controllers.coffee
 │   │   ├──controllers.js
 │   │   └──services
-│   │       ├──resource.coffee
 │   │       ├──resource.js
-│   │       ├──common.coffee
 │   │       └──common.js
 │   ├──css
 │   │   ├──docs.css
@@ -73,39 +67,43 @@
 │   │   └──docs.scss
 │   ├──img
 │   ├──fonts
-│   ├──common
-│   │   └──common.modal.html
-│   ├──customer
-│   │   ├──customer.html
-│   │   ├──customer.modal.html
-│   │   └──customer.js
-│   ├──driver
-│   │   ├──driver.html
-│   │   ├──driver.modal.html
-│   │   └──driver.js
-│   ├──order
-│   │   ├──order.html
-│   │   ├──order.modal.html
-│   │   ├──order.js
-│   │   ├──monthly.html
-│   │   ├──quarter.html
-│   │   ├──period.html
-│   │   └──period.js
-│   ├──rule
-│   │   ├──temp.html
-│   │   ├──temp.modal.html
-│   │   ├──temp.js
-│   │   ├──rule.html
-│   │   ├──user.modal.html
-│   │   └──user.js
-│   ├──user
-│   │   ├──user.html
-│   │   ├──user.modal.html
-│   │   └──user.js
-│   └──role
-│       ├──role.html
-│       ├──role.modal.html
-│       └──role.js
+│   └──views
+│       ├──common
+│       │   ├──home.html
+│       │   ├──pwd.html
+│       │   ├──help.html
+│       │   └──delete.modal.html
+│       ├──customer
+│       │   ├──customer.html
+│       │   ├──customer.modal.html
+│       │   └──customer.js
+│       ├──driver
+│       │   ├──driver.html
+│       │   ├──driver.modal.html
+│       │   └──driver.js
+│       ├──order
+│       │   ├──order.html
+│       │   ├──order.modal.html
+│       │   ├──order.js
+│       │   ├──monthly.html
+│       │   ├──quarter.html
+│       │   ├──period.html
+│       │   └──period.js
+│       ├──rule
+│       │   ├──temp.html
+│       │   ├──temp.modal.html
+│       │   ├──temp.js
+│       │   ├──rule.html
+│       │   ├──user.modal.html
+│       │   └──user.js
+│       ├──user
+│       │   ├──user.html
+│       │   ├──user.modal.html
+│       │   └──user.js
+│       └──role
+│           ├──role.html
+│           ├──role.modal.html
+│           └──role.js
 ├──dist
 └──test
 

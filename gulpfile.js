@@ -6,29 +6,19 @@
       lazy: true
     }),
     _ = {
-      app: 'app',
+      app:  'app',
       dist: 'dist',
-      img: 'app/img',
-      sass: 'app/css',
-      css: 'app/css'
+      img:  'app/img',
+      view: 'app/views',
+      sass: 'app/sass',
+      css:  'app/css'
     };
-    var workPath = [
-      _.app + '/js',
-      _.app + '/common',
-      _.app + '/customer',
-      _.app + '/driver',
-      _.app + '/order',
-      _.app + '/rule',
-      _.app + '/user',
-      _.app + '/role'
-    ], js=[], view=[];
-    for(var i in workPath){
-      js.push(workPath[i] + '/**/*.js');
-    }
-    for(var j in workPath){
-      view.push(workPath[i] + '/**/*.html');
-    }
-
+    // var workPath = [
+    //   _.app + '/js', _.app + '/view'
+    // ], js=[];
+    // for(var i in workPath){
+    //   js.push(workPath[i] + '/**/*.js');
+    // }
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ jsonlint
@@ -50,8 +40,7 @@
   //| ✓ jshint
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('jshint', function() {
-    console.log([ 'gulpfile.js' ].concat(view))
-    return gulp.src([ 'gulpfile.js' ].concat(js))
+    return gulp.src([ 'gulpfile.js' , _.app + '/js/**/*.js', _.view + '/**/*.js'])
       .pipe($.jshint('.jshintrc'))
       .pipe($.jshint.reporter('default'));
   });
@@ -80,8 +69,7 @@
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('svg', function() {
     return gulp.src([
-        _.img + '/**/*.svg',
-        _.css + '/**/*.svg'
+        _.img + '/**/*.svg'
       ])
       .pipe($.plumber())
       .pipe($.svgmin([{
@@ -112,7 +100,7 @@
   //| ✓ join & minify css & js
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('html', ['sass'], function() {
-    return gulp.src('app/*.html')
+    return gulp.src('app/index.html')
       .pipe($.plumber())
       .pipe($.useref.assets())
       .pipe($.if('*.js', $.uglify()))
@@ -128,18 +116,18 @@
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ minify json files
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  gulp.task('json', function() {
-    return gulp.src(_.app + '/json/*.json')
-      .pipe($.jsonminify())
-      .pipe(gulp.dest(_.dist + '/json/'));
-  });
+  // gulp.task('json', function() {
+  //   return gulp.src(_.app + '/json/*.json')
+  //     .pipe($.jsonminify())
+  //     .pipe(gulp.dest(_.dist + '/json/'));
+  // });
 
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ concat & minify all template to a js file
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('tmpl2js', function() {
-    return gulp.src(view)
+    return gulp.src([_.view + '/**/*.html'])
       .pipe($.plumber())
       .pipe($.minifyHtml({
         empty: true,
@@ -200,8 +188,10 @@
       glob: [
         _.app + '/*.{html,txt}',
         _.css + '/**/*.css',
-        _.img + '/**/*.{png,jpg,jpeg,gif,ico}'
-      ].concat(js)
+        _.img + '/**/*.{png,jpg,jpeg,gif,ico}',
+        _.app + '/js/**/*.js',
+        _.view+ '/**/*.js' 
+      ]
     }, function(files) {
       return files.pipe($.plumber()).pipe($.connect.reload());
     });
@@ -222,7 +212,7 @@
 
     // Watch template files
     $.watch({
-      glob: view
+      glob: [_.view + '/**/*.html']
     }, function() {
       gulp.start('tmpl2js');
     });

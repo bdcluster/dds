@@ -1,0 +1,50 @@
+$icon-font:          "../fonts/";
+
+@font-face {
+  font-family: "iconfont";
+  src: url('#{$icon-font}iconfont.eot'); /* IE9*/
+  src: url('#{$icon-font}iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('#{$icon-font}iconfont.woff') format('woff'), /* chrome、firefox */
+  url('#{$icon-font}iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('#{$icon-font}iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+$icons: (
+  yonghu:"\e610", 
+  mima:"\e609", 
+  yanzheng:"\e60a", 
+  login:"\e604", 
+  exit:"\e600", 
+  help:"\e605", 
+  arrow-right:"\e603",
+  setting:"\e602", 
+  customer:"\e608", 
+  order:"\e606", 
+  rule:"\e607",
+  chart:"\e60b",
+  success:"\e60e",
+  warning:"\e60f",
+  info:"\e60c",
+  danger:"\e60d",
+  car:"\e601",
+  driver:"\e601",
+  oldpwd:"\e611",
+  newpwd:"\e613",
+  newpwd2:"\e612",
+  vehicle:"\e614"
+  );
+@each $icon-name, $icon-content in $icons{
+  .icon-#{$icon-name}:before{
+    content: $icon-content;
+  }
+}
+

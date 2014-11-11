@@ -2,6 +2,8 @@
 .sass-cache
 node_modules
 zipfiles
+dist
+*.bak
 
 app/bower_components
 app/dist

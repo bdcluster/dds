@@ -134,23 +134,12 @@
       .pipe(gulp.dest(_.dist + '/json/'));
   });
 
-  //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //| ✓ minify include files
-  //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  // gulp.task('tmpl', function(){
-  //   return gulp.src([
-  //     _.views + '/form.login.html',
-  //     _.views + '/menu.html'
-  //   ])
-  //   .pipe($.minifyHtml())
-  //   .pipe(gulp.dest(_.dist + '/views/'));
-  // });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ concat & minify all template to a js file
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('tmpl2js', function() {
-    return gulp.src(_.views + '/**/*.html')
+    return gulp.src(view)
       .pipe($.plumber())
       .pipe($.minifyHtml({
         empty: true,
@@ -210,11 +199,9 @@
     $.watch({
       glob: [
         _.app + '/*.{html,txt}',
-        _.views + '/*.html',
         _.css + '/**/*.css',
-        _.js + '/**/*.js',
         _.img + '/**/*.{png,jpg,jpeg,gif,ico}'
-      ]
+      ].concat(js)
     }, function(files) {
       return files.pipe($.plumber()).pipe($.connect.reload());
     });
@@ -235,7 +222,7 @@
 
     // Watch template files
     $.watch({
-      glob: [_.views + '/**/*.html']
+      glob: view
     }, function() {
       gulp.start('tmpl2js');
     });

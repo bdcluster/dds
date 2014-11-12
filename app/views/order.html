@@ -49,14 +49,9 @@
       </button>
     </div>
   </form>
-  <div class="btn-group">
-    <button class="btn btn-primary btn-sm" data-ng-click="goBack()" data-ng-hide="hideBack">
-      <i class="glyphicon glyphicon-chevron-left"></i> 返回
-    </button>
-    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
-      <i class="glyphicon glyphicon-refresh"></i> 刷新
-    </button>
-  </div>
+  <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+    <i class="glyphicon glyphicon-refresh"></i> 刷新
+  </button>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -95,17 +90,19 @@
           data-ng-show="ord.billStatus==o.s"></span>
       </td>
       <td>
-        <span class="label label-default" data-ng-show="ord.syncStatus==0">未同步</span>
-        <span class="label label-success" data-ng-show="ord.syncStatus==1">已同步</span>
+         <span class="label label-{{o.c}}"
+          data-ng-repeat="o in syncStatus"
+          data-ng-bind="o.n"
+          data-ng-show="ord.syncStatus==o.s"></span>
       </td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="ordDetail(ord)">
           <span class="glyphicon glyphicon-th-list"></span>
           订单详情
         </button>
-        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncStatus=='正在同步', 'btn-info':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
+        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncButton=='正在同步', 'btn-info':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
           <i class="glyphicon glyphicon-refresh"></i>
-          <span data-ng-bind="syncStatus"></span>
+          <span data-ng-bind="syncButton"></span>
         </button>
       </td>
     </tr>

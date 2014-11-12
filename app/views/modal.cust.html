@@ -66,7 +66,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.address.$valid &amp;&amp; custForm.address.$dirty, 'has-error':custForm.address.$invalid &amp;&amp; custForm.address.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">常用目的地</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="address" data-ng-model="formData.address">
+        <input type="text" class="form-control" name="address" data-ng-model="formData.address" data-ng-maxlength="20" placeholder="长度小于等于20位">
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.address.$dirty" data-ng-class="{'glyphicon-ok':custForm.address.$valid, 'glyphicon-remove':custForm.address.$invalid}"></i>
       </div>
     </div>

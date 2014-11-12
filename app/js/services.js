@@ -263,7 +263,7 @@
           }
         }
         else{
-          return '系统错误，无返回数据！';
+          return '会话过期，请手工退出后重新登录！';
         }
       },
 
@@ -389,7 +389,7 @@
       },
 
       goOrderList: function(opts){
-        $location.path('/order').search(opts);
+        $location.path('/orderPeriod').search(opts);
       },
 
       ruleStr2Json: function(str){
@@ -414,7 +414,9 @@
             for(var q in obj[p]){
               ruleDetail.push(obj[p][q]);
             }
-            ruleRecord.push(ruleDetail.join(','));
+            if(ruleDetail.length === 4){
+              ruleRecord.push(ruleDetail.join(','));
+            }
           }
         }
         return ruleRecord.join(';');
@@ -434,6 +436,12 @@
           obj[arr[i]]=true;
         }
         return obj;
+      },
+
+      today: function(){
+        var now;
+        now = $filter('date')(new Date(), 'yyyy-MM-dd');
+        return now;
       }
     };
   }]);

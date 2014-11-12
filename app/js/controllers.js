@@ -15,8 +15,10 @@
         startingDay:1
       },
       toggleCal: function(event){
-        event.preventDefault();
-        event.stopPropagation();
+        if(arguments[1]!==true){
+          event.preventDefault();
+          event.stopPropagation();
+        }
       },
       menus:storage.get('menus'),
       userId:storage.get('userId'),
@@ -193,6 +195,8 @@
           delete scope.formData.role;
           DDS.saveUser(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
+          }, function(){
+            C.alert(scope, {msg:"网络错误", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -266,6 +270,8 @@
               scope.formData.menuIdArray = menuIdArray();
               DDS.saveRole(angular.extend(params, scope.formData), function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
+              }, function(){
+                C.alert(scope, {msg:"网络错误", show:true}, true);
               });
             }
             // ,cancel: C.cancelModal
@@ -333,6 +339,8 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveCust(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
+          }, function(){
+            C.alert(scope, {msg:"网络错误", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -362,7 +370,7 @@
     $scope.saveDriver = function(driv){
       var params={pageNum:$scope.pageNum}, drivInfo, provinceOrder, cityOrder;
       if(driv){
-        drivInfo = angular.extend(driv);
+        drivInfo = angular.extend({}, driv);
         angular.extend(params, {action:'edit', id:drivInfo.id});
         if(drivInfo.provinceName){
           for(var i=0; i<areas.length; i++){
@@ -391,6 +399,8 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveDriv(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
+          }, function(){
+            C.alert(scope, {msg:"网络错误", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -442,7 +452,11 @@
         {'n':'未结算', 's':'1', 'c':'default'},
         {'n':'已结算', 's':'2', 'c':'success'}
       ],
-      syncStatus: '同步订单',
+      syncStatus:[
+        {'n':'未同步', 's':'0', 'c':'default'},
+        {'n':'已同步', 's':'1', 'c':'success'}    
+      ],
+      syncButton: '同步订单',
       sync:{
         primary:true,
         success:false,
@@ -463,7 +477,7 @@
       syncOrder: function(orderId){
         var self = this, syncParams;
         if(!self.sync.success){
-          self.syncStatus = '正在同步';
+          self.syncButton = '正在同步';
           syncParams = angular.extend({
             endpoint:'order', action:'synchOrder', 
             orderId: orderId, chaos: Math.random()
@@ -477,10 +491,10 @@
                   success:true,
                   danger:false
                 };
-                self.syncStatus = data.message;
+                self.syncButton = data.message;
               }
               else{
-                self.syncStatus = '同步失败';
+                self.syncButton = '同步失败';
                 self.sync = {
                   primary:false,
                   success:false,
@@ -499,7 +513,11 @@
         var modalSet = {
           modalTitle: '订单详情', // modal 窗体标题
           formData:ord,
-          extraData:{orderStatus:$scope.orderStatus, billStatus:$scope.billStatus}
+          extraData:{
+            orderStatus:$scope.orderStatus, 
+            billStatus:$scope.billStatus, 
+            syncStatus:$scope.syncStatus
+          }
         };
         C.openModal(modalSet, 'order');
       }
@@ -508,14 +526,14 @@
   }])
   /* 时间段统计 */
   .controller('OrderFilterController', ['$scope', 'DDS', 'C', function($scope, DDS, C){
-    var curYear = new Date().getFullYear(), curMonth = new Date().getMonth();
+    var curYear = new Date().getFullYear(), curMonth = new Date().getMonth() +1;
     $scope.years = C.range(2010, curYear);
     $scope.search = {
       year: curYear,
-      month: curMonth + 1,
+      month: curMonth,
       quarter: Math.ceil((new Date().getMonth()+1)/3),
-      dp1: curYear + '-' + C.twiNum(curMonth+1) + '-01',
-      dp2: curYear + '-' + C.twiNum(curMonth+1) + '-' + C.mLength()[curMonth]
+      dp1: curYear + '-' + C.twiNum(curMonth) + '-01',
+      dp2: curYear + '-' + C.twiNum(curMonth) + '-' + C.mLength()[curMonth]
     };
     $scope.areas = C.storage().get('provinces');
 
@@ -583,17 +601,20 @@
       else{
         angular.extend(params, {action:'add'});
         tempInfo.arrayStr = {'0':{}};
+        tempInfo.status = 0;
         extraData.rules = [0];
+        extraData.minDate = C.today();
       }
       var modalSet = {
         modalTitle: '计费模板定义', // modal 窗体标题
         formData: tempInfo || {},
         extraData:extraData,
         confirm: function(modalInstance, scope){ // 确认modal callback
-          // console.log(scope.formData.arrayStr)
           var str = C.json2RuleStr(scope.formData.arrayStr);
           DDS.saveRuleTemp(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
+          }, function(){
+            C.alert(scope, {msg:"网络错误", show:true}, true);
           });
         }
       };
@@ -647,68 +668,66 @@
 
     $scope.areas = C.storage().get('provinces');
 
-    $scope.saveRule = function(rule){
-      DDS.get({endpoint: 'template', action: 'select', status: '0'}).$promise.then(function(result){
-        var data = C.validResponse(result), provinceOrder, tempOrder='';
+    $scope.addRule = function(){
+      var tmpls = DDS.get({endpoint: 'template', action: 'select', status: '0'});
+      tmpls.$promise.then(function(result){
+        var data = C.validResponse(result);
         if(typeof data !== 'string'){
           var templates=data.templates;
-          var params={pageNum:$scope.pageNum}, ruleInfo;
+          var params={pageNum:$scope.pageNum, action:'add'};
           //把模板中的arrayStr json化备用
           for(var i=0; i<templates.length; i++){
             templates[i].rules = C.range(0, templates[i].arrayStr.split(';').length-1);
             angular.extend(templates[i], {arrayStr:C.ruleStr2Json(templates[i].arrayStr)});
           }
-          if(rule){
-            ruleInfo = angular.extend({}, rule);
-            // 格式化日期
-            ruleInfo.openTime = C.formatDate(ruleInfo.openTime);
-            ruleInfo.closeTime = C.formatDate(ruleInfo.closeTime);
-
-            ruleInfo.cityStr = {};
-            ruleInfo.cityStr[ruleInfo.cityId]=true;
-            // 将规则字符串json化
-            ruleInfo.arrayStr=C.ruleStr2Json(ruleInfo.arrayStr);
-            for(i=0; i<extraData.areas.length; i++){
-              if(extraData.areas[i].name===ruleInfo.provinceName){
-                provinceOrder=i;
-                break;
-              }
-            }
-            for(i=0; i<templates.length; i++){
-              if(templates[i].tempNo===ruleInfo.tempNo){
-                tempOrder=i;
-                break;
-              }
-            }
-            angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
-            angular.extend(
-              extraData, {provinceOrder: provinceOrder, tempOrder: tempOrder, editMode:true}
-            );
-          }
-          else{
-            angular.extend(params, {action:'add'});
-            angular.extend(extraData, {provinceOrder: '', tempOrder: '', editMode:false});
-          }
           var modalSet = {
-            modalTitle: '计费规则定义', // modal 窗体标题
-            formData: ruleInfo || {},
-            extraData: angular.extend(extraData,{templates: templates, now: new Date()}),
+            modalTitle: '计费规则添加', // modal 窗体标题
+            formData: {status: 0},
+            extraData: angular.extend(extraData,{templates: templates}),
             confirm: function(modalInstance, scope){ // 确认modal callback
               var str = C.json2RuleStr(scope.formData.arrayStr);
               var cityStr = C.getKeyStr(scope.formData.cityStr);
-              if(cityStr===''){
+              if(cityStr === ''){
                 C.alert(scope, {msg: '至少选择一个城市', show:true}, true);
               }
               else{
                 DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str, cityStr:cityStr}), function(res){
                   C.responseHandler(scope, $scope, modalInstance, res);
+                }, function(){
+                  C.alert(scope, {msg:"网络错误", show:true}, true);
                 });
               }
             }
           };
-          C.openModal(modalSet, 'rule');
+          C.openModal(modalSet, 'rule.add');
         }
       });
+    };
+    $scope.saveRule = function(rule){
+      var params={pageNum:$scope.pageNum}, ruleInfo;
+      if(rule){
+        ruleInfo = angular.extend({}, rule, {
+          openTime:  C.formatDate(rule.openTime),
+          closeTime: C.formatDate(rule.closeTime),
+          arrayStr:  C.ruleStr2Json(rule.arrayStr),
+          rules:     C.range(0, rule.arrayStr.split(";").length, true)
+        });
+        angular.extend(params, {action:'edit', id:ruleInfo.ruleId});
+
+        var modalSet = {
+          modalTitle: '计费规则编辑', // modal 窗体标题
+          formData: ruleInfo,
+          confirm: function(modalInstance, scope){ // 确认modal callback
+            var str = C.json2RuleStr(scope.formData.arrayStr);
+            DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
+              C.responseHandler(scope, $scope, modalInstance, res);
+            }, function(){
+              C.alert(scope, {msg:"网络错误", show:true}, true);
+            });
+          }
+        };
+        C.openModal(modalSet, 'rule.edit');
+      }
     };
 
     $scope.remove = function(id){

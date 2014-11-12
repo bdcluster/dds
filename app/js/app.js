@@ -22,7 +22,7 @@
       }
     });
   }])
-  .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider, $httpProvider, localStorageServiceProvider){
+  .config(['$provide', '$routeProvider','$httpProvider', 'localStorageServiceProvider', function($provide, $routeProvider, $httpProvider, localStorageServiceProvider){
 
     // $httpProvider.interceptors.push('TokenInterceptor');
 
@@ -64,6 +64,11 @@
       })
       .when('/order', {
         templateUrl: viewPath + 'order.html',
+        controller:  'OrderController',
+        access: { requiredLogin: true }
+      })
+      .when('/orderPeriod', {
+        templateUrl: viewPath + 'order-period.html',
         controller:  'OrderController',
         access: { requiredLogin: true }
       })
@@ -130,7 +135,34 @@
 
     //set localStorage type as sessionStorage
     localStorageServiceProvider.setStorageType('sessionStorage');
-
     $httpProvider.defaults.withCredentials = true;
+
+    //interpolate ngForm and ngModel names
+    $provide.decorator('ngModelDirective', ['$delegate', function($delegate) {
+      var ngModel = $delegate[0], controller = ngModel.controller;
+      ngModel.controller = ['$scope', '$element', '$attrs', '$injector', function(scope, element, attrs, $injector) {
+        var $interpolate = $injector.get('$interpolate');
+        attrs.$set('name', $interpolate(attrs.name || '')(scope));
+        $injector.invoke(controller, this, {
+          '$scope': scope,
+          '$element': element,
+          '$attrs': attrs
+        });
+      }];
+      return $delegate;
+    }]);
+    $provide.decorator('formDirective', ['$delegate', function($delegate) {
+      var form = $delegate[0], controller = form.controller;
+      form.controller = ['$scope', '$element', '$attrs', '$injector', function(scope, element, attrs, $injector) {
+        var $interpolate = $injector.get('$interpolate');
+        attrs.$set('name', $interpolate(attrs.name || attrs.ngForm || '')(scope));
+        $injector.invoke(controller, this, {
+          '$scope': scope,
+          '$element': element,
+          '$attrs': attrs
+        });
+      }];
+      return $delegate;
+    }]);
   }]);
 })();

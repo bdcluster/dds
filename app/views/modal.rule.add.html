@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate ng-init="province=extraData.areas[extraData.provinceOrder]; tempObj=extraData.templates[extraData.tempOrder]">
+<form class="form-horizontal form-modal" role="form" name="ruleForm" novalidate>
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -11,40 +11,35 @@
       <i class="iconfont icon-danger"></i>
       <span data-ng-bind="alert.msg"></span>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.province.$valid &amp;&amp; ruleForm.province.$dirty}">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.province.$valid &amp;&amp; ruleForm.province.$dirty, 'has-error':ruleForm.province.$invalid &amp;&amp; ruleForm.province.$dirty}">
       <label for="province" class="col-xs-3 control-label">* 省份选择</label>
       <div class="col-xs-8">
        <select name="province" class="form-control"
         data-ng-model="province" 
         data-ng-options="prov.name for prov in extraData.areas" 
-        data-ng-change="formData.provinceId=province.id; city=''" 
-        data-ng-hide="extraData.editMode"
+        data-ng-change="formData.provinceId=province.id; city=''; showCity=true" 
         required>
           <option value="">-- 请选择 --</option>
         </select> 
-        <input type="hidden" name="provinceId" data-ng-model="provinceId">
-        <p class="form-control-static" data-ng-show="extraData.editMode" data-ng-bind="formData.provinceName"></p>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" data-ng-show="showCity">
       <label class="col-xs-3 control-label">城市选择</label>
       <div class="col-xs-8">
-        <label class="checkbox-inline many-checkbox" ng-repeat="city in province.subname" data-ng-hide="extraData.editMode">
+        <label class="checkbox-inline many-checkbox" ng-repeat="city in province.subname">
           <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}
         </label>
-        <p class="form-control-static" data-ng-show="extraData.editMode" data-ng-bind="formData.cityName"></p>
       </div>
     </div>
-    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempObj.$valid}">
+    <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempObj.$valid &amp;&amp; ruleForm.tempObj.$dirty, 'has-error':ruleForm.tempObj.$invalid &amp;&amp; ruleForm.tempObj.$dirty}">
       <label for="openTime" class="col-xs-3 control-label">* 计费模板</label>
       <div class="col-xs-8">
         <select name="tempObj" class="form-control" required
           data-ng-model="tempObj" 
-          data-ng-options="t.tempNo for t in extraData.templates" 
-          data-ng-change="formData.openTime=(tempObj.openTime | myDate:'yyyy-MM-dd');formData.closeTime=(tempObj.closeTime | myDate:'yyyy-MM-dd');formData.tempId=tempObj.id;formData.arrayStr=tempObj.arrayStr">
+          data-ng-options="t.tempName for t in extraData.templates" 
+          data-ng-change="formData.openTime=(tempObj.openTime | myDate:'yyyy-MM-dd'); formData.closeTime=(tempObj.closeTime | myDate:'yyyy-MM-dd'); formData.tempId=tempObj.id; formData.arrayStr=tempObj.arrayStr; formData.description=tempObj.description; showRule=true">
           <option value="">请选择</option>
         </select>
-        <input type="hidden" name="tempId" data-ng-model="formData.tempId">
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.openTime.$valid &amp;&amp; ruleForm.openTime.$dirty, 'has-error':ruleForm.openTime.$invalid &amp;&amp; ruleForm.openTime.$dirty}">
@@ -88,39 +83,55 @@
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.closeTime.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.closeTime.$valid, 'glyphicon-remove':ruleForm.closeTime.$invalid}"></i>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" data-ng-show="showRule">
       <label class="col-xs-3 control-label">* 规则填充</label>
       <div class="col-xs-8 rule-unit" data-ng-class="{'col-xs-offset-3':!$first}" data-ng-repeat="rule in tempObj.rules">
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-6 has-feedback"
+            data-ng-class="{'has-success': ruleForm['ruleStartTime'+$index].$valid &amp;&amp; ruleForm['ruleStartTime'+$index].$dirty, 'has-error': ruleForm['ruleStartTime'+$index].$invalid &amp;&amp; ruleForm['ruleStartTime'+$index].$dirty}">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              <input type="number" name="ruleStartTime" class="form-control" placeholder="开始时间" min="0" max="23"
+              <input type="number" name="ruleStartTime{{$index}}" class="form-control" placeholder="开始时间"
+                min="0" max="23"
                 data-ng-model="formData.arrayStr[$index][0]"
                 data-ng-readonly="!$first"
                 required>
             </div>
+            <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleStartTime'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleStartTime'+$index].$valid, 'glyphicon-remove':ruleForm['ruleStartTime'+$index].$invalid}"></i>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-6 has-feedback" 
+            data-ng-class="{'has-success': ruleForm['ruleEndTime'+$index].$valid &amp;&amp; ruleForm['ruleEndTime'+$index].$dirty, 'has-error': ruleForm['ruleEndTime'+$index].$invalid &amp;&amp; ruleForm['ruleEndTime'+$index].$dirty}">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              <input type="number" name="ruleEndTime" class="form-control" placeholder="结束时间" min="0" max="23"
+              <input type="number" name="ruleEndTime{{$index}}" class="form-control" placeholder="结束时间"
+                min="0" max="23"
                 data-ng-model="formData.arrayStr[$index][1]"
                 data-ng-change="formData.arrayStr[$index+1][0]=formData.arrayStr[$index][1]"
                 required>
             </div>
+            <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleEndTime'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleEndTime'+$index].$valid, 'glyphicon-remove':ruleForm['ruleEndTime'+$index].$invalid}"></i>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-6 has-feedback" 
+            data-ng-class="{'has-success': ruleForm['ruleStartPrice'+$index].$valid &amp;&amp; ruleForm['ruleStartPrice'+$index].$dirty, 'has-error': ruleForm['ruleStartPrice'+$index].$invalid &amp;&amp; ruleForm['ruleStartPrice'+$index].$dirty}">
             <div class="input-group">
               <span class="input-group-addon">￥</span>
-              <input type="number" name="ruleStartPrice" class="form-control" data-ng-model="formData.arrayStr[$index][2]" placeholder="起步价" required>
+              <input type="number" name="ruleStartPrice{{$index}}" class="form-control" 
+                data-ng-model="formData.arrayStr[$index][2]"
+                data-min="0" 
+                placeholder="起步价" required>
             </div>
+            <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleStartPrice'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleStartPrice'+$index].$valid, 'glyphicon-remove':ruleForm['ruleStartPrice'+$index].$invalid}"></i>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-6 has-feedback" 
+            data-ng-class="{'has-success': ruleForm['ruleExtraPrice'+$index].$valid &amp;&amp; ruleForm['ruleExtraPrice'+$index].$dirty, 'has-error': ruleForm['ruleExtraPrice'+$index].$invalid &amp;&amp; ruleForm['ruleExtraPrice'+$index].$dirty}">
             <div class="input-group">
               <span class="input-group-addon">￥</span>
-              <input type="number" name="ruleExtraPrice" class="form-control" data-ng-model="formData.arrayStr[$index][3]" placeholder="加价" required>
+              <input type="number" name="ruleExtraPrice{{$index}}" class="form-control" 
+                data-ng-model="formData.arrayStr[$index][3]" 
+                data-min="0" 
+                placeholder="加价" required>
             </div>
+            <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleExtraPrice'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleExtraPrice'+$index].$valid, 'glyphicon-remove':ruleForm['ruleExtraPrice'+$index].$invalid}"></i>
           </div>
           <div class="col-xs-4 text-right col-xs-offset-8">
             <button type="button" class="btn btn-danger btn-xs" 
@@ -154,7 +165,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.description.$dirty, 'has-error':ruleForm.description.$invalid &amp;&amp; ruleForm.description.$dirty}">
       <label for="description" class="col-xs-3 control-label">描述</label>
       <div class="col-xs-8">
-        <input class="form-control" name="description" data-ng-model="formData.description">
+        <textarea name="description" rows="5" class="form-control" data-ng-model="formData.description" data-ng-maxlength="100" placeholder="长度小于等于100位"></textarea>
       </div>
     </div>
     <div class="form-group">
@@ -165,7 +176,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" data-ng-disabled="ruleForm.$invalid &amp;&amp; !extraData.showEdit" data-ng-click="confirm()">
+    <button class="btn btn-primary" data-ng-disabled="ruleForm.$invalid" data-ng-click="confirm()">
       <i class="glyphicon glyphicon-ok"></i> 确认
     </button>
     <button class="btn" data-ng-click="cancel()">

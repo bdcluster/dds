@@ -27,7 +27,7 @@
       <label class="col-xs-3 control-label">城市选择</label>
       <div class="col-xs-8">
         <label class="checkbox-inline many-checkbox" ng-repeat="city in province.subname">
-          <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}
+          <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}({{city.id}})
         </label>
       </div>
     </div>

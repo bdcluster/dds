@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="drivForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder];city=province.subname[extraData.cityOrder]">
+<form class="form-horizontal form-modal" role="form" name="drivForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder]||'';city=province.subname[extraData.cityOrder]||''">
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -20,7 +20,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.driverName.$valid &amp;&amp; drivForm.driverName.$dirty, 'has-error':drivForm.driverName.$invalid &amp;&amp; drivForm.driverName.$dirty}">
       <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="driverName" data-ng-model="formData.driverName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位">
+        <input type="text" class="form-control" name="driverName" data-ng-model="formData.driverName" data-ng-minlength="2" data-ng-maxlength="5" maxlength="5" placeholder="2-5位">
         <i class="glyphicon form-control-feedback" data-ng-show="drivForm.driverName.$dirty" data-ng-class="{'glyphicon-ok':drivForm.driverName.$valid, 'glyphicon-remove':drivForm.driverName.$invalid}"></i>
       </div>
     </div>
@@ -73,7 +73,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':drivForm.nativePlace.$valid &amp;&amp; drivForm.nativePlace.$dirty, 'has-error':drivForm.nativePlace.$invalid &amp;&amp; drivForm.nativePlace.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">籍贯</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="nativePlace" data-ng-model="formData.nativePlace" data-ng-maxlength="10" placeholder="长度小于等于10位">
+        <input type="text" class="form-control" name="nativePlace" data-ng-model="formData.nativePlace" data-ng-maxlength="10" maxlength="10" placeholder="长度小于等于10位">
         <i class="glyphicon form-control-feedback" data-ng-show="drivForm.nativePlace.$dirty" data-ng-class="{'glyphicon-ok':drivForm.nativePlace.$valid, 'glyphicon-remove':drivForm.nativePlace.$invalid}"></i>
       </div>
     </div>

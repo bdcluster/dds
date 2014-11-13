@@ -50,8 +50,8 @@
       <td>客户名称</td>
       <td>客户手机号</td>
       <td>总次数</td>
-      <td>平均费用</td>
-      <td>总费用</td>
+      <td>平均费用(元)</td>
+      <td>总费用(元)</td>
       <td>总服务时间(小时)</td>
       <td class="action">操作</td>
     </tr>
@@ -80,6 +80,6 @@
     <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
   </div>
   <div class="col-xs-2 text-right pagination-tip">
-    页码: {{pageNo}} / {{numPages}}
+    页码: {{pageNum}} / {{numPages}}
   </div>
 </div>

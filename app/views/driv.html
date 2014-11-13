@@ -1,12 +1,12 @@
 <div class="well">
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
-      <label class="sr-only">司机姓名</label>
-      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="司机姓名">
-    </div>
-    <div class="form-group">
       <label class="sr-only">司机工号</label>
       <input type="text" class="form-control input-sm" name="driverNo" data-ng-model="search.driverNo" placeholder="司机工号">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">司机姓名</label>
+      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="司机姓名">
     </div>
     <div class="form-group">
       <label class="sr-only">省份</label>
@@ -54,10 +54,10 @@
       <td>驾驶证</td>
       <td>省份</td>
       <td>城市</td>
-      <td>工作状态</td>
       <td>驾龄</td>
       <td>籍贯</td>
       <td>代驾次数</td>
+      <td>工作状态</td>
       <td>服务评级</td>
       <td class="action">操作</td>
     </tr>
@@ -67,16 +67,21 @@
       <td data-ng-bind="driver.driverNo"></td>
       <td>
         <span data-ng-bind="driver.driverName"></span>
-        <span class="label label-danger" data-ng-show="driver.driverStatus==1">已停用</span>
+        <span class="label label-danger pull-right" data-ng-show="driver.driverStatus==1">已停用</span>
       </td>
       <td data-ng-bind="driver.driverPhone"></td>
       <td data-ng-bind="driver.identityCard"></td>
       <td data-ng-bind="driver.provinceName"></td>
       <td data-ng-bind="driver.cityName"></td>
-      <td data-ng-bind="driver.workStatus | driveStatus"></td>
       <td data-ng-bind="driver.driveAge"></td>
       <td data-ng-bind="driver.nativePlace"></td>
       <td data-ng-bind="driver.driveCount"></td>
+      <td>
+        <span class="label label-{{o.c}}"
+          data-ng-repeat="o in workStatus"
+          data-ng-bind="o.n"
+          data-ng-show="driver.workStatus==o.s"></span>
+      </td>
       <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.starLevel"></td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveDriver(driver)">

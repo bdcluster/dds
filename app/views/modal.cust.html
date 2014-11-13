@@ -1,4 +1,4 @@
-<form class="form-horizontal form-modal" role="form" name="custForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder];city=province.subname[extraData.cityOrder]">
+<form class="form-horizontal form-modal" role="form" name="custForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder]||'';city=province.subname[extraData.cityOrder]||''">
   <div class="modal-header">
     <button type="button" class="close" data-ng-click="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -20,7 +20,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.userName.$valid &amp;&amp; custForm.userName.$dirty, 'has-error':custForm.userName.$invalid &amp;&amp; custForm.userName.$dirty}">
       <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位">
+        <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位" maxlength="5">
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.userName.$dirty" data-ng-class="{'glyphicon-ok':custForm.userName.$valid, 'glyphicon-remove':custForm.userName.$invalid}"></i>
       </div>
     </div>
@@ -50,23 +50,23 @@
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.mobilePhone.$valid &amp;&amp; custForm.mobilePhone.$dirty, 'has-error':custForm.mobilePhone.$invalid &amp;&amp; custForm.mobilePhone.$dirty}">
-      <label for="usermobile" class="col-xs-3 control-label">手机号</label>
+      <label for="usermobile" class="col-xs-3 control-label">* 手机号</label>
       <div class="col-xs-8">
-        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required>
+        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" maxlength="11" required>
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.mobilePhone.$dirty" data-ng-class="{'glyphicon-ok':custForm.mobilePhone.$valid, 'glyphicon-remove':custForm.mobilePhone.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.emergencyPhone.$valid &amp;&amp; custForm.emergencyPhone.$dirty, 'has-error':custForm.emergencyPhone.$invalid &amp;&amp; custForm.emergencyPhone.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">紧急联系电话</label>
       <div class="col-xs-8">
-        <input type="tex" class="form-control" name="emergencyPhone" data-ng-model="formData.emergencyPhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/">
+        <input type="tex" class="form-control" name="emergencyPhone" data-ng-model="formData.emergencyPhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" maxlength="11">
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.emergencyPhone.$dirty" data-ng-class="{'glyphicon-ok':custForm.emergencyPhone.$valid, 'glyphicon-remove':custForm.emergencyPhone.$invalid}"></i>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':custForm.address.$valid &amp;&amp; custForm.address.$dirty, 'has-error':custForm.address.$invalid &amp;&amp; custForm.address.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">常用目的地</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="address" data-ng-model="formData.address" data-ng-maxlength="20" placeholder="长度小于等于20位">
+        <input type="text" class="form-control" name="address" data-ng-model="formData.address" data-ng-maxlength="20" maxlength="20" placeholder="长度小于等于20位">
         <i class="glyphicon form-control-feedback" data-ng-show="custForm.address.$dirty" data-ng-class="{'glyphicon-ok':custForm.address.$valid, 'glyphicon-remove':custForm.address.$invalid}"></i>
       </div>
     </div>

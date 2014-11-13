@@ -14,7 +14,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.tempName.$valid &amp;&amp; ruleForm.tempName.$dirty, 'has-error':ruleForm.tempName.$invalid &amp;&amp; ruleForm.tempName.$dirty}">
       <label for="tempName" class="col-xs-3 control-label">* 模板名称</label>
       <div class="col-xs-8">
-        <input type="text" class="form-control" name="tempName" data-ng-maxlength="12" data-ng-model="formData.tempName" required placeholder="长度小于等于12位">
+        <input type="text" class="form-control" name="tempName" data-ng-maxlength="12" data-ng-model="formData.tempName" maxlength="12" placeholder="长度小于等于12位" required>
         <i class="glyphicon form-control-feedback" data-ng-show="ruleForm.tempName.$dirty" data-ng-class="{'glyphicon-ok':ruleForm.tempName.$valid, 'glyphicon-remove':ruleForm.tempName.$invalid}"></i>
       </div>
     </div>

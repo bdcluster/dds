@@ -314,16 +314,18 @@
         custInfo = angular.extend({},cust);
         angular.extend(params, {action:'edit', id:custInfo.id});
         if(custInfo.provinceName){
-          for(var i=0; i<areas.length; i++){
-            if(areas[i].name===custInfo.provinceName){
-              provinceOrder=i;
+          for(var i = 0; i<areas.length; i++){
+            if(areas[i].name === custInfo.provinceName){
+              provinceOrder = i;
               break;
             }
           }
-          for(i=0; i<areas[provinceOrder].subname.length; i++){
-            if(areas[provinceOrder].subname[i].name===custInfo.cityName){
-              cityOrder=i;
-              break;
+          if(provinceOrder){
+            for(i=0; i<areas[provinceOrder].subname.length; i++){
+              if(areas[provinceOrder].subname[i].name === custInfo.cityName){
+                cityOrder=i;
+                break;
+              }
             }
           }
         }
@@ -335,7 +337,7 @@
       var modalSet = {
         modalTitle: '客户信息', // modal 窗体标题
         formData: custInfo || {},
-        extraData:{areas: areas, cityOrder:cityOrder, provinceOrder:provinceOrder},
+        extraData:{areas: areas, cityOrder: cityOrder, provinceOrder: provinceOrder},
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.saveCust(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
@@ -366,6 +368,11 @@
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage(); // default: load pageNum:1
+    $scope.workStatus=[
+      {'n':'忙碌', 's':'1', 'c':'danger'},
+      {'n':'空闲', 's':'2', 'c':'success'},
+      {'n':'代驾中','s':'3', 'c':'warning'}
+    ];
 
     $scope.saveDriver = function(driv){
       var params={pageNum:$scope.pageNum}, drivInfo, provinceOrder, cityOrder;
@@ -379,14 +386,15 @@
               break;
             }
           }
-          for(i=0; i<areas[provinceOrder].subname.length; i++){
-            if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
-              cityOrder=i;
-              break;
+          if(provinceOrder){
+            for(i=0; i<areas[provinceOrder].subname.length; i++){
+              if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
+                cityOrder=i;
+                break;
+              }
             }
           }
         }
-        
       }
       else{
         angular.extend(params, {action:'add'});

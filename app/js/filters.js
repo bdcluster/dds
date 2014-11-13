@@ -12,10 +12,10 @@
     };
   }])
   /*  1=是； 2=否*/
-  .filter('isVIP', function(){
-    return function(vip){
-      if (vip===1) return '是';
-      else return '否';
+  .filter('cutDesc', function(){
+    return function(desc){
+      if (desc && desc.length>10) return desc.substring(0, 15) + '...';
+      else return desc;
     };
   });
 })();

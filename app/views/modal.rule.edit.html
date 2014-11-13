@@ -103,7 +103,7 @@
               <span class="input-group-addon">￥</span>
               <input type="number" name="ruleStartPrice{{$index}}" class="form-control" 
                 data-ng-model="formData.arrayStr[$index][2]"
-                data-min="0" 
+                data-min="0" data-max="10000" data-ng-pattern="/^[0-9]\d*$/"
                 data-ng-disabled="!formData.editFlag"
                 placeholder="起步价" required>
             </div>
@@ -115,7 +115,7 @@
               <span class="input-group-addon">￥</span>
               <input type="number" name="ruleExtraPrice{{$index}}" class="form-control" 
                 data-ng-model="formData.arrayStr[$index][3]" 
-                data-min="0" 
+                data-min="0" data-max="10000" data-ng-pattern="/^[0-9]\d*$/"
                 data-ng-disabled="!formData.editFlag"
                 placeholder="加价" required>
             </div>

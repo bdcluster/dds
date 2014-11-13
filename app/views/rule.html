@@ -71,9 +71,15 @@
       <td data-ng-bind="rule.closeTime | myDate:'yyyy-MM-dd'"></td>
       <td>
         <span class="label label-success" data-ng-show="rule.status==0">已启用</span>
-        <span class="label label-danger" data-ng-show="rule.status==1">已停用</span>
+        <span class="label label-danger"  data-ng-show="rule.status==1">已停用</span>
       </td>
-      <td data-ng-bind="rule.description"></td>
+      <td>
+        <span 
+          data-tooltip-popup-delay='500' 
+          data-tooltip="{{rule.description}}" 
+          data-tooltip-placement="bottom"
+          data-ng-bind="rule.description | cutDesc"></span>
+      </td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRule(rule)">
           <span class="glyphicon glyphicon-edit"></span>

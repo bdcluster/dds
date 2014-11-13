@@ -45,9 +45,13 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.role.$valid &amp;&amp; userForm.role.$dirty, 'has-error':userForm.role.$invalid &amp;&amp; userForm.role.$dirty}">
       <label class="col-xs-3 control-label">角色</label>
       <div class="col-xs-8">
-        <label class="radio-inline" data-ng-repeat="role in extraData.roles">
-          <input type="radio" name="role" data-ng-value="role.id" data-ng-model="formData.roleId" required> {{role.roleName}}
-        </label>
+        <div class="row">
+          <div class="col-xs-6" data-ng-repeat="role in extraData.roles">
+            <label class="radio-inline">
+              <input type="radio" name="role" data-ng-value="role.id" data-ng-model="formData.roleId" required> {{role.roleName}}
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -17,7 +17,7 @@
        <select name="province" class="form-control"
         data-ng-model="province" 
         data-ng-options="prov.name for prov in extraData.areas" 
-        data-ng-change="formData.provinceId=province.id; city=''; showCity=true" 
+        data-ng-change="formData.provinceId=province.id;formData.cityStr='';city='';showCity=true" 
         required>
           <option value="">-- 请选择 --</option>
         </select> 
@@ -27,7 +27,7 @@
       <label class="col-xs-3 control-label">城市选择</label>
       <div class="col-xs-8">
         <label class="checkbox-inline many-checkbox" ng-repeat="city in province.subname">
-          <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}({{city.id}})
+          <input type="checkbox" name="city[]" data-ng-model="formData.cityStr[city.id]" data-ng-checked="formData.cityStr[city.id]">{{city.name}}
         </label>
       </div>
     </div>
@@ -117,7 +117,7 @@
               <span class="input-group-addon">￥</span>
               <input type="number" name="ruleStartPrice{{$index}}" class="form-control" 
                 data-ng-model="formData.arrayStr[$index][2]"
-                data-min="0" 
+                data-min="0" data-max="10000" data-ng-pattern="/^[0-9]\d*$/"
                 placeholder="起步价" required>
             </div>
             <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleStartPrice'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleStartPrice'+$index].$valid, 'glyphicon-remove':ruleForm['ruleStartPrice'+$index].$invalid}"></i>
@@ -128,7 +128,7 @@
               <span class="input-group-addon">￥</span>
               <input type="number" name="ruleExtraPrice{{$index}}" class="form-control" 
                 data-ng-model="formData.arrayStr[$index][3]" 
-                data-min="0" 
+                data-min="0" data-max="10000" data-ng-pattern="/^[0-9]\d*$/"
                 placeholder="加价" required>
             </div>
             <i class="glyphicon form-control-feedback" data-ng-show="ruleForm['ruleExtraPrice'+$index].$dirty" data-ng-class="{'glyphicon-ok':ruleForm['ruleExtraPrice'+$index].$valid, 'glyphicon-remove':ruleForm['ruleExtraPrice'+$index].$invalid}"></i>

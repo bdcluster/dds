@@ -64,10 +64,10 @@
     <tr>
       <td>模板编号</td>
       <td>模板名称</td>
-      <td>描述</td>
       <td>生效时间</td>
       <td>停用时间</td>
       <td>状态</td>
+      <td>描述</td>
       <td class="action">操作</td>
     </tr>
   </thead>
@@ -77,12 +77,18 @@
         <a data-ng-href="#/tempDetail/{{t.id}}" data-ng-bind="t.tempNo"></a>
       </td>
       <td data-ng-bind="t.tempName"></td>
-      <td data-ng-bind="t.description"></td>
-      <td data-ng-bind="t.openTime | myDate:'yyyy-MM-dd'"></td>
-      <td data-ng-bind="t.closeTime | myDate:'yyyy-MM-dd'"></td>
+      <td data-ng-bind="t.openTime | myDate"></td>
+      <td data-ng-bind="t.closeTime | myDate"></td>
       <td>
         <span class="label label-success" data-ng-show="t.status==0">已启用</span>
         <span class="label label-danger" data-ng-show="t.status==1">已停用</span>
+      </td>
+      <td>
+        <span 
+          data-tooltip-popup-delay='500' 
+          data-tooltip="{{t.description}}" 
+          data-tooltip-placement="bottom"
+          data-ng-bind="t.description | cutDesc"></span>
       </td>
       <td>
         <button class="btn btn-primary btn-xs" data-ng-click="saveRuleTemp(t)">

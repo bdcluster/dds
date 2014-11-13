@@ -166,6 +166,7 @@
       endpoint:'user', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.extend({}, paramsInit);
     $scope.changePage = function(){
       C.list(this, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
@@ -180,6 +181,7 @@
     $scope.saveUser = function(user){
       var params={pageNum:$scope.pageNum};
       if(user){
+        paramsInit = angular.extend({}, $scope.paramsInit);
         userInfo = angular.extend({},user);
         angular.extend(params, {action:'edit', id:userInfo.id});
       }
@@ -222,6 +224,7 @@
       endpoint:'role', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.extend({}, paramsInit);
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
@@ -239,6 +242,7 @@
         if(typeof data!=='string'){
           var params={pageNum:$scope.pageNum};
           if(role){
+            paramsInit = angular.extend({}, $scope.paramsInit);
             var menuIdArray=function(){
               var obj={};
               for(var i=0; i<role.menuIdArray.length; i++){
@@ -300,6 +304,7 @@
       endpoint:'customer', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.extend({}, paramsInit);
     var areas = C.storage().get('provinces');
     $scope.areas = areas;
     $scope.changePage = function(){
@@ -311,6 +316,7 @@
       var params={pageNum:$scope.pageNum},
           provinceOrder, cityOrder, custInfo;
       if(cust){
+        paramsInit = angular.extend({}, $scope.paramsInit);
         custInfo = angular.extend({},cust);
         angular.extend(params, {action:'edit', id:custInfo.id});
         if(custInfo.provinceName){
@@ -364,6 +370,7 @@
     };
     var areas = C.storage().get('provinces');
     $scope.areas = areas;
+    $scope.paramsInit = angular.extend({}, paramsInit);
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
@@ -377,6 +384,7 @@
     $scope.saveDriver = function(driv){
       var params={pageNum:$scope.pageNum}, drivInfo, provinceOrder, cityOrder;
       if(driv){
+        paramsInit = angular.extend({}, $scope.paramsInit);
         drivInfo = angular.extend({}, driv);
         angular.extend(params, {action:'edit', id:drivInfo.id});
         if(drivInfo.provinceName){
@@ -441,6 +449,7 @@
       endpoint:'order', action:'select',
       pageNum:$scope.pageNum
     };
+
     $scope.areas = C.storage().get('provinces');
     angular.extend(paramsInit, $routeParams);
 
@@ -515,7 +524,10 @@
         }
       },
       orderExport: function(){
-        C.exportFile($scope, DDS, angular.extend({endpoint:'order', action:'exportOrder'}, $scope.search));
+        C.exportFile($scope, DDS, angular.extend(
+          {endpoint:'order', action:'exportOrder'}, 
+          $scope.search, $routeParams
+        ));
       },
       ordDetail: function(ord){
         var modalSet = {
@@ -570,11 +582,12 @@
     };
 
     $scope.orderByCust = function(cName){
-      C.goOrderList({
+      /*C.goOrderList({
         customerName: cName,
         startTime: $scope.search.startTime || $scope.search.dp1,
         endTime: $scope.search.endTime || $scope.search.dp2
-      });
+      });*/
+      C.goOrderList(angular.extend({customerName: cName}, C.getPeriod($scope.search)));
     };
   }])
   /* 计费规则模板 */
@@ -583,6 +596,7 @@
       endpoint:'template', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.extend({}, paramsInit);
     $scope.search = {};
     $scope.changePage = function(){
       C.list($scope, DDS, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
@@ -598,6 +612,7 @@
     $scope.saveRuleTemp = function(ruleTemp){
       var params={pageNum:$scope.pageNum}, tempInfo={}, extraData={};
       if(ruleTemp){
+        paramsInit = angular.extend({}, $scope.paramsInit);
         tempInfo = angular.extend({}, ruleTemp);
         angular.extend(params, {action:'edit', id:tempInfo.id});
 
@@ -658,6 +673,7 @@
       endpoint:'rule', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.extend({}, paramsInit);
     $scope.search = {};
     var storage = C.storage(), extraData = {areas: storage.get('provinces')};
     $scope.changePage = function(){
@@ -714,6 +730,7 @@
     $scope.saveRule = function(rule){
       var params={pageNum:$scope.pageNum}, ruleInfo;
       if(rule){
+        paramsInit = angular.extend({}, $scope.paramsInit);
         ruleInfo = angular.extend({}, rule, {
           openTime:  C.formatDate(rule.openTime),
           closeTime: C.formatDate(rule.closeTime),
@@ -773,7 +790,6 @@
         var modalSet = {
           modalTitle: '名称', // modal 窗体标题
           confirm: function(modalInstance, scope){ // 确认modal callback
-            console.log(scope.formData); // collect form data
             modalInstance.close(function(){ // close modal
               C.alert($scope, {type:'success', msg:'编辑成功！'});
             });

@@ -167,6 +167,12 @@ html{
 }
 
 .table-dds{
+  .tooltip-inner{
+    text-align:left;
+  }
+  span[tooltip], span[data-tooltip]{
+    cursor: help;
+  }
   thead > tr {
     background: $brand-info;
     font-weight: bold;

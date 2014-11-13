@@ -27,6 +27,7 @@
           data-is-open="sOpen"
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false"
+          data-ng-change="search.dp1=(search.dp1 | myDate:'yyyy-MM-dd')"
           data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;"
           readonly>
         <span class="input-group-btn" data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;">
@@ -44,6 +45,7 @@
           data-datepicker-options="dateOptions"  
           data-show-button-bar="false"  
           data-min-date="search.dp1"
+          data-ng-change="search.dp2=(search.dp2 | myDate:'yyyy-MM-dd')"
           data-ng-click="toggleCal($event);eOpen=!eOpen;sOpen=false;"
           readonly>
         <span class="input-group-btn">
@@ -55,7 +57,7 @@
       <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <i class="glyphicon glyphicon-search"></i> 搜素
       </button>
-      <button class="btn btn-primary btn-sm" data-ng-click="staticsExport(search)">
+      <button class="btn btn-primary btn-sm" data-ng-click="staticsExport(search)" data-ng-show="orders.length>0">
         <i class="glyphicon glyphicon-export"></i> 数据导出
       </button>      
     </div>

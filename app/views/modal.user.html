@@ -14,7 +14,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':userForm.loginName.$valid &amp;&amp; userForm.loginName.$dirty, 'has-error':userForm.loginName.$invalid &amp;&amp; userForm.loginName.$dirty}">
       <label for="username" class="col-xs-3 control-label">* 用户名</label>
       <div class="col-xs-8" data-ng-hide="extraData.editMode">
-        <input type="text" class="form-control" name="loginName" data-ng-model="formData.loginName" placeholder="5-12位字母或数字" data-ng-pattern="/^[A-Za-z0-9]{5,12}$/" maxlength="5" required>
+        <input type="text" class="form-control" name="loginName" data-ng-model="formData.loginName" placeholder="5-12位字母或数字" data-ng-pattern="/^[A-Za-z0-9]{5,12}$/" maxlength="12" required>
         <i class="glyphicon form-control-feedback" data-ng-show="userForm.loginName.$dirty" data-ng-class="{'glyphicon-ok':userForm.loginName.$valid, 'glyphicon-remove':userForm.loginName.$invalid}"></i>
       </div>
       <div class="col-xs-8" data-ng-show="extraData.editMode">

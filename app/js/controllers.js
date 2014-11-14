@@ -326,7 +326,7 @@
               break;
             }
           }
-          if(provinceOrder){
+          if(provinceOrder >= 0){
             for(i=0; i<areas[provinceOrder].subname.length; i++){
               if(areas[provinceOrder].subname[i].name === custInfo.cityName){
                 cityOrder=i;
@@ -394,7 +394,7 @@
               break;
             }
           }
-          if(provinceOrder){
+          if(provinceOrder>=0){
             for(i=0; i<areas[provinceOrder].subname.length; i++){
               if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
                 cityOrder=i;

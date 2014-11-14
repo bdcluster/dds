@@ -69,9 +69,14 @@
     │   ├──fonts
     │   └──views
     │       ├──common
+    │       │   ├──login.html
+    │       │   ├──login.js
     │       │   ├──home.html
+    │       │   ├──home.js
     │       │   ├──pwd.html
+    │       │   ├──pwd.js
     │       │   ├──help.html
+    │       │   ├──help.js
     │       │   └──delete.modal.html
     │       ├──customer
     │       │   ├──customer.html

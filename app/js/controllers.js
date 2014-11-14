@@ -1,10 +1,57 @@
 (function(){
   'use strict';
-  angular.module('DdsControllers', [])
-  .controller('GlobelController', [function(){
+  angular.module('DdsControllers', [
+    'LoginModule', 'HomeModule'
+  ])
+  .controller('GlobelController', [
+    '$rootScope','$location','AuthService','DDS','C',function(
+     $rootScope,  $location,  AuthService,  DDS,  C){
 
-  }])
-  .controller('AdminController', [function(){
-    
-  }])
+    var storage = C.storage();
+    angular.extend($rootScope, {
+      version: 'ver 0.3',
+      isLogged: AuthService.isLogged || storage.get('isLogged'),
+      alerts: [],
+      menus: storage.get('menus') || [],
+      userId:storage.get('userId') || [],
+      dateOptions: {
+        showWeeks:false,
+        startingDay:1
+      },
+      toggleCal: function(event){
+        if(arguments[1]!==true){
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      },
+      isActivedMenu: function(viewLocation){
+        return viewLocation === $location.path();
+      },
+      markOpen: function(no){
+        storage.set('opendAccordion', no);
+      },
+      keepOpenAccordion: function(){
+        var index = storage.get('opendAccordion');
+        if(index !== null){
+          this.menus[index].open = true;
+        }
+      },
+      signOut: function(){
+        var self = this;
+        var logout = DDS.get({endpoint:'logout'});
+
+        logout.$promise.then(function(res){
+          var data = C.validResponse(res);
+          if(angular.isObject(data)){
+            AuthService.isLogged = false;
+            storage.clear();
+            $rootScope.menus = [];
+            $rootScope.isLogged = false;
+            $location.path('/login');
+          }
+        }, C.badResponse);
+      }
+    });
+    $rootScope.keepOpenAccordion();
+  }]);
 })();

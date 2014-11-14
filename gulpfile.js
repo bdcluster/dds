@@ -136,7 +136,7 @@
       }))
       .pipe($.ngHtml2js({
         moduleName: "DdsTemplate",
-        prefix: "views/"
+        prefix: "/views/"
       }))
       .pipe($.concat("templates.js", {
         newLine: ';'
@@ -169,7 +169,9 @@
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('connect', $.connect.server({
     root: [_.app],
-    livereload: true,
+    livereload:{
+      port: 35730 
+    },
     port: 9000
   }));
 
@@ -190,7 +192,7 @@
         _.css + '/**/*.css',
         _.img + '/**/*.{png,jpg,jpeg,gif,ico}',
         _.app + '/js/**/*.js',
-        _.view+ '/**/*.js' 
+        _.view+ '/*/*.js'
       ]
     }, function(files) {
       return files.pipe($.plumber()).pipe($.connect.reload());

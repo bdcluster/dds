@@ -10,18 +10,19 @@
     'LocalStorageModule',
     'DdsControllers',
     'DdsDirectives',
-    'DdsTemplate',
+    'DdsResources',
     'DdsServices',
+    'DdsTemplate',
     'DdsFilters'
   ])
-  /*.run(['$rootScope', '$location', 'AuthService', 'C', function($rootScope, $location, AuthService, C) {
+  .run(['$rootScope', '$location', 'AuthService', 'C', function($rootScope, $location, AuthService, C) {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
       var isLogged = AuthService.isLogged || C.storage().get('isLogged');
       if (nextRoute.access && nextRoute.access.requiredLogin && !isLogged) {
         $location.path('/login');
       }
     });
-  }])*/
+  }])
   .config(['$routeProvider','$httpProvider', 'localStorageServiceProvider', function($routeProvider, $httpProvider, localStorageServiceProvider){
 
     // $httpProvider.interceptors.push('TokenInterceptor');
@@ -29,17 +30,17 @@
     $routeProvider
       .when('/login', {
         templateUrl: viewPath + 'common/login.html',
-        controller:  'AdminController',
+        controller:  'LoginController',
         access: { requiredLogin: false }
+      })
+      .when('/home', {
+        templateUrl: viewPath + 'common/home.html',
+        controller:  'HomeController',
+        access: { requiredLogin: true }
       })
       .when('/chgpwd', {
         templateUrl: viewPath + 'chgpwd.html',
         controller:  'ChangePasswordController',
-        access: { requiredLogin: true }
-      })
-      .when('/home', {
-        templateUrl: viewPath + 'home.html',
-        controller:  'HomeController',
         access: { requiredLogin: true }
       })
       .when('/user', {

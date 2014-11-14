@@ -2,7 +2,7 @@
 <html  xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="DdsApp" data-ng-controller="GlobelController">
   <head>
     <meta charset="utf-8">
-    <title>代驾平台</title>
+    <title>Alpha2 - 代驾平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- build:css css/docs.css -->
     <link rel="stylesheet" href="./css/docs.css">
@@ -37,9 +37,9 @@
               <li>
                 <a href="#/chgpwd"><i class="iconfont icon-mima"></i> 修改密码</a>
               </li>
-              <li>
+              <!-- <li>
                 <a href="#/help"><i class="iconfont icon-help"></i> 帮助文档</a>
-              </li>
+              </li> -->
               <li class="divider"></li>
               <li>
                 <a href="#" data-ng-click="signOut()"><i class="iconfont icon-exit"></i> 退出系统</a>
@@ -52,7 +52,21 @@
     <div class="container-fluid">
       <div class="row">
         <!-- menu loaded -->
-        <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
+        <aside class="col-xs-2 accordion">
+          <div data-accordion close-others="true">
+            <div data-accordion-group data-ng-repeat="m in menus" data-is-open="m.open" data-ng-click="markOpen($index)" data-ng-class="{active:m.open}">
+              <div data-accordion-heading><i class="iconfont" data-ng-class="{'icon-{{m.alias}}': true}"></i> {{m.name}}</div>
+              <ul class="nav nav-pills nav-stacked">
+                <li data-ng-repeat="m2 in m.subname" data-ng-class="{active: isActivedMenu('/'+m2.path)}">
+                  <a href="#/{{m2.path}}">
+                    <i class='iconfont icon-arrow-right'></i>
+                    <span data-ng-bind="m2.name"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
         <section class="col-xs-10">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
             <i class="iconfont icon-{{alert.type}}"></i>
@@ -78,7 +92,8 @@
         </div>
       </div>
     </footer>
-    <div class="mask" data-ng-show="!showPage"></div>
+    <div class="mask" data-ng-hide="isLogged"></div>
+    {{isLogged}}
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>
@@ -89,10 +104,13 @@
     <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>  
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
+    <script src="js/resources.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/filters.js"></script>
     <script src="js/templates.js"></script>
+    <script src="views/common/login.js"></script>
+    <script src="views/common/home.js"></script>
     <!-- endbuild -->
   </body>
 </html>

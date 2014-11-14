@@ -35,8 +35,11 @@
       proj = '';
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1});
     }
-    // url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
-    url = 'http://10.10.40.250:8080/ddrive-platform-web/:endpoint/:action/:id';
+    else if(C.runtimeEvn() ===1){
+      host = '10.10.40.250';
+      port = ':8080';
+    }
+    url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
     /*if(storage.get('token')){
       angular.extend(normalPrarms, {userId:storage.get('userId')})
     }*/
@@ -103,14 +106,21 @@
   .factory('C', ['$window', '$filter', '$timeout','$location', '$modal','localStorageService', function($window, $filter, $timeout, $location, $modal, ls){
     return {
       runtimeEvn: function(){
-        //0前端环境， 10其他
+        /*
+          0: 本地环境, 连mock数据
+          1: 本地环境, 连远程API
+        */
         var ua = navigator.userAgent.toLowerCase();
         var host = $window.location.host,
             port = $location.port(),
             local= /^(localhost|127\.0)/i,
+            remote = /^static.ddriver.com/i,
             dev = /^10\.10\.40\.250/i;
-        if(port === 9000) {
+        if(port === 9000 && local.test(host)) {
           return 0;
+        }
+        else if(port === 9000 && remote.test(host)){
+          return 1;
         }
         else {
           return 10;

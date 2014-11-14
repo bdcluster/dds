@@ -143,17 +143,25 @@
       <label class="col-xs-3 control-label">* 状态</label>
       <div class="col-xs-8">
         <label class="radio-inline">
-          <input type="radio" name="status" data-ng-value="0" data-ng-model="formData.status" required> 启用
+          <input type="radio" name="status" 
+            data-ng-value="0" 
+            data-ng-model="formData.status" 
+            data-ng-disabled="formData.editStatusFlag"
+            required> 启用
         </label>
         <label class="radio-inline">
-          <input type="radio" name="status" data-ng-value="1" data-ng-model="formData.status" required> 停用
+          <input type="radio" name="status" 
+            data-ng-value="1" 
+            data-ng-model="formData.status" 
+            data-ng-disabled="formData.editStatusFlag"            
+            required> 停用
         </label>
       </div>
     </div>
     <div class="form-group has-feedback" data-ng-class="{'has-success':ruleForm.description.$dirty, 'has-error':ruleForm.description.$invalid &amp;&amp; ruleForm.description.$dirty}">
       <label for="description" class="col-xs-3 control-label">描述</label>
       <div class="col-xs-8">
-        <textarea name="description" rows="5" class="form-control" data-ng-model="formData.description" data-ng-maxlength="100" placeholder="长度小于等于100位"></textarea>
+        <textarea name="description" rows="5" class="form-control" data-ng-model="formData.description" data-ng-maxlength="100" data-ng-disabled="formData.editStatusFlag" placeholder="长度小于等于100位"></textarea>
       </div>
     </div>
     <div class="form-group">

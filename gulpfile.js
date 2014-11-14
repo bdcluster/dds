@@ -113,18 +113,6 @@
   });
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //| ✓ minify include files
-  //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  // gulp.task('tmpl', function(){
-  //   return gulp.src([
-  //     _.views + '/form.login.html',
-  //     _.views + '/menu.html'
-  //   ])
-  //   .pipe($.minifyHtml())
-  //   .pipe(gulp.dest(_.dist + '/views/'));
-  // });
-  
-  //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ concat & minify all template to a js file
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('tmpl2js', function(){
@@ -174,8 +162,9 @@
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ server
+  //    use mock data: localhost
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
- gulp.task('server', ['connect', 'sass'], function() {
+ gulp.task('server', ['connect', 'sass', 'tmpl2js'], function() {
    gulp.start('localhost');
  });
 
@@ -214,12 +203,8 @@
   //| ✓ clean dist folder
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('clean', function() {
-    // var stream = gulp.src([
-    //   _.dist + '*'
-    // ], { read: false });
-    // return stream.pipe($.del());
     return $.del([_.dist + '*'], function (err) {
-      console.log('Files deleted');
+       $.util.log;
     });
   });
 
@@ -239,7 +224,7 @@
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ default
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-  gulp.task('default', ['clean'], function() {
+  gulp.task('default', function() {
     gulp.start('build');
   });
 

@@ -26,84 +26,84 @@
 ---
 
 ## 模块列表
-.
-├──login
-├──home
-├──password-change
-├──help
-├──customer
-│   └──customer-manage
-├──driver
-│   └──driver-manage
-|——order
-│   ├──order-list
-│   ├──monthly-list
-│   ├──quarter-list
-│   └──period-list
-|——rule
-│   ├──template-manage
-│   └──rule-manage
-└──setting
-    ├──user-manage
-    └──role-manage
+    .
+    ├──login
+    ├──home
+    ├──password-change
+    ├──help
+    ├──customer
+    │   └──customer-manage
+    ├──driver
+    │   └──driver-manage
+    |——order
+    │   ├──order-list
+    │   ├──monthly-list
+    │   ├──quarter-list
+    │   └──period-list
+    |——rule
+    │   ├──template-manage
+    │   └──rule-manage
+    └──setting
+        ├──user-manage
+        └──role-manage
 
 ## v2.0版本预计改动如下：
 #### 目录结构(基本按模块需求划分)
-.
-├──app
-│   ├──index.html
-│   ├──js
-│   │   ├──app.js
-│   │   ├──directives.js
-│   │   ├──filters.js
-│   │   ├──controllers.js
-│   │   └──services
-│   │       ├──resource.js
-│   │       └──common.js
-│   ├──css
-│   │   ├──docs.css
-│   │   ├──_iconfont.scss
-│   │   ├──_vandor.scss
-│   │   └──docs.scss
-│   ├──img
-│   ├──fonts
-│   └──views
-│       ├──common
-│       │   ├──home.html
-│       │   ├──pwd.html
-│       │   ├──help.html
-│       │   └──delete.modal.html
-│       ├──customer
-│       │   ├──customer.html
-│       │   ├──customer.modal.html
-│       │   └──customer.js
-│       ├──driver
-│       │   ├──driver.html
-│       │   ├──driver.modal.html
-│       │   └──driver.js
-│       ├──order
-│       │   ├──order.html
-│       │   ├──order.modal.html
-│       │   ├──order.js
-│       │   ├──monthly.html
-│       │   ├──quarter.html
-│       │   ├──period.html
-│       │   └──period.js
-│       ├──rule
-│       │   ├──temp.html
-│       │   ├──temp.modal.html
-│       │   ├──temp.js
-│       │   ├──rule.html
-│       │   ├──user.modal.html
-│       │   └──user.js
-│       ├──user
-│       │   ├──user.html
-│       │   ├──user.modal.html
-│       │   └──user.js
-│       └──role
-│           ├──role.html
-│           ├──role.modal.html
-│           └──role.js
-├──dist
-└──test
+    .
+    ├──app
+    │   ├──index.html
+    │   ├──js
+    │   │   ├──app.js
+    │   │   ├──directives.js
+    │   │   ├──filters.js
+    │   │   ├──controllers.js
+    │   │   └──services
+    │   │       ├──resource.js
+    │   │       └──common.js
+    │   ├──css
+    │   │   ├──docs.css
+    │   │   ├──_iconfont.scss
+    │   │   ├──_vandor.scss
+    │   │   └──docs.scss
+    │   ├──img
+    │   ├──fonts
+    │   └──views
+    │       ├──common
+    │       │   ├──home.html
+    │       │   ├──pwd.html
+    │       │   ├──help.html
+    │       │   └──delete.modal.html
+    │       ├──customer
+    │       │   ├──customer.html
+    │       │   ├──customer.modal.html
+    │       │   └──customer.js
+    │       ├──driver
+    │       │   ├──driver.html
+    │       │   ├──driver.modal.html
+    │       │   └──driver.js
+    │       ├──order
+    │       │   ├──order.html
+    │       │   ├──order.modal.html
+    │       │   ├──order.js
+    │       │   ├──monthly.html
+    │       │   ├──quarter.html
+    │       │   ├──period.html
+    │       │   └──period.js
+    │       ├──rule
+    │       │   ├──temp.html
+    │       │   ├──temp.modal.html
+    │       │   ├──temp.js
+    │       │   ├──rule.html
+    │       │   ├──user.modal.html
+    │       │   └──user.js
+    │       ├──user
+    │       │   ├──user.html
+    │       │   ├──user.modal.html
+    │       │   └──user.js
+    │       └──role
+    │           ├──role.html
+    │           ├──role.modal.html
+    │           └──role.js
+    ├──dist
+    └──test
 

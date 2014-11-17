@@ -198,7 +198,7 @@
           DDS.saveUser(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){
-            C.alert(scope, {msg:"网络错误", show:true}, true);
+            C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -275,7 +275,7 @@
               DDS.saveRole(angular.extend(params, scope.formData), function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
               }, function(){
-                C.alert(scope, {msg:"网络错误", show:true}, true);
+                C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
               });
             }
             // ,cancel: C.cancelModal
@@ -348,7 +348,7 @@
           DDS.saveCust(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){
-            C.alert(scope, {msg:"网络错误", show:true}, true);
+            C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -416,7 +416,7 @@
           DDS.saveDriv(angular.extend(params, scope.formData), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){
-            C.alert(scope, {msg:"网络错误", show:true}, true);
+            C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
           });
         }
         // ,cancel: C.cancelModal
@@ -637,7 +637,7 @@
           DDS.saveRuleTemp(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){
-            C.alert(scope, {msg:"网络错误", show:true}, true);
+            C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
           });
         }
       };
@@ -718,7 +718,7 @@
                 DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str, cityStr:cityStr}), function(res){
                   C.responseHandler(scope, $scope, modalInstance, res);
                 }, function(){
-                  C.alert(scope, {msg:"网络错误", show:true}, true);
+                  C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
                 });
               }
             }
@@ -747,7 +747,7 @@
             DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str}), function(res){
               C.responseHandler(scope, $scope, modalInstance, res);
             }, function(){
-              C.alert(scope, {msg:"网络错误", show:true}, true);
+              C.alert(scope, {msg:"对不起，您没有访问权限！", show:true}, true);
             });
           }
         };

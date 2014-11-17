@@ -44,7 +44,8 @@
   //| ✓ sass2css
   //'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   gulp.task('sass', function(){
-    return gulp.src(_.sass + '/**/*.{scss, sass}').pipe($.rubySass({
+    return gulp.src(_.sass + '/**/*.{scss, sass}')
+    .pipe($.rubySass({
       loadPath: [
         'app/bower_components/bootstrap-sass-only/scss/bootstrap/',
         'app/bower_components/animate-scss/src/'

@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  var viewPath = "/views/";
+  var viewPath = "/views";
   angular.module('DdsApp', [
     'ngMd5',
     'ngRoute',
@@ -29,22 +29,22 @@
 
     $routeProvider
       .when('/login', {
-        templateUrl: viewPath + 'common/login.html',
+        templateUrl: viewPath + '/common/login.html',
         controller:  'LoginController',
         access: { requiredLogin: false }
       })
       .when('/home', {
-        templateUrl: viewPath + 'common/home.html',
+        templateUrl: viewPath + '/common/home.html',
         controller:  'HomeController',
         access: { requiredLogin: true }
       })
       .when('/chgpwd', {
-        templateUrl: viewPath + 'chgpwd.html',
+        templateUrl: viewPath + '/common/chgpwd.html',
         controller:  'ChangePasswordController',
         access: { requiredLogin: true }
       })
       .when('/user', {
-        templateUrl: viewPath + 'user.html',
+        templateUrl: viewPath + '/user/user.html',
         controller:  'UserController',
         access: { requiredLogin: true }
       })

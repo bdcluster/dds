@@ -23,14 +23,13 @@
       $scope.user.password = $filter('md5')($scope.user.password);
       $scope.master = angular.copy($scope.user);
       // 登录验证
-      var paramsInit = angular.extend({endpoint: 'login-index'}, $scope.user)
+      var paramsInit = angular.extend({endpoint: 'login-index'}, $scope.user);
       DDS.get(paramsInit, function(res){
         var data = C.validResponse(res);
         if(angular.isObject(data)){
           AuthService.isLogged = true;
           storage.set('isLogged', true);
           storage.set('userId', data.user.userId);
-
           var menus = DDS.get({endpoint:'menu', action:'select', type:2, userId:data.user.userId});
           menus.$promise.then(function(result){
             var menus = C.validResponse(result);
@@ -43,9 +42,13 @@
                 $location.path('/home');
               }, 500);
             }
-          }, C.badResponse())
+          }, function(){C.badResponse();});
         }
-      }, C.badResponse());
-    }
+      }, function(){C.badResponse();});
+    };
+
+    $scope.isUnchanged = function(user){
+      return angular.equals(user, $scope.master);
+    };
   }]);
 })();

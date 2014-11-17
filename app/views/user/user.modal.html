@@ -1,0 +1,66 @@
+<form class="form-horizontal form-modal" role="form" name="modalForm" novalidate>
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.loginName.$valid &amp;&amp; modalForm.loginName.$dirty, 'has-error':modalForm.loginName.$invalid &amp;&amp; modalForm.loginName.$dirty}">
+      <label for="username" class="col-xs-3 control-label">* 用户名</label>
+      <div class="col-xs-8" data-ng-hide="extraData.editMode">
+        <input type="text" class="form-control" name="loginName" data-ng-model="formData.loginName" placeholder="5-12位字母或数字" data-ng-pattern="/^[A-Za-z0-9]{5,12}$/" maxlength="12" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.loginName.$dirty" data-ng-class="{'glyphicon-ok':modalForm.loginName.$valid, 'glyphicon-remove':modalForm.loginName.$invalid}"></i>
+      </div>
+      <div class="col-xs-8" data-ng-show="extraData.editMode">
+        <p class="form-control-static" data-ng-bind="formData.loginName"></p>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.userName.$valid &amp;&amp; modalForm.userName.$dirty, 'has-error':modalForm.userName.$invalid &amp;&amp; modalForm.userName.$dirty}">
+      <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位" maxlength="5" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.userName.$dirty" data-ng-class="{'glyphicon-ok':modalForm.userName.$valid, 'glyphicon-remove':modalForm.userName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.mobilePhone.$valid &amp;&amp; modalForm.mobilePhone.$dirty, 'has-error':modalForm.mobilePhone.$invalid &amp;&amp; modalForm.mobilePhone.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">手机</label>
+      <div class="col-xs-8">
+        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.mobilePhone.$dirty" data-ng-class="{'glyphicon-ok':modalForm.mobilePhone.$valid, 'glyphicon-remove':modalForm.mobilePhone.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.email.$valid &amp;&amp; modalForm.email.$dirty, 'has-error':modalForm.email.$invalid &amp;&amp; modalForm.email.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">邮箱</label>
+      <div class="col-xs-8">
+        <input type="email" class="form-control" name="email" data-ng-model="formData.email">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.email.$dirty" data-ng-class="{'glyphicon-ok':modalForm.email.$valid, 'glyphicon-remove':modalForm.email.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.role.$valid &amp;&amp; modalForm.role.$dirty, 'has-error':modalForm.role.$invalid &amp;&amp; modalForm.role.$dirty}">
+      <label class="col-xs-3 control-label">角色</label>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6" data-ng-repeat="role in extraData.roles">
+            <label class="radio-inline">
+              <input type="radio" name="role" data-ng-value="role.id" data-ng-model="formData.roleId" required> {{role.roleName}}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="modalForm.$invalid" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

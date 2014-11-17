@@ -8,36 +8,14 @@
     return auth;
   }])
   .factory('C', [
-    '$window','$filter','$timeout','$location','$modal','$rootScope','localStorageService',function(
-     $window,  $filter,  $timeout,  $location,  $modal , $rootScope,  ls){
+    '$filter','$timeout','$location','$modal','$rootScope','DDS','localStorageService',function(
+     $filter,  $timeout,  $location,  $modal , $rootScope,  DDS,  ls){
 
     return{
       errMessage: {
-        networkErr: '对不起，您没有访问权限！', // response failure
+        networkErr: '对不起，网络错误，或者您没有访问权限！', // response failure
         responseErr:'对不起，出现一个未知错误!', // header.errorCode!==0
-        dataError: '会话过期，请手工退出系统后重新登录！' // no json data
-      },
-
-      runtimeEvn: function(){
-        /*
-          0: 本地环境, 连mock数据
-          1: 本地环境, 连远程API
-        */
-        var ua = navigator.userAgent.toLowerCase();
-        var host = $window.location.host,
-            port = $location.port(),
-            local= /^(localhost|127\.0)/i,
-            remote = /^static.ddriver.com/i,
-            dev = /^10\.10\.40\.250/i;
-        if(port === 9000 && local.test(host)) {
-          return 0;
-        }
-        else if(port === 9000 && remote.test(host)){
-          return 1;
-        }
-        else {
-          return 10;
-        }
+        dataError:  '会话过期，请手工退出系统后重新登录！' // no json data
       },
 
       succ: function(chart){
@@ -64,9 +42,15 @@
         return a;
       },
 
-      alert: function(opts, alone, scope){
-        if(alone){
-          angular.extend(scope.alert, opts);
+      /*
+        操作提示， modal 和 scope参数用在模式窗口的提示中
+      */
+      alert: function(opts, modal, scope){
+        if(modal){
+          angular.extend(scope.alert, opts, {show:true});
+          $timeout(function(){ 
+            scope.alert={show:false}
+          }, 3000);
         }
         else{
           $rootScope.alerts.push(opts);
@@ -100,11 +84,12 @@
         this.alert({type:'danger', msg: this.errMessage.networkErr});
       },
 
-      validResponse: function(res){
+      validResponse: function(res, ifModal, modalScope){
+        var alertOptions;
         if(res.header){
           if(res.header.errorCode === 0){
             if(res.data.code>0){
-              this.alert({type: 'danger', msg: res.data.message});
+              this.alert({type: 'danger', msg: res.data.message}, ifModal, modalScope);
             }
             else{
               // 成功返回有效数据
@@ -115,13 +100,77 @@
             this.alert({
               type: 'danger', 
               msg: this.errMessage.responseErr
-            });
+            }, ifModal, modalScope);
           }
         }
         else{
-          this.alert({type:'danger', msg: this.errMessage.dataError});
+          this.alert({type:'danger', msg: this.errMessage.dataError}, ifModal, modalScope);
+        }
+      },
+
+      list:function(scope, options){
+        var self = this;
+        DDS.get(options, function(res){
+          var data = self.validResponse(res);
+          if(angular.isObject(res)){
+            angular.extend(scope, data);
+            scope.showPagination = true;
+          }
+        }, function(){
+          self.badResponse();
+        });
+      },
+
+      openModal: function(modalSet, module){
+        var m = module ;
+        var options = {
+          templateUrl: '/views/'+ m + '/' +m +'.modal.html',
+          controller: 'ModalController',
+          resolve: {
+            modalSet: function(){ return modalSet; }
+          }
+        };
+        if(angular.isUndefined(m)){
+          angular.extend(options, {
+            templateUrl: '/views/common/remove.modal.html',
+            size:'sm'
+          });
+        }
+        var modalInstance = $modal.open(options);
+
+        modalInstance.result.then(function (result) {
+          result();
+        }, function (reason) {
+            // console.log(reason);
+        });
+
+        modalInstance.opened.then(function(info){
+          // console.log(info)
+        });
+      },
+
+      cancelModal: function(modalInstance){ // 取消modal 默认没有callback
+        modalInstance.dismiss('dismiss');
+      },
+
+      responseHandler: function(modalScope, ctrlScope, modalInstance, res){
+        var self = this, data = self.validResponse(res, true, modalScope);
+        // if()
+        if(angular.isObject(data)){
+          modalInstance.close(function(){ // close modal
+            angular.extend(ctrlScope, data);
+            //如果role数据变更，更新role的缓存
+            /*if(data.roles){
+              self.storage().set('role', data);
+            }*/
+            self.alert({type:'success', msg:data.message || '操作成功！'});
+            angular.extend(ctrlScope, {
+              search:{}, province:{}, city:{}
+            });
+          });
         }
       }
-    }
+
+    };
   }]);
 })();

@@ -10,5 +10,11 @@
         return $filter('date')(mydate, argu);
       }
     };
-  }]);
+  }])
+  .filter('cutDesc', function(){
+    return function(desc){
+      if (desc && desc.length>10) return desc.substring(0, 15) + '...';
+      else return desc;
+    };
+  });
 })();

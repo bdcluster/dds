@@ -34,7 +34,7 @@ $panel-border-radius:       0;
 @import "scaffolding", "type", "code", "grid", "tables", "forms", "buttons";
 
 // Components
-@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close", "button-groups", "labels";
+@import "dropdowns","component-animations", "glyphicons", "input-groups", "pagination","alerts", "modals", "navs", "navbar", "panels", "wells", "close", "button-groups", "labels", "tooltip";
 
 // Utility classes
 @import "utilities";

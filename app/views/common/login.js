@@ -5,13 +5,11 @@
      $rootScope,  $scope,  $filter,  $timeout,  $location,  AuthService,  C,  DDS){
     
     var storage = C.storage();
-    if(storage.get('isLogged')){
-      $location.path('/home');
-    }
-    else{
-      storage.clear();
-      $rootScope.menus=[];
-    }
+
+    AuthService.isLogged = false;
+    $rootScope.isLogged = false;
+    $rootScope.menus = [];
+    storage.clear();
 
     $scope.checkLogin = function(){
       /*
@@ -30,6 +28,8 @@
           AuthService.isLogged = true;
           storage.set('isLogged', true);
           storage.set('userId', data.user.userId);
+          storage.set('loginInfo', data.user);
+
           var menus = DDS.get({endpoint:'menu', action:'select', type:2, userId:data.user.userId});
           menus.$promise.then(function(result){
             var menus = C.validResponse(result);

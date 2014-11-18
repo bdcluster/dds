@@ -39,7 +39,7 @@
         access: { requiredLogin: true }
       })
       .when('/chgpwd', {
-        templateUrl: viewPath + '/common/chgpwd.html',
+        templateUrl: viewPath + '/common/pwd.html',
         controller:  'ChangePasswordController',
         access: { requiredLogin: true }
       })
@@ -49,22 +49,22 @@
         access: { requiredLogin: true }
       })
       .when('/role', {
-        templateUrl: viewPath + 'role.html',
+        templateUrl: viewPath + '/role/role.html',
         controller:  'RoleController',
         access: { requiredLogin: true }
       })
       .when('/customer', {
-        templateUrl: viewPath + 'cust.html',
+        templateUrl: viewPath + '/customer/customer.html',
         controller:  'CustomerController',
         access: { requiredLogin: true }
       })
       .when('/driver', {
-        templateUrl: viewPath + 'driv.html',
+        templateUrl: viewPath + '/driver/driver.html',
         controller:  'DriverController',
         access: { requiredLogin: true }
       })
       .when('/order', {
-        templateUrl: viewPath + 'order.html',
+        templateUrl: viewPath + '/order/order.html',
         controller:  'OrderController',
         access: { requiredLogin: true }
       })
@@ -84,22 +84,22 @@
         access: { requiredLogin: true }
       })
       .when('/rule', {
-        templateUrl: viewPath + 'rule.html',
+        templateUrl: viewPath + '/rule/rule.html',
         controller:  'RuleController',
         access: { requiredLogin: true }
       })
       .when('/template', {
-        templateUrl: viewPath + 'template.html',
+        templateUrl: viewPath + '/rule/tmpl.html',
         controller:  'RuleTemplateController',
         access: { requiredLogin: true }
       })
-      .when('/tempDetail/:id', {
-        templateUrl: viewPath + 'tempDetail.html',
-        controller:  'RuleTemplateDetailController',
+      .when('/template/:id', {
+        templateUrl: viewPath + '/rule/tmpl.detail.html',
+        controller:  'RuleDetailController',
         access: { requiredLogin: true }
       })
-      .when('/ruleDetail/:id', {
-        templateUrl: viewPath + 'ruleDetail.html',
+      .when('/rule/:id', {
+        templateUrl: viewPath + '/rule/rule.detail.html',
         controller:  'RuleDetailController',
         access: { requiredLogin: true }
       })

@@ -16,11 +16,17 @@
 
     $scope.doSearch = function(o){
       if(angular.isObject(o)){
-        C.list($scope, angular.extend(paramsInit, o, {pageNum:1}));
+        C.list(this, angular.extend(paramsInit, o, {pageNum:1}));
       }
     };
-    $scope.changePage();
 
+    $scope.refresh = function(){
+      C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
+      angular.extend(this, angular.copy(C.empty));
+      angular.copy(this.paramsInit, paramsInit);
+    };
+
+    $scope.changePage();
     //Modal options & actions
     $scope.saveUser = function(user){
       var roles = DDS.get({endpoint:'role', action:'select'}), userInfo;
@@ -43,13 +49,13 @@
             formData: userInfo || {},
             confirm: function(modalInstance, scope){ // 确认modal callback
               delete scope.formData.role;
-              DDS.saveUser(angular.extend(params, scope.formData), function(res){
+              var saveData = DDS.saveUser(angular.extend(params, scope.formData));
+              saveData.$promise.then(function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
               }, function(){
                 C.badResponse();
-              });
+              })
             }
-            // ,cancel: C.cancelModal
           };
           C.openModal(modalSet, 'user');
         }
@@ -67,7 +73,6 @@
             C.badResponse();
           });
         }
-        // ,cancel: C.cancelModal
       };
       C.openModal(modalSet);
     };

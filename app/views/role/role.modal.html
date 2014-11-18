@@ -1,0 +1,49 @@
+<form class="form-horizontal form-modal" role="form" name="roleForm" novalidate>
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.roleName.$valid &amp;&amp; roleForm.roleName.$dirty, 'has-error':roleForm.roleName.$invalid &amp;&amp; roleForm.roleName.$dirty}">
+      <label for="roleName" class="col-xs-3 control-label">* 角色名称</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="roleName" data-ng-model="formData.roleName" data-ng-maxlength="10" placeholder="长度小于等于 10 位" maxlength="10" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="roleForm.roleName.$dirty" data-ng-class="{'glyphicon-ok':roleForm.roleName.$valid, 'glyphicon-remove':roleForm.roleName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':roleForm.menuIds.$valid &amp;&amp; roleForm.menuIds.$dirty, 'has-error':roleForm.menuIds.$invalid &amp;&amp; roleForm.menuIds.$dirty}">
+      <label for="menuIds" class="col-xs-3 control-label">选择权限</label>
+      <div class="col-xs-8 role-pool">
+        <!-- <select name="menuIds" multiple="true" size="10" class="form-control" data-ng-model="formData.menuIdArray" data-ng-options="menu.id as menu.name for menu in extraData"></select> -->
+        <div class="check-wrap">
+          <div class="checkbox" data-ng-repeat="role in extraData">
+            <label>
+              <input type="checkbox" data-ng-model="formData.menuIdArray[role.id]"> <strong>{{role.name}}</strong>
+            </label>
+            <div class="checkbox" data-ng-repeat="sub in role.subname">
+              <label class="sub-label">
+                <input type="checkbox" data-ng-model="formData.menuIdArray[sub.id]" data-ng-change="formData.menuIdArray[role.id]=formData.menuIdArray[sub.id] || true"> {{sub.name}}
+              </label>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="roleForm.$invalid" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

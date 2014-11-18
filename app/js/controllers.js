@@ -1,7 +1,12 @@
 (function(){
   'use strict';
   angular.module('DdsControllers', [
-    'LoginModule', 'HomeModule', 'UserModule'
+    'LoginModule', 'HomeModule', 'PasswordModule',
+    'UserModule', 'RoleModule',  
+    'RuleTmplModule', 'RuleModule', 'RuleDetailModule',
+    'CustomerModule',
+    'DriverModule',
+    'OrderModule'
   ])
   .controller('GlobelController', [
     '$rootScope','$window','$location','AuthService','DDS','C',function(
@@ -45,20 +50,16 @@
 
         logout.$promise.then(function(res){
           var data = C.validResponse(res);
-          if(angular.isObject(data)){
-            AuthService.isLogged = false;
-            storage.clear();
-            $rootScope.menus = [];
-            $rootScope.isLogged = false;
-            $location.path('/login');
-          }
-        }, C.badResponse);
+          C.delayJump('/login');
+        });
       }
     });
     $rootScope.keepOpenAccordion();
   }])
   /* normal modal */
-  .controller('ModalController', ['$scope', '$modalInstance', 'modalSet', function($scope, $modalInstance, modalSet){
+  .controller('ModalController', [
+    '$scope','$modalInstance','modalSet', function(
+     $scope,  $modalInstance,  modalSet){
     angular.extend($scope, {
       alert:{show:false},
       modalTitle: modalSet.modalTitle,
@@ -69,11 +70,7 @@
         modalSet.confirm($modalInstance, this);
       },
       cancel: function(){
-        // modalSet.cancel($modalInstance);
         $modalInstance.dismiss('cancel');
-      },
-      selCity:function(){
-        modalSet.selCity(this);
       }
     });
   }]);

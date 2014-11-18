@@ -192,7 +192,7 @@
         _.css + '/**/*.css',
         _.img + '/**/*.{png,jpg,jpeg,gif,ico}',
         _.app + '/js/**/*.js',
-        _.view+ '/*/*.js'
+        _.view+ '/**/*.js'
       ]
     }, function(files) {
       return files.pipe($.plumber()).pipe($.connect.reload());

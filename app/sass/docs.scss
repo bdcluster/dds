@@ -167,6 +167,12 @@ body{
 }
 
 .table-dds{
+  .tooltip-inner{
+    text-align:left;
+  }
+  span[tooltip], span[data-tooltip]{
+    cursor: help;
+  }
   thead > tr {
     background: $brand-info;
     font-weight: bold;
@@ -229,6 +235,9 @@ body{
   input[readonly]{
     background-color: white;
   }
+  input[disabled]{
+    background-color: #eee;
+  }
   .form-control{
     &:not(:first-child):not(:last-child) {
       @include border-right-radius($border-radius-base);
@@ -260,6 +269,16 @@ body{
     border-top:1px dashed $gray-light;
     padding-top:15px;
   }
+}
+
+.btn-status{
+  .btn[disabled]{
+    opacity:1;
+  }
+}
+
+.form-inline .input-sm[type=text]{
+  width: 100px;
 }
 
 footer{

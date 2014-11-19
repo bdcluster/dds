@@ -13,12 +13,6 @@
       sass: 'app/sass',
       css:  'app/css'
     };
-    // var workPath = [
-    //   _.app + '/js', _.app + '/view'
-    // ], js=[];
-    // for(var i in workPath){
-    //   js.push(workPath[i] + '/**/*.js');
-    // }
 
   //|**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //| ✓ jsonlint
@@ -87,11 +81,11 @@
   gulp.task('images', function() {
     return gulp.src([_.img + '/**/*.{png,jpg,jpeg,gif,ico}'])
       .pipe($.plumber())
-      .pipe($.cache($.imagemin({
+      .pipe($.imagemin({
         optimizationLevel: 3,
         progressive: true,
         interlaced: true
-      })))
+      }))
       .pipe(gulp.dest(_.dist + '/img'))
       .pipe($.size());
   });

@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
       <label class="sr-only">省份</label>
-      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefinde">
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefined">
         <option value="">-- 选择省份 --</option> 
       </select>
     </div>
@@ -41,17 +41,19 @@
       </select>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch()">
         <span class="glyphicon glyphicon-search"></span> 搜素
-      </button>
-      <button class="btn btn-primary btn-sm" data-ng-click="orderExport(search)" data-ng-show="orders.length>0">
-        <i class="glyphicon glyphicon-export"></i> 数据导出
       </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
-    <i class="glyphicon glyphicon-refresh"></i> 刷新
-  </button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="orderExport(search)" data-ng-disabled="orders.length<=0">
+      <i class="glyphicon glyphicon-export"></i> 数据导出
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">
@@ -65,8 +67,8 @@
       <td>费用</td>
       <td>订单状态</td>
       <td>账单状态</td>
-      <td>同步状态</td>
-      <td>操作</td>
+      <td class="hide">同步状态</td>
+      <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
@@ -89,7 +91,7 @@
           data-ng-bind="o.n"
           data-ng-show="ord.billStatus==o.s"></span>
       </td>
-      <td>
+      <td class="hide">
          <span class="label label-{{o.c}}"
           data-ng-repeat="o in syncStatus"
           data-ng-bind="o.n"
@@ -100,7 +102,7 @@
           <span class="glyphicon glyphicon-th-list"></span>
           订单详情
         </button>
-        <button class="btn btn-xs" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncButton=='正在同步', 'btn-info':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
+        <button class="btn btn-xs hide" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncButton=='正在同步', 'btn-info':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
           <i class="glyphicon glyphicon-refresh"></i>
           <span data-ng-bind="syncButton"></span>
         </button>

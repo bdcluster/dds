@@ -17,12 +17,9 @@
     };
     $scope.changePage(); // default: load pageNum:1
 
-    $scope.doSearch = function(o){
-      if(angular.isObject(o)){
-        if(!o.provinceId && o.cityId){
-          delete o.cityId;
-        }
-        C.list(this, angular.extend(paramsInit, o, {pageNum: 1}));
+    $scope.doSearch = function(){
+      if(C.searchFlag(this.search)){
+        C.list(this, angular.extend(paramsInit, this.search, {pageNum: 1}));
       }
     };
 
@@ -30,7 +27,6 @@
       C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
       angular.extend(this, angular.copy(C.empty));
       angular.copy(this.paramsInit, paramsInit);
-      console.log($scope.search)
     };
 
     $scope.workStatus=[
@@ -40,26 +36,15 @@
     ];
 
     $scope.saveDriver = function(driv){
-      var params={pageNum:$scope.pageNum}, drivInfo, provinceOrder, cityOrder;
+      var params={pageNum:$scope.pageNum}, drivInfo, curProv, provinceOrder, cityOrder;
       if(driv){
         paramsInit = angular.extend({}, $scope.paramsInit);
         drivInfo = angular.extend({}, driv);
         angular.extend(params, {action:'edit', id:drivInfo.id});
         if(drivInfo.provinceName){
-          for(var i=0; i<areas.length; i++){
-            if(areas[i].name===drivInfo.provinceName){
-              provinceOrder=i;
-              break;
-            }
-          }
-          if(provinceOrder>=0){
-            for(i=0; i<areas[provinceOrder].subname.length; i++){
-              if(areas[provinceOrder].subname[i].name===drivInfo.cityName){
-                cityOrder=i;
-                break;
-              }
-            }
-          }
+          curProv = C.curProvince(areas, drivInfo.provinceName, drivInfo.cityName);
+          provinceOrder = curProv.provOrder;
+          cityOrder = curProv.cityOrder;
         }
       }
       else{

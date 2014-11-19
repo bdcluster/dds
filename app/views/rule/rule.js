@@ -9,19 +9,15 @@
       pageNum:$scope.pageNum
     };
     $scope.paramsInit = angular.copy(paramsInit);
-    $scope.search = {};
     var storage = C.storage(), extraData = {areas: storage.get('provinces')};
     $scope.changePage = function(){
       C.list(this, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
     };
     $scope.changePage();
 
-    $scope.doSearch = function(o){
-      if(angular.isObject(o)){
-        if(!o.provinceId && o.cityId){
-          delete o.cityId;
-        }
-        C.list(this, angular.extend(paramsInit, o, {pageNum: 1}));
+    $scope.doSearch = function(){
+      if(C.searchFlag(this.search)){
+        C.list(this, angular.extend(paramsInit, this.search, {pageNum: 1}));
       }
     };
 

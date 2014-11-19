@@ -14,7 +14,6 @@
     angular.extend(paramsInit, $routeParams);
 
     angular.extend($scope, {
-      search:{},
       orderStatus:[
         {'s':'1','n':'已预约','c':'warning'},
         {'s':'2','n':'已取消','c':'default'},
@@ -44,12 +43,9 @@
       goBack:function(){
         history.back();
       },
-      doSearch: function(o){
-        if(angular.isObject(o)){
-          if(!o.provinceId && o.cityId){
-            delete o.cityId;
-          }
-          C.list(this, angular.extend(paramsInit, o, {pageNum: 1}));
+      doSearch: function(){
+        if(C.searchFlag(this.search)){
+          C.list(this, angular.extend(paramsInit, this.search, {pageNum: 1}));
         }
       },
       refresh: function(){
@@ -82,8 +78,8 @@
                 };
               }
             }, 2000);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
           });
           
         }

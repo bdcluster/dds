@@ -128,7 +128,7 @@
               <i class="glyphicon glyphicon-minus"></i>
             </button>
             <button type="button" class="btn btn-info btn-xs" 
-              data-ng-show="$last" 
+              data-ng-show="$last &amp;&amp; $index<11" 
               data-ng-click="
                 formData.rules.push($index+1);
                 formData.arrayStr[$index+1][0]=formData.arrayStr[$index][1]

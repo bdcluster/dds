@@ -31,12 +31,9 @@
     };
     $scope.changePage();
 
-    $scope.doSearch = function(o){
-      if(angular.isObject(o)){
-        if(!o.provinceId && o.cityId){
-          delete o.cityId;
-        }
-        var s = angular.extend(paramsInit, o, C.getPeriod(o), {pageNum:1});
+    $scope.doSearch = function(){
+      if(C.searchFlag(this.search)){
+        var s = angular.extend(paramsInit, this.search, C.getPeriod(this.search), {pageNum:1});
         delete s.dp1; s.dp2;
         $scope.search.startTime=s.startTime;
         $scope.search.endTime=s.endTime;

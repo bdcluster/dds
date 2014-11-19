@@ -1,12 +1,12 @@
 {
   "author": "Jim Yuan",
-  "name": "fackbook",
-  "version": "0.0.0",
+  "name": "Designation Driver Service",
+  "version": "0.3",
   "license": "MIT",
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git@github.com:jimyuan/ezx14-3.git"
+    "url": "git@github.com:bdcluster/dds.git"
   },
   "devDependencies": {
     "del": "^0.1.3",

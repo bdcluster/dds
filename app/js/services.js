@@ -13,8 +13,9 @@
 
     return{
       errMessage: {
-        networkErr: '对不起，网络错误，或者您没有访问权限！', // response failure
-        responseErr:'对不起，出现一个未知错误!', // header.errorCode!==0
+        status404: '对不起，您可能没有访问权限！', // response failure && status=404
+        status500: '内部服务器错，请联系管理员！', // response failure && status=0
+        responseErr:'对不起，出现一个未知错误！', // header.errorCode!==0
         dataError:  '会话过期，请手工退出系统后重新登录！' // no json data
       },
 
@@ -96,13 +97,6 @@
         };
       },
 
-      /*
-        Ajax请求失败
-      */
-      badResponse: function(data, status){
-        this.alert({type:'danger', msg: this.errMessage.networkErr});
-      },
-
       validResponse: function(res, ifModal, modalScope){
         if(res.header){
           if(res.header.errorCode === 0){
@@ -130,6 +124,29 @@
           return false;
         }
       },
+      /*
+        Ajax请求失败
+      */
+      badResponse: function(res){
+        if(res){
+          if(res.status === 404){
+            this.alert({type:'danger', msg: this.errMessage.status404});
+            return false;
+          }
+          else if(res.status === 0){
+            this.alert({type:'danger', msg: this.errMessage.status500});
+            return false;
+          }
+          else{
+            this.alert({type:'danger', msg: '未知错误！(status: '+ res.status +')'});
+            return false;
+          }
+        }
+        else{
+          this.alert({type:'danger', msg: '未知错误，请联系管理员！'});
+          return false;
+        }
+      },
 
       list:function(scope, options){
         var self = this;
@@ -139,8 +156,8 @@
             angular.extend(scope, data);
             scope.showPagination = true;
           }
-        }, function(){
-          self.badResponse();
+        }, function(res){
+          self.badResponse(res);
         });
       },
 
@@ -244,8 +261,7 @@
             str = [],
             self= this; 
         if(obj.endpoint && obj.action){
-          delete obj.endpoint;
-          delete obj.action;
+          delete obj.endpoint; delete obj.action;
           if(!angular.equals(obj, {})){
             for(var p in obj){
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
@@ -349,8 +365,40 @@
       formatDate:function(d){
         var date = d || new Date();
         return $filter('myDate')(date, 'yyyy-MM-dd');
-      }
+      },
 
+      curProvince: function(provData, curProv, curCity){
+        var queryOrder = {}, cityArr;
+        for(var i = 0; i < provData.length; i++){
+          if(provData[i].name === curProv){
+            queryOrder.provOrder = i;
+            break;
+          }
+          else{
+            queryOrder.provOrder = '';
+          }
+        }
+        if(queryOrder.provOrder >= 0){
+          cityArr = provData[queryOrder.provOrder].subname;
+          for(i = 0; i < cityArr.length; i++){
+            if(cityArr[i].name === curCity){
+              queryOrder.cityOrder = i;
+              break;
+            }
+            else{
+              queryOrder.cityOrder = '';
+            }
+          }
+        }
+        else{
+          queryOrder.cityOrder = '';
+        }
+        return queryOrder;
+      }, 
+
+      searchFlag: function(searchData){
+        return (angular.isObject(searchData) && !angular.equals(searchData, {}));
+      }
     };
   }]);
 })();

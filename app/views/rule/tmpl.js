@@ -16,9 +16,9 @@
     };
     $scope.changePage();
 
-    $scope.doSearch = function(o){
-      if(angular.isObject(o)){
-        C.list(this, angular.extend(paramsInit, o, {pageNum: 1}));
+    $scope.doSearch = function(){
+      if(C.searchFlag(this.search)){
+        C.list(this, angular.extend(paramsInit, this.search, {pageNum: 1}));
       }
     };
 
@@ -45,7 +45,7 @@
         tempInfo.arrayStr = {'0':{}};
         tempInfo.status = 0;
         extraData.rules = [0];
-        extraData.minDate = C.formateDate();
+        extraData.minDate = C.formatDate();
       }
       var modalSet = {
         modalTitle: '计费模板定义', // modal 窗体标题

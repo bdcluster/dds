@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
       <label class="sr-only">省份</label>
-      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefinde">
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefined">
         <option value="">-- 选择省份 --</option> 
       </select>
     </div>
@@ -30,7 +30,7 @@
       </select>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch()">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
     </div>

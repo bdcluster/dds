@@ -18,12 +18,9 @@
     };
     $scope.changePage(); // default: load pageNum:1
 
-    $scope.doSearch = function(o){
-      if(angular.isObject(o)){
-        if(!o.provinceId && o.cityId){
-          delete o.cityId;
-        }
-        C.list(this, angular.extend(paramsInit, o, {pageNum: 1}));
+    $scope.doSearch = function(){
+      if(C.searchFlag(this.search)){
+        C.list(this, angular.extend(paramsInit, this.search, {pageNum: 1}));
       }
     };
 
@@ -35,26 +32,15 @@
 
     $scope.saveCust = function(cust){
       var params={pageNum:$scope.pageNum},
-          provinceOrder, cityOrder, custInfo;
+          curProv, provinceOrder, cityOrder, custInfo;
       if(cust){
         paramsInit = angular.extend({}, $scope.paramsInit);
         custInfo = angular.extend({},cust);
         angular.extend(params, {action:'edit', id:custInfo.id});
         if(custInfo.provinceName){
-          for(var i = 0; i<areas.length; i++){
-            if(areas[i].name === custInfo.provinceName){
-              provinceOrder = i;
-              break;
-            }
-          }
-          if(provinceOrder >= 0){
-            for(i=0; i<areas[provinceOrder].subname.length; i++){
-              if(areas[provinceOrder].subname[i].name === custInfo.cityName){
-                cityOrder=i;
-                break;
-              }
-            }
-          }
+          curProv = C.curProvince(areas, custInfo.provinceName, custInfo.cityName);
+          provinceOrder = curProv.provOrder;
+          cityOrder = curProv.cityOrder;
         }
       }
       else{

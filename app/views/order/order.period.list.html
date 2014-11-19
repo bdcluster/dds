@@ -22,7 +22,7 @@
       <td>费用</td>
       <td>订单状态</td>
       <td>账单状态</td>
-      <td>同步状态</td>
+      <td class="hide">同步状态</td>
       <td class="action">操作</td>
     </tr>
   </thead>
@@ -46,7 +46,7 @@
           data-ng-bind="o.n"
           data-ng-show="ord.billStatus==o.s"></span>
       </td>
-      <td>
+      <td class="hide">
          <span class="label label-{{o.c}}"
           data-ng-repeat="o in syncStatus"
           data-ng-bind="o.n"

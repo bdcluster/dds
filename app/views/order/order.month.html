@@ -2,7 +2,7 @@
   <form class="form-inline pull-right" role="form">
     <div class="form-group">
       <label class="sr-only">省份</label>
-      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city='';search.cityId=undefinde">
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id; city='';search.cityId=undefined">
         <option value="">-- 选择省份 --</option> 
       </select>
       <input name="provinceId" type="hidden" data-ng-model="search.provinceId">
@@ -32,14 +32,16 @@
       <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
         <span class="glyphicon glyphicon-search"></span> 搜素
       </button>
-      <button class="btn btn-primary btn-sm" data-ng-click="staticsExport(search)" data-ng-show="orders.length>0">
-        <i class="glyphicon glyphicon-export"></i> 数据导出
-      </button>
     </div>
   </form>
-  <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
-    <i class="glyphicon glyphicon-refresh"></i> 刷新
-  </button>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="staticsExport(search)" data-ng-diasabled="orders.length<=0">
+      <i class="glyphicon glyphicon-export"></i> 数据导出
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+  </div>
   <div class="clearfix"></div>
 </div>
 <table class="table table-bordered table-striped table-dds">

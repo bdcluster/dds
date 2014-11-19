@@ -4,9 +4,9 @@
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 html{
- idth:100%; height:100%;
+ width:100%; height:100%;
 }
-body{
+.platform-body{
   width:100%; height:100%;
   padding-top: $navbar-height + $grid-gutter-width / 2 + 5;
   overflow-x: hidden;

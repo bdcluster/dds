@@ -36,7 +36,7 @@
     if(runtimeEvn() === 0) {
       port = ':8084';
       proj = '';
-      angular.extend(normalPrarms, {local:1, mock:1, enforce:1, chaose:Math.random()});
+      angular.extend(normalPrarms, {local:1, mock:1, enforce:1, chaos:Math.random()});
     }
     else if(runtimeEvn() ===1){
       host = '10.10.40.250';

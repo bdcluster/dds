@@ -65,7 +65,7 @@
         if(modal){
           angular.extend(scope.alert, opts, {show:true});
           $timeout(function(){ 
-            scope.alert={show:false}
+            scope.alert={show:false};
           }, 3000);
         }
         else{
@@ -96,12 +96,14 @@
         };
       },
 
-      badResponse: function(){
+      /*
+        Ajax请求失败
+      */
+      badResponse: function(data, status){
         this.alert({type:'danger', msg: this.errMessage.networkErr});
       },
 
       validResponse: function(res, ifModal, modalScope){
-        var alertOptions;
         if(res.header){
           if(res.header.errorCode === 0){
             if(res.data.code>0){
@@ -116,16 +118,15 @@
           else{
             this.alert({
               type: 'danger', 
-              msg: this.errMessage.responseErr
-            }, ifModal, modalScope);
+              msg: res.header.message || this.errMessage.responseErr}, ifModal, modalScope);
             return false;
           }
         }
+        else if(res !== ''){
+          this.alert({type:'danger', msg: this.errMessage.dataError}, ifModal, modalScope);
+          return false;
+        }
         else{
-          this.alert({
-            type:'danger', 
-            msg: this.errMessage.dataError
-          }, ifModal, modalScope);
           return false;
         }
       },
@@ -149,7 +150,7 @@
           path = '/views/' + module.split('.')[0] + '/';
         }
         else{
-          path = '/views/common/'
+          path = '/views/common/';
         } 
         var options = {
           templateUrl: path + m +'.modal.html',
@@ -187,7 +188,7 @@
           modalInstance.close(function(){ // close modal
             angular.extend(ctrlScope, data);
             self.alert({type:'success', msg:data.message || '操作成功！'});
-            angular.extend(ctrlScope, self.empty);
+            angular.extend(ctrlScope, angular.copy(self.empty));
           });
         }
       },
@@ -259,6 +260,74 @@
         }, function(){
           C.badResponse();
         });
+      },
+
+      mLength: function(){
+        var monthDays = ["", 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        if (((this.year % 4 === 0) && (this.year % 100 !== 0)) || (this.year % 400 === 0)){
+          monthDays[2] = 29;
+        }
+        return monthDays;
+      },
+
+      twiNum: function(num){
+        if(angular.isNumber(num)){
+          if(num < 10){
+            return "0" + num;
+          }
+          else{
+            return num;
+          }
+        } 
+        else{
+          return "00";
+        }
+      },
+
+      getPeriod: function(){
+        var section = $location.path(), pickYear, firstDay, endDay, dp1, dp2;
+        var params = arguments[0], period={};
+        switch(section){
+          case '/month-ord':
+            period = {
+              s: params.year + '-' + this.twiNum(params.month) + '-01',
+              e: params.year + '-' + this.twiNum(params.month) + '-' + this.mLength()[params.month]
+            };
+          break;
+
+          case '/quarter-ord':
+            pickYear = params ? params.year : curYear;
+            firstDay = params ? this.twiNum(params.quarter * 3 - 2) + '-01' : this.twiNum(curQuarter * 3 - 2) + '-01';
+            endDay   = params ? this.twiNum(params.quarter * 3) + '-' + this.mLength()[params.quarter * 3] : this.twiNum(curQuarter * 3) + '-' + this.mLength()[curQuarter * 3];
+            period = {
+              s: pickYear + '-' + firstDay,
+              e: pickYear + '-' + endDay
+            };
+          break;
+
+          case '/time-ord':
+            dp1 = params.dp1;
+            dp2 = params.dp2;
+            if(params && dp1 && dp2){
+              if(params.dp1>params.dp2){
+                dp1 = [dp1, dp2];
+                dp2 = dp1[0];
+                dp1 = dp1[1];
+              }
+              period = {
+                s: dp1, e: dp2
+              };
+            }
+          break;
+        }
+        return {
+          startTime: this.formatDate(period.s),
+          endTime:   this.formatDate(period.e)
+        };
+      },
+
+      goOrderList: function(opts){
+        $location.path('/orderPeriod').search(opts);
       },
 
       getKeyJson:function(str){

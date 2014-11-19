@@ -54,7 +54,7 @@
                 C.responseHandler(scope, $scope, modalInstance, res);
               }, function(){
                 C.badResponse();
-              })
+              });
             }
           };
           C.openModal(modalSet, 'user');

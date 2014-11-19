@@ -68,19 +68,24 @@
         controller:  'OrderController',
         access: { requiredLogin: true }
       })
+      .when('/orderPeriod', {
+        templateUrl: viewPath + '/order/order.period.list.html',
+        controller:  'OrderController',
+        access: { requiredLogin: true }
+      })
       .when('/month-ord', {
-        templateUrl: viewPath + 'month-ord.html',
-        controller:  'OrderFilterController',
+        templateUrl: viewPath + '/order/order.month.html',
+        controller:  'OrderPeriodController',
         access: { requiredLogin: true }
       })
       .when('/quarter-ord', {
-        templateUrl: viewPath + 'quarter-ord.html',
-        controller:  'OrderFilterController',
+        templateUrl: viewPath + '/order/order.quarter.html',
+        controller:  'OrderPeriodController',
         access: { requiredLogin: true }
       })
       .when('/time-ord', {
-        templateUrl: viewPath + 'time-ord.html',
-        controller:  'OrderFilterController',
+        templateUrl: viewPath + '/order/order.period.html',
+        controller:  'OrderPeriodController',
         access: { requiredLogin: true }
       })
       .when('/rule', {
@@ -104,7 +109,7 @@
         access: { requiredLogin: true }
       })
       .when('/help', {
-        templateUrl: viewPath + 'help.html',
+        templateUrl: viewPath + '/common/help.html',
         access: { requiredLogin: true }
       })
       .when('/demo', {

@@ -7,7 +7,7 @@
     }),
     _ = {
       app:  'app',
-      dist: 'dist',
+      dist: 'app/dist',
       img:  'app/img',
       view: 'app/views',
       sass: 'app/sass',

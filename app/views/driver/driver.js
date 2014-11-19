@@ -30,6 +30,7 @@
       C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
       angular.extend(this, angular.copy(C.empty));
       angular.copy(this.paramsInit, paramsInit);
+      console.log($scope.search)
     };
 
     $scope.workStatus=[
@@ -63,14 +64,14 @@
       }
       else{
         angular.extend(params, {action:'add'});
-        drivInfo = {};
+        drivInfo = {workStatus:2, driverStatus:0};
       }
       var modalSet = {
         modalTitle: '司机信息', // modal 窗体标题
         formData: drivInfo || {},
         extraData:{areas: areas, cityOrder:cityOrder, provinceOrder:provinceOrder},
         confirm: function(modalInstance, scope){ // 确认modal callback
-          var saveData = DDS.saveDriv(angular.extend(params, scope.formData))
+          var saveData = DDS.saveDriv(angular.extend(params, scope.formData));
           saveData.$promise.then(function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){

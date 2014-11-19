@@ -9,7 +9,7 @@
       angular.extend(paramsInit, {endpoint: 'template'});
     }
     if(hash.indexOf('rule')!==-1){
-      angular.extend(paramsInit, {endpoint: 'rule'})
+      angular.extend(paramsInit, {endpoint: 'rule'});
     }
     C.list($scope, paramsInit);
     $scope.goBack = function(){

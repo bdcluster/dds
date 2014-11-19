@@ -6,7 +6,7 @@
     'RuleTmplModule', 'RuleModule', 'RuleDetailModule',
     'CustomerModule',
     'DriverModule',
-    'OrderModule'
+    'OrderModule', 'OrderPeriodModule'
   ])
   .controller('GlobelController', [
     '$rootScope','$window','$location','AuthService','DDS','C',function(

@@ -21,8 +21,8 @@
       $scope.user.password = $filter('md5')($scope.user.password);
       $scope.master = angular.copy($scope.user);
       // 登录验证
-      var paramsInit = angular.extend({endpoint: 'login-index'}, $scope.user);
-      DDS.get(paramsInit, function(res){
+      // var paramsInit = angular.extend({endpoint: 'login-index'}, $scope.user);
+      DDS.login($scope.user, function(res){
         var data = C.validResponse(res);
         if(angular.isObject(data)){
           AuthService.isLogged = true;

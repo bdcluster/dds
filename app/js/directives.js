@@ -1,4 +1,4 @@
 (function(){
   'use strict';
-  angular.module('DdsDirectives', [])
+  angular.module('DdsDirectives', []);
 })();

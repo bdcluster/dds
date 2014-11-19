@@ -8,6 +8,7 @@
       endpoint:'order', action:'select',
       pageNum:$scope.pageNum
     };
+    $scope.paramsInit = angular.copy(paramsInit);
 
     $scope.areas = C.storage().get('provinces');
     angular.extend(paramsInit, $routeParams);

@@ -5,13 +5,16 @@
      $rootScope,  $scope,  $filter,  C,  DDS){
     
     $rootScope.title = '修改密码 - 代驾平台';
-    var storage = C.storage().get('loginInfo');
+    var storage = C.storage();
+    var userInfo = storage.get('loginInfo');
+
+    C.closeMenu();
     $scope.pwd = {};
     $scope.pwdSubmit = function(){
       var postData = { 
-        userId: storage.userId,
-        sessionId : storage.sessionId,
-        id: storage.id,
+        userId: userInfo.userId,
+        sessionId : userInfo.sessionId,
+        id: userInfo.id,
         oldPassword: $filter('md5')($scope.pwd.oldPwd),
         newPassword: $filter('md5')($scope.pwd.newPwd)
       };

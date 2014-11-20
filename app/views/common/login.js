@@ -37,15 +37,23 @@
 
             if(angular.isObject(menus)){
               storage.set('menus', result.data); //缓存菜单
+              $rootScope.menus = storage.get('menus');
+
               $scope.hideLogin=true; //为login容器添加fade-out样式
               $timeout(function(){
-                $rootScope.isLogged = true;
+                $rootScope.isLogged = storage.get('isLogged');
+                $rootScope.userId = storage.get('userId');
+
                 $location.path('/home');
               }, 500);
             }
-          }, function(){C.badResponse();});
+          }, function(res){
+            C.badResponse(res);
+          });
         }
-      }, function(){C.badResponse();});
+      }, function(res){
+        C.badResponse(res);
+      });
     };
 
     $scope.isUnchanged = function(user){

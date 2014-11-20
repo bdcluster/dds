@@ -21,7 +21,7 @@
       pagination: '/views/common/pagination.html',
       alerts: [],
       menus: storage.get('menus') || [],
-      userId:storage.get('userId') || [],
+      userId:storage.get('userId') || '',
       pageNum:1,
       maxPageSize : 8,
       recordsPerPage: 10,
@@ -52,7 +52,7 @@
       },
       signOut: function(){
         var self = this;
-        var logout = DDS.get({endpoint:'logout'});
+        var logout = DDS.signOut();
 
         logout.$promise.then(function(res){
           var data = C.validResponse(res);

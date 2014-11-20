@@ -48,6 +48,15 @@
         return a;
       },
 
+      closeMenu: function(){
+        var storage, index;
+        storage = this.storage();
+        index = storage.get('opendAccordion');
+        if(index !== null){
+          $rootScope.menus[index].open = false;
+        }
+      },
+
       delayJump: function(hash, delay){
         if(delay){
           $timeout(function(){

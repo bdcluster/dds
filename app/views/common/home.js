@@ -4,25 +4,25 @@
     '$rootScope','$scope','$location','AuthService','C','DDS', function(
      $rootScope,  $scope,  $location,  AuthService,  C,  DDS){
     
+    $rootScope.title = '首页 - 代驾平台';
     var storage = C.storage();
-    if(storage.get('isLogged')){
-      $rootScope.menus = storage.get('menus');
-      $rootScope.userId = storage.get('userId');
-      $rootScope.isLogged=true;
-      $rootScope.title = '首页 - 代驾平台';
+    var index = storage.get('opendAccordion');
+    var params = {endpoint:'provinces', action:'select'};
+    var key = params.endpoint;
 
-      $scope.provincesData = function(){
-        var params = {endpoint:'provinces', action:'select'};
-        var key = params.endpoint;
-        DDS.get(params, function(res){
-          var data = C.validResponse(res);
-          if(angular.isObject(data) && !angular.isObject(storage.get(key))){
-            storage.set(key, data);
-          }
-        }, function(){
-          C.badResponse();
-        });
-      };
+    C.closeMenu();
+
+    $scope.provincesData = function(){
+      DDS.get(params, function(res){
+        var data = C.validResponse(res);
+        if(angular.isObject(data)){
+          storage.set(key, data);
+        }
+      }, function(res){
+        C.badResponse(res);
+      });
+    };
+    if(!storage.get(key)){
       $scope.provincesData();
     }
 

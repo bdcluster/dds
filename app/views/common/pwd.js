@@ -1,9 +1,10 @@
 (function(){
   'use strict';
   angular.module('PasswordModule', []).controller('ChangePasswordController', [
-    '$scope','$filter','C','DDS', function(
-     $scope,  $filter,  C,  DDS){
+    '$rootScope','$scope','$filter','C','DDS', function(
+     $rootScope,  $scope,  $filter,  C,  DDS){
     
+    $rootScope.title = '修改密码 - 代驾平台';
     var storage = C.storage().get('loginInfo');
     $scope.pwd = {};
     $scope.pwdSubmit = function(){

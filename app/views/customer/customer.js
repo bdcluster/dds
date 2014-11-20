@@ -55,8 +55,9 @@
           var saveData = DDS.saveCust(angular.extend(params, scope.formData));
           saveData.$promise.then(function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
         // ,cancel: C.cancelModal

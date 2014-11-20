@@ -80,6 +80,7 @@
             }, 2000);
           }, function(res){
             C.badResponse(res);
+            modalInstance.dismiss();
           });
           
         }

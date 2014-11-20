@@ -14,7 +14,8 @@
     return{
       errMessage: {
         status404: '对不起，您可能没有访问权限！', // response failure && status=404
-        status500: '内部服务器错，请联系管理员！', // response failure && status=0
+        status500: '网络不通, 或者内部服务器错误，请联系管理员！', // response failure && status=0
+        otherError:'未知错误！', // bad response, other response status
         responseErr:'对不起，出现一个未知错误！', // header.errorCode!==0
         dataError:  '会话过期，请手工退出系统后重新登录！' // no json data
       },
@@ -130,33 +131,36 @@
       badResponse: function(res){
         if(res){
           if(res.status === 404){
-            this.alert({type:'danger', msg: this.errMessage.status404});
+            this.alert({type:'danger', msg: this.errMessage.status404 + '(status: ' + res.status + ')'});
             return false;
           }
           else if(res.status === 0){
-            this.alert({type:'danger', msg: this.errMessage.status500});
+            this.alert({type:'danger', msg: this.errMessage.status500 + '(status: ' + res.status + ')'});
             return false;
           }
           else{
-            this.alert({type:'danger', msg: '未知错误！(status: '+ res.status +')'});
+            this.alert({type:'danger', msg: this.errMessage.otherError + '(status: ' + res.status +')'});
             return false;
           }
         }
         else{
-          this.alert({type:'danger', msg: '未知错误，请联系管理员！'});
+          this.alert({type:'danger', msg: this.errMessage.otherError});
           return false;
         }
       },
 
       list:function(scope, options){
         var self = this;
+        $rootScope.loading = true;
         DDS.get(options, function(res){
           var data = self.validResponse(res);
+          $rootScope.loading = false;
           if(angular.isObject(res)){
             angular.extend(scope, data);
             scope.showPagination = true;
           }
         }, function(res){
+          $rootScope.loading = false;
           self.badResponse(res);
         });
       },

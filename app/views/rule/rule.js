@@ -30,7 +30,8 @@
     $scope.areas = C.storage().get('provinces');
 
     $scope.addRule = function(){
-      var tmpls = DDS.get({endpoint: 'template', action: 'select', status: '0'});
+      // 查询所有(type='all')有效(status=0)模板
+      var tmpls = DDS.get({endpoint: 'template', action: 'select', status: 0, type: 'all'});
       tmpls.$promise.then(function(result){
         var data = C.validResponse(result);
         if(angular.isObject(data)){
@@ -56,8 +57,9 @@
                 saveData = DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str, cityStr:cityStr}));
                 saveData.$promise.then(function(res){
                   C.responseHandler(scope, $scope, modalInstance, res);
-                }, function(){
-                  C.badResponse();
+                }, function(res){
+                  C.badResponse(res);
+                  modalInstance.dismiss();
                 });
               }
             }
@@ -86,8 +88,9 @@
             var saveData =  DDS.saveRule(angular.extend(params, scope.formData, {arrayStr:str}));
             saveData.$promise.then(function(res){
               C.responseHandler(scope, $scope, modalInstance, res);
-            }, function(){
-              C.badResponse();
+            }, function(res){
+              C.badResponse(res);
+              modalInstance.dismiss();
             });
           }
         };
@@ -101,6 +104,9 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delRule({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
       };

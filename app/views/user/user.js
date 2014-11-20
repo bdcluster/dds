@@ -52,15 +52,17 @@
               var saveData = DDS.saveUser(angular.extend(params, scope.formData));
               saveData.$promise.then(function(res){
                 C.responseHandler(scope, $scope, modalInstance, res);
-              }, function(){
-                C.badResponse();
+              }, function(res){
+                C.badResponse(res);
+                modalInstance.dismiss();
               });
             }
           };
           C.openModal(modalSet, 'user');
         }
-      }, function(){
-        C.badResponse();
+      }, function(res){
+        C.badResponse(res);
+        modalInstance.dismiss();
       });
     };
     $scope.remove = function(id){
@@ -69,8 +71,9 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delUser({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
       };

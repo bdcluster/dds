@@ -4,6 +4,7 @@
     '$rootScope','$scope','$filter','$timeout','$location','AuthService','C','DDS', function(
      $rootScope,  $scope,  $filter,  $timeout,  $location,  AuthService,  C,  DDS){
     
+    $rootScope.title = '登录 - 代驾平台';
     var storage = C.storage();
 
     AuthService.isLogged = false;

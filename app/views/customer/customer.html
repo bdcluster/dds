@@ -41,7 +41,6 @@
       <td>城市</td>
       <td>常用目的地</td>
       <td>注册时间</td>
-      <td class="action">操作</td>
     </tr>
   </thead>
   <tbody>
@@ -54,20 +53,7 @@
       <td data-ng-bind="cust.cityName"></td>
       <td data-ng-bind="cust.address"></td>
       <td data-ng-bind="cust.createTime | myDate"></td>
-      <td>
-        <button class="btn btn-primary btn-xs" data-ng-click="saveCust(cust)">
-          <span class="glyphicon glyphicon-edit"></span>
-          编辑
-        </button>
-      </td>
     </tr>
   </tbody>
 </table>
-<div class="row" data-ng-show="showPagination">
-  <div class="col-xs-10">
-    <div data-pagination data-total-items="total" data-ng-model="pageNum" data-max-size="maxPageSize" class="pagination-sm" data-num-pages="numPages" data-ng-change="changePage()" data-rotate="false" data-boundary-links="true" data-previous-text="上页" data-next-text="下页" data-first-text="首页" data-last-text="末页"></div>
-  </div>
-  <div class="col-xs-2 text-right pagination-tip">
-    页码: {{pageNum}} / {{numPages}}
-  </div>
-</div>
+<div data-ng-include="pagination"></div>

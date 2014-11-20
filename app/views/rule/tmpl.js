@@ -56,8 +56,9 @@
           var saveData = DDS.saveRuleTemp(angular.extend(params, scope.formData, {arrayStr:str}));
           saveData.$promise.then(function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
       };
@@ -70,8 +71,9 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delRuleTemp({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
       };

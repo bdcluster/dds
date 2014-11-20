@@ -2,7 +2,7 @@
 <html  xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="DdsApp" data-ng-controller="GlobelController">
   <head>
     <meta charset="utf-8">
-    <title>Alpha2 - 代驾平台</title>
+    <title data-ng-bind="title"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- build:css css/docs.css -->
     <link rel="stylesheet" href="./css/docs.css">
@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">
-            <i class="iconfont icon-vehicle"></i> 代驾管理系统 <small data-ng-bind="version"></small>
+            <i class="iconfont icon-vehicle"></i> 代驾平台 <small data-ng-bind="version"></small>
           </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -57,8 +57,9 @@
             <div data-accordion-group data-ng-repeat="m in menus" data-is-open="m.open" data-ng-click="markOpen($index)" data-ng-class="{active:m.open}">
               <div data-accordion-heading><i class="iconfont" data-ng-class="{'icon-{{m.alias}}': true}"></i> {{m.name}}</div>
               <ul class="nav nav-pills nav-stacked">
-                <li data-ng-repeat="m2 in m.subname" data-ng-class="{active: isActivedMenu('/'+m2.path)}">
-                  <a href="#/{{m2.path}}">
+                <li data-ng-repeat="m2 in m.subname"
+                  data-ng-class="{active: isActivedMenu('/'+m2.path)}">
+                  <a href="#/{{m2.path}}" data-ng-click="resetTitle(m2.name)">
                     <i class='iconfont icon-arrow-right'></i>
                     <span data-ng-bind="m2.name"></span>
                   </a>
@@ -90,6 +91,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="loading text-primary" data-ng-show="loading">
+        <i class="iconfont icon-loading"></i>
       </div>
     </footer>
     <div class="mask" data-ng-hide="isLogged"></div>

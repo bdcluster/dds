@@ -61,6 +61,7 @@
             C.responseHandler(scope, $scope, modalInstance, res);
           }, function(){
             C.badResponse();
+            modalInstance.dismiss();
           });
         }
       };
@@ -73,8 +74,9 @@
         confirm: function(modalInstance, scope){ // 确认modal callback
           DDS.delDriv({pageNum:$scope.pageNum, id: id}, function(res){
             C.responseHandler(scope, $scope, modalInstance, res);
-          }, function(){
-            C.badResponse();
+          }, function(res){
+            C.badResponse(res);
+            modalInstance.dismiss();
           });
         }
       };

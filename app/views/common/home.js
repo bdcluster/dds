@@ -9,6 +9,7 @@
       $rootScope.menus = storage.get('menus');
       $rootScope.userId = storage.get('userId');
       $rootScope.isLogged=true;
+      $rootScope.title = '首页 - 代驾平台';
 
       $scope.provincesData = function(){
         var params = {endpoint:'provinces', action:'select'};

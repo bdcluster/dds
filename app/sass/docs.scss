@@ -28,6 +28,24 @@ html{
   }
 }
 
+.loading{
+  $w: 100px;
+  width:$w; height:$w;
+  position: absolute;
+  top: 50%; left: 50%;
+  text-align:center;
+  margin-top: -$w/2;
+  margin-left: -$w/2;
+  border-radius: $w/5;
+  background: $gray-lighter;
+  border:5px solid darken($gray-lighter, 10%);
+  opacity:0.8;
+  i{
+    font-size:$w/2;
+    line-height:$w;
+    @include animation("rotate" 2s linear infinite forwards);
+  }
+}
 
 .mask{
   position: fixed;
@@ -195,6 +213,10 @@ html{
       text-decoration:underline;
     }
   }
+  tfoot td{
+    min-height: 200px;
+
+  }
 }
 
 .pagination{
@@ -213,7 +235,7 @@ html{
   right:0;
 }
 
-@include keyframes("sync-rotate"){
+@include keyframes("rotate"){
   from{
     @include rotate(0deg);
   }
@@ -223,7 +245,7 @@ html{
 }
 
 .sync-ing i{
-  @include animation("sync-rotate" 2s linear infinite forwards);
+  @include animation("rotate" 2s linear infinite forwards);
 }
 
 .show-edit{

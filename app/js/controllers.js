@@ -15,13 +15,16 @@
     var storage = C.storage();
     angular.extend($rootScope, {
       version: 'ver 0.3',
+      title: "代驾平台",
       isLogged: AuthService.isLogged || storage.get('isLogged'),
+      loading: false,
+      pagination: '/views/common/pagination.html',
       alerts: [],
       menus: storage.get('menus') || [],
       userId:storage.get('userId') || [],
       pageNum:1,
       maxPageSize : 8,
-      recordsPerPage: 2,
+      recordsPerPage: 10,
       dateOptions: {
         showWeeks:false,
         startingDay:1
@@ -44,6 +47,9 @@
           this.menus[index].open = true;
         }
       },
+      resetTitle: function(t){
+        $rootScope.title = t + ' - 代驾平台';
+      },
       signOut: function(){
         var self = this;
         var logout = DDS.get({endpoint:'logout'});
@@ -56,7 +62,7 @@
     });
     $rootScope.keepOpenAccordion();
   }])
-  /* normal modal */
+  /* modal controller */
   .controller('ModalController', [
     '$scope','$modalInstance','modalSet', function(
      $scope,  $modalInstance,  modalSet){

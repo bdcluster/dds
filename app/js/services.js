@@ -401,7 +401,20 @@
       }, 
 
       searchFlag: function(searchData){
-        return (angular.isObject(searchData) && !angular.equals(searchData, {}));
+        var storage = this.storage(), lastSearch;
+        if(angular.equals(searchData, {}) || !angular.isObject(searchData)){
+          return false;
+        }
+        else{
+          lastSearch = storage.get('searchData');
+          if(angular.equals(lastSearch, searchData)){
+            return false;
+          }
+          else{
+            storage.set('searchData', searchData);
+            return true;
+          }
+        }
       }
     };
   }]);

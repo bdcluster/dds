@@ -21,15 +21,17 @@
     };
 
     $scope.refresh = function(){
-      C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
-      angular.extend(this, angular.copy(C.empty));
-      angular.copy(this.paramsInit, paramsInit);
+      if(!angular.equals(this.paramsInit, paramsInit)){
+        C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
+        angular.extend(this, angular.copy(C.empty));
+        angular.copy(this.paramsInit, paramsInit);
+      }
     };
 
     $scope.changePage();
     //Modal options & actions
     $scope.saveUser = function(user){
-      var roles = DDS.get({endpoint:'role', action:'select'}), userInfo;
+      var roles = DDS.get({endpoint:'role', action:'select', type:'all'}), userInfo;
       roles.$promise.then(function(res){
         var data = C.validResponse(res);
         if(angular.isObject(data)){

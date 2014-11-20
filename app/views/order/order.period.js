@@ -13,6 +13,7 @@
       dp1: curYear + '-' + C.twiNum(curMonth) + '-01',
       dp2: curYear + '-' + C.twiNum(curMonth) + '-' + C.mLength()[curMonth]
     };
+    var originSearch = angular.copy($scope.search);
     $scope.areas = C.storage().get('provinces');
 
     var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
@@ -42,9 +43,12 @@
     };
 
     $scope.refresh = function(){
-      C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
-      angular.extend(this, angular.copy(C.empty));
-      angular.copy(this.paramsInit, paramsInit);
+      if(!angular.equals(this.paramsInit, paramsInit)){
+        C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
+        angular.extend(this, angular.copy(C.empty));
+        $scope.search = angular.copy(originSearch);
+        angular.copy(this.paramsInit, paramsInit);
+      }
     };
 
     $scope.orderByCust = function(cName){

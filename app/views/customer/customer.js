@@ -25,9 +25,11 @@
     };
 
     $scope.refresh = function(){
-      C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
-      angular.extend(this, angular.copy(C.empty));
-      angular.copy(this.paramsInit, paramsInit);
+      if(!angular.equals(this.paramsInit, paramsInit)){
+        C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
+        angular.extend(this, angular.copy(C.empty));
+        angular.copy(this.paramsInit, paramsInit);
+      }
     };
 
     $scope.saveCust = function(cust){

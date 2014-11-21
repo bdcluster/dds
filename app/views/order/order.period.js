@@ -51,8 +51,8 @@
       }
     };
 
-    $scope.orderByCust = function(cName){
-      C.goOrderList(angular.extend({customerName: cName}, C.getPeriod($scope.search)));
+    $scope.orderByCust = function(cId){
+      C.goOrderList(angular.extend({custId: cId}, C.getPeriod($scope.search)));
     };
 
   }]);

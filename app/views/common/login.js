@@ -12,6 +12,9 @@
     $rootScope.menus = [];
     storage.clear();
 
+    $scope.code = angular.copy($rootScope.codeUrl);
+    // $rootScope.codeUrl = '/ddrive-platform-web/getCheckCode';
+
     $scope.checkLogin = function(){
       /*
         login success:
@@ -54,10 +57,16 @@
       }, function(res){
         C.badResponse(res);
       });
+
+      this.getCode();
     };
 
     $scope.isUnchanged = function(user){
       return angular.equals(user, $scope.master);
+    };
+
+    $scope.getCode = function(){
+      $scope.code = $rootScope.codeUrl + '?chaos=' + Math.random();
     };
   }]);
 })();

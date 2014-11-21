@@ -1,8 +1,8 @@
 (function(){
   'use strict';
   angular.module('DdsResources', []).factory('DDS', [
-    '$resource','$window','$location',function(
-     $resource,  $window,  $location){
+    '$rootScope','$resource','$window','$location',function(
+     $rootScope,  $resource,  $window,  $location){
 
     var http = $location.protocol(), 
         host = $location.host(), 
@@ -42,6 +42,7 @@
       host = '10.10.40.250';
       port = ':8080';
     }
+    $rootScope.codeUrl = http + '://' + host + port + proj + '/getCheckCode';
     url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
 
     return $resource(url, normalPrarms, {

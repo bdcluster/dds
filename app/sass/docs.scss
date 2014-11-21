@@ -169,10 +169,15 @@ html{
 .role-pool{
   .check-wrap{
     height:250px;
-    overflow-y: scroll;
-    padding:0 $grid-gutter-width/2;
     border: 1px solid $input-border;
     border-radius: $input-border-radius;
+  }
+  .check-area{
+    height:250px;
+    overflow-y: scroll;
+    padding:$grid-gutter-width/2;
+    padding-top:0;
+    
   }
 }
 

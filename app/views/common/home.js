@@ -6,12 +6,10 @@
     
     $rootScope.title = '首页 - 代驾平台';
     var storage = C.storage();
-    var index = storage.get('opendAccordion');
     var params = {endpoint:'provinces', action:'select'};
     var key = params.endpoint;
 
     C.closeMenu();
-
     $scope.provincesData = function(){
       DDS.get(params, function(res){
         var data = C.validResponse(res);
@@ -22,7 +20,7 @@
         C.badResponse(res);
       });
     };
-    if(!storage.get(key)){
+    if(storage.get(key) === null){
       $scope.provincesData();
     }
 

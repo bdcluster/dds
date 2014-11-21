@@ -17,7 +17,7 @@
         status500: '网络不通, 或者内部服务器错误，请联系管理员！', // response failure && status=0
         otherError:'未知错误！', // bad response, other response status
         responseErr:'对不起，出现一个未知错误！', // header.errorCode!==0
-        dataError:  '会话过期，请手工退出系统后重新登录！' // no json data
+        dataError:  '没有请求到任何数据。' // no json data
       },
 
       empty:{
@@ -119,6 +119,13 @@
               return res.data;
             }
           }
+          // session过期,踢回登录页
+          else if(res.header.errorCode === 2){
+            this.alert({type: 'danger', msg: res.header.message}, ifModal, modalScope);
+            $timeout(function(){
+              $location.path('/login');
+            }, 3000);
+          }
           else{
             this.alert({
               type: 'danger', 
@@ -127,7 +134,7 @@
           }
         }
         else if(res !== ''){
-          this.alert({type:'danger', msg: this.errMessage.dataError}, ifModal, modalScope);
+          // this.alert({type:'danger', msg: this.errMessage.dataError}, ifModal, modalScope);
           return false;
         }
         else{

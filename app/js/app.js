@@ -112,11 +112,6 @@
         templateUrl: viewPath + '/common/help.html',
         access: { requiredLogin: true }
       })
-      .when('/demo', {
-        templateUrl: viewPath + 'demo.html',
-        controller:  'DemoController',
-        access: { requiredLogin: true }
-      })
       .otherwise({redirectTo: '/home'});
 
     $httpProvider.defaults.transformRequest = function(obj){

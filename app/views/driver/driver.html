@@ -1,0 +1,99 @@
+<div class="well">
+  <form class="form-inline pull-right" role="form">
+    <div class="form-group">
+      <label class="sr-only">司机工号</label>
+      <input type="text" class="form-control input-sm" name="driverNo" data-ng-model="search.driverNo" placeholder="司机工号">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">姓名</label>
+      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="姓名">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">省份</label>
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefined">
+        <option value="">-- 选择省份 --</option> 
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">城市</label>
+      <select name="city" class="form-control input-sm" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="search.cityId=city.id">
+        <option value="">-- 选择城市 --</option> 
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">状态</label>
+      <select name="workStatus" class="form-control input-sm" data-ng-model="search.workStatus">
+        <option value="">---工作状态---</option>
+        <option value="1">忙碌</option>
+        <option value="2">空闲</option>
+        <option value="3">代驾中</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch()">
+        <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+    </div>
+  </form>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="saveDriver()">
+      <i class="glyphicon glyphicon-plus"></i> 添加
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>    
+  </div>
+  <div class="clearfix"></div>
+</div>
+<table class="table table-bordered table-striped table-dds">
+  <thead>
+    <tr>
+      <td>司机工号</td>
+      <td>姓名</td>
+      <td>手机号</td>
+      <td>驾驶证</td>
+      <td>省份</td>
+      <td>城市</td>
+      <td>驾龄</td>
+      <td>籍贯</td>
+      <td>代驾次数</td>
+      <td>工作状态</td>
+      <td>服务评级</td>
+      <td class="action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat="driver in drivers">
+      <td data-ng-bind="driver.driverNo"></td>
+      <td>
+        <span data-ng-bind="driver.driverName"></span>
+        <span class="label label-danger pull-right" data-ng-show="driver.driverStatus==1">已停用</span>
+      </td>
+      <td data-ng-bind="driver.driverPhone"></td>
+      <td data-ng-bind="driver.identityCard"></td>
+      <td data-ng-bind="driver.provinceName"></td>
+      <td data-ng-bind="driver.cityName"></td>
+      <td data-ng-bind="driver.driveAge"></td>
+      <td data-ng-bind="driver.nativePlace"></td>
+      <td data-ng-bind="driver.driveCount"></td>
+      <td>
+        <span class="label label-{{o.c}}"
+          data-ng-repeat="o in workStatus"
+          data-ng-bind="o.n"
+          data-ng-show="driver.workStatus==o.s"></span>
+      </td>
+      <td data-ng-bind="'✭✭✭✭✭' | limitTo: driver.starLevel"></td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="saveDriver(driver)">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(driver.id)">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div data-ng-include="pagination"></div>

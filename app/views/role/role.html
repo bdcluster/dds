@@ -1,0 +1,48 @@
+<div class="well">
+  <form class="form-inline pull-right" role="form">
+    <div class="form-group">
+      <label class="sr-only">角色名</label>
+      <input type="text" class="form-control input-sm" name="roleName" data-ng-model="search.roleName" placeholder="角色名">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch(search)">
+        <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+    </div>
+  </form>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="saveRole()">
+      <i class="glyphicon glyphicon-plus"></i> 添加
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<table class="table table-bordered table-striped table-dds">
+  <thead>
+    <tr>
+      <td>角色名</td>
+      <td>添加时间</td>
+      <td class="action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat="role in roles">
+      <td data-ng-bind="role.roleName"></td>
+      <td data-ng-bind="role.createTime | myDate"></td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="saveRole(role)">
+          <span class="glyphicon glyphicon-edit"></span>
+          编辑
+        </button>
+        <button class="btn btn-danger btn-xs" data-ng-click="remove(role.id)">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          删除
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div data-ng-include="pagination"></div>

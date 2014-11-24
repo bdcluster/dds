@@ -1,0 +1,113 @@
+<form class="form-horizontal form-modal" role="form" name="modalForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder]||'';city=province.subname[extraData.cityOrder]||''">
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group" data-ng-show="formData.driverNo">
+      <label class="col-xs-3 control-label">司机工号</label>
+      <div class="col-xs-8">
+        <p class="form-control-static" data-ng-bind="formData.driverNo"></p>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.driverName.$valid &amp;&amp; modalForm.driverName.$dirty, 'has-error':modalForm.driverName.$invalid &amp;&amp; modalForm.driverName.$dirty}">
+      <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="driverName" data-ng-model="formData.driverName" data-ng-minlength="2" data-ng-maxlength="5" maxlength="5" placeholder="2-5位">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.driverName.$dirty" data-ng-class="{'glyphicon-ok':modalForm.driverName.$valid, 'glyphicon-remove':modalForm.driverName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.province.$valid &amp;&amp; modalForm.province.$dirty &amp;&amp; modalForm.city.$dirty &amp;&amp; modalForm.city.$valid, 'has-error':(modalForm.province.$invalid &amp;&amp; modalForm.province.$dirty) || (modalForm.city.$invalid &amp;&amp; modalForm.city.$dirty)}">
+      <label for="province" class="col-xs-3 control-label">* 地区</label>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6">
+            <select name="province" class="form-control"
+              data-ng-model="province" 
+              data-ng-options="prov.name for prov in extraData.areas"
+              data-ng-change="formData.provinceId=province.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+          <div class="col-xs-6">
+            <select name="city" class="form-control"
+              data-ng-model="city"
+              data-ng-options="city.name for city in province.subname"
+              data-ng-change="formData.cityId=city.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.driverPhone.$valid &amp;&amp; modalForm.driverPhone.$dirty, 'has-error':modalForm.driverPhone.$invalid &amp;&amp; modalForm.driverPhone.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">* 手机号</label>
+      <div class="col-xs-8">
+        <input type="tex" class="form-control" name="driverPhone" data-ng-model="formData.driverPhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.driverPhone.$dirty" data-ng-class="{'glyphicon-ok':modalForm.driverPhone.$valid, 'glyphicon-remove':modalForm.driverPhone.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.identityCard.$valid &amp;&amp; modalForm.identityCard.$dirty, 'has-error':modalForm.identityCard.$invalid &amp;&amp; modalForm.identityCard.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">* 驾驶证</label>
+      <div class="col-xs-8">
+        <input type="tex" class="form-control" name="identityCard" data-ng-model="formData.identityCard" data-ng-pattern="/(^\d{15}$)|(^\d{17}([0-9]|X)$)/" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.identityCard.$dirty" data-ng-class="{'glyphicon-ok':modalForm.identityCard.$valid, 'glyphicon-remove':modalForm.identityCard.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.driveAge.$valid &amp;&amp; modalForm.driveAge.$dirty, 'has-error':modalForm.driveAge.$invalid &amp;&amp; modalForm.driveAge.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">驾龄</label>
+      <div class="col-xs-8">
+        <input type="number" class="form-control" name="driveAge" data-ng-model="formData.driveAge" data-min="1" data-max="60" placeholder="驾龄介于1-60">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.driveAge.$dirty" data-ng-class="{'glyphicon-ok':modalForm.driveAge.$valid, 'glyphicon-remove':modalForm.driveAge.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.nativePlace.$valid &amp;&amp; modalForm.nativePlace.$dirty, 'has-error':modalForm.nativePlace.$invalid &amp;&amp; modalForm.nativePlace.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">籍贯</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="nativePlace" data-ng-model="formData.nativePlace" data-ng-maxlength="10" maxlength="10" placeholder="长度小于等于10位">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.nativePlace.$dirty" data-ng-class="{'glyphicon-ok':modalForm.nativePlace.$valid, 'glyphicon-remove':modalForm.nativePlace.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':dirvForm.workStatus.$valid &amp;&amp; dirvForm.workStatus.$dirty, 'has-error':dirvForm.workStatus.$invalid &amp;&amp; dirvForm.workStatus.$dirty}">
+      <label class="col-xs-3 control-label">* 当前状态</label>
+      <div class="col-xs-8">
+        <label class="radio-inline">
+          <input type="radio" name="workStatus" data-ng-value="1" data-ng-model="formData.workStatus" required> 忙碌
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="workStatus" data-ng-value="2" data-ng-model="formData.workStatus" required> 空闲
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="workStatus" data-ng-value="3" data-ng-model="formData.workStatus" required> 代驾中
+        </label>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':dirvForm.driverStatus.$valid &amp;&amp; dirvForm.driverStatus.$dirty, 'has-error':dirvForm.driverStatus.$invalid &amp;&amp; dirvForm.driverStatus.$dirty}">
+      <label class="col-xs-3 control-label">* 司机状态</label>
+      <div class="col-xs-8">
+        <label class="radio-inline">
+          <input type="radio" name="driverStatus" data-ng-value="1" data-ng-model="formData.driverStatus" required> 停用
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="driverStatus" data-ng-value="0" data-ng-model="formData.driverStatus" required> 启用
+        </label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="modalForm.$invalid || modalForm.$pristine" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

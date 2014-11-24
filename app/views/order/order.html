@@ -1,0 +1,113 @@
+<div class="well">
+  <form class="form-inline pull-right" role="form">
+    <div class="form-group">
+      <label class="sr-only">客户名称</label>
+      <input type="text" class="form-control input-sm" name="customerName" data-ng-model="search.customerName" placeholder="客户名称">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">账号</label>
+      <input type="text" class="form-control input-sm" name="driverName" data-ng-model="search.driverName" placeholder="司机名称">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">订单号</label>
+      <input type="text" class="form-control input-sm" name="orderId" data-ng-model="search.orderId" placeholder="订单号">
+    </div>
+    <div class="form-group">
+      <label class="sr-only">省份</label>
+      <select name="province" class="form-control input-sm" data-ng-model="province" data-ng-options="prov.name for prov in areas" data-ng-change="search.provinceId=province.id;city='';search.cityId=undefined">
+        <option value="">-- 选择省份 --</option> 
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">城市</label>
+      <select name="city" class="form-control input-sm" data-ng-model="city" data-ng-options="city.name for city in province.subname" data-ng-change="search.cityId=city.id">
+        <option value="">-- 选择城市 --</option> 
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">订单状态</label>
+      <select name="status" class="form-control input-sm" 
+        data-ng-model="search.orderStatus"
+        data-ng-options="st.s as st.n for st in orderStatus">
+        <option value="">订单状态</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="sr-only">帐单状态</label>
+      <select name="status" class="form-control input-sm" 
+        data-ng-model="search.billStatus"
+        data-ng-options="st.s as st.n for st in billStatus">
+        <option value="">帐单状态</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-sm" data-ng-click="doSearch()">
+        <span class="glyphicon glyphicon-search"></span> 搜素
+      </button>
+    </div>
+  </form>
+  <div class="btn-group">
+    <button class="btn btn-primary btn-sm" data-ng-click="refresh()">
+      <i class="glyphicon glyphicon-refresh"></i> 刷新
+    </button>
+    <button class="btn btn-primary btn-sm" data-ng-click="orderExport(search)" data-ng-disabled="orders.length<=0">
+      <i class="glyphicon glyphicon-export"></i> 数据导出
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<table class="table table-bordered table-striped table-dds">
+  <thead>
+    <tr>
+      <td>订单号</td>
+      <td>客户名称</td>
+      <td>司机名称</td>
+      <td>省份</td>
+      <td>城市</td>
+      <td>费用</td>
+      <td>订单状态</td>
+      <td>账单状态</td>
+      <td class="hide">同步状态</td>
+      <td class="action">操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-ng-repeat="ord in orders">
+      <td data-ng-bind="ord.orderNo"></td>
+      <td data-ng-bind="ord.customerName"></td>
+      <td data-ng-bind="ord.driverName"></td>
+      <td data-ng-bind="ord.provinceName"></td>
+      <td data-ng-bind="ord.cityName"></td>
+      <td data-ng-bind="ord.serviceCost | currency: '￥'"></td>
+      <td>
+        <span class="label label-{{o.c}}" 
+          data-ng-repeat="o in orderStatus" 
+          data-ng-bind="o.n" 
+          data-ng-show="ord.orderStatus==o.s"></span>
+      </td>
+      <td>
+        <span class="label label-{{o.c}}"
+          data-ng-repeat="o in billStatus"
+          data-ng-bind="o.n"
+          data-ng-show="ord.billStatus==o.s"></span>
+      </td>
+      <td class="hide">
+         <span class="label label-{{o.c}}"
+          data-ng-repeat="o in syncStatus"
+          data-ng-bind="o.n"
+          data-ng-show="ord.syncStatus==o.s"></span>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-xs" data-ng-click="ordDetail(ord)">
+          <span class="glyphicon glyphicon-th-list"></span>
+          订单详情
+        </button>
+        <button class="btn btn-xs hide" data-ng-click="syncOrder(ord.orderId)" data-ng-class="{'sync-ing':syncButton=='正在同步', 'btn-info':sync.primary, 'btn-success':sync.success, 'btn-danger': sync.danger}" data-ng-show="ord.syncStatus==0">
+          <i class="glyphicon glyphicon-refresh"></i>
+          <span data-ng-bind="syncButton"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div data-ng-include="pagination"></div>

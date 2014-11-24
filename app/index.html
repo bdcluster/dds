@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html  xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="DdsApp">
+<html  xmlns:ng="http://angularjs.org" id="ng-app" data-ng-app="DdsApp" data-ng-controller="GlobelController">
   <head>
     <meta charset="utf-8">
-    <title>代驾平台</title>
+    <title data-ng-bind="title"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- build:css css/docs.css -->
     <link rel="stylesheet" href="./css/docs.css">
@@ -15,7 +15,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>
     <![endif]-->
   </head>
-  <body data-ng-controller="GlobelController" class="platform-body">
+  <body class="platform-body">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -42,7 +42,7 @@
               </li> -->
               <li class="divider"></li>
               <li>
-                <a href="#" data-ng-click="signOut()"><i class="iconfont icon-exit"></i> 退出系统</a>
+                <a href="#/login" data-ng-click="signOut()"><i class="iconfont icon-exit"></i> 退出系统</a>
               </li>
             </ul>
           </li>
@@ -52,7 +52,22 @@
     <div class="container-fluid">
       <div class="row">
         <!-- menu loaded -->
-        <aside class="col-xs-2 accordion" ng-include="menuTemplate">content loading......</aside>
+        <aside class="col-xs-2 accordion">
+          <div data-accordion close-others="true">
+            <div data-accordion-group data-ng-repeat="m in menus" data-is-open="m.open" data-ng-click="markOpen($index)" data-ng-class="{active:m.open}">
+              <div data-accordion-heading><i class="iconfont" data-ng-class="{'icon-{{m.alias}}': true}"></i> {{m.name}}</div>
+              <ul class="nav nav-pills nav-stacked">
+                <li data-ng-repeat="m2 in m.subname"
+                  data-ng-class="{active: isActivedMenu('/'+m2.path)}">
+                  <a href="#/{{m2.path}}" data-ng-click="resetTitle(m2.name)">
+                    <i class='iconfont icon-arrow-right'></i>
+                    <span data-ng-bind="m2.name"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
         <section class="col-xs-10">
           <div data-alert data-ng-repeat="alert in alerts" data-type="{{alert.type}}" data-close="closeAlert($index)" class="animated fade-in">
             <i class="iconfont icon-{{alert.type}}"></i>
@@ -77,8 +92,11 @@
           </div>
         </div>
       </div>
+      <div class="loading text-primary" data-ng-show="loading">
+        <i class="iconfont icon-loading"></i>
+      </div>
     </footer>
-    <div class="mask" data-ng-show="!showPage"></div>
+    <div class="mask" data-ng-hide="isLogged"></div>
     <!-- build:js js/docs.js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>
@@ -90,9 +108,23 @@
     <script src="js/app.js"></script>
     <script src="js/filters.js"></script>    
     <script src="js/services.js"></script>
-    <script src="js/templates.js"></script>    
+    <script src="js/resources.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="views/common/login.js"></script>
+    <script src="views/common/home.js"></script>
+    <script src="views/common/pwd.js"></script>
+    <script src="views/user/user.js"></script>
+    <script src="views/role/role.js"></script>
+    <script src="views/rule/tmpl.js"></script>
+    <script src="views/rule/rule.js"></script>
+    <script src="views/rule/rule.detail.js"></script>
+    <script src="views/customer/customer.js"></script>
+    <script src="views/driver/driver.js"></script>
+    <script src="views/order/order.js"></script>
+    <script src="views/order/order.period.js"></script>
     <!-- endbuild -->
   </body>
 </html>

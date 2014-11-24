@@ -1,0 +1,88 @@
+<form class="form-horizontal form-modal" role="form" name="modalForm" novalidate data-ng-init="province=extraData.areas[extraData.provinceOrder]||'';city=province.subname[extraData.cityOrder]||''">
+  <div class="modal-header">
+    <button type="button" class="close" data-ng-click="cancel()">
+      <span aria-hidden="true">&times;</span>
+      <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title" data-ng-bind="modalTitle"></h4>
+  </div>
+  <div class="modal-body">
+    <div data-alert data-type="danger" data-ng-show="alert.show" class="animated fade-in">
+      <i class="iconfont icon-danger"></i>
+      <span data-ng-bind="alert.msg"></span>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">用户名</label>
+      <div class="col-xs-8">
+        <p class="form-control-static" data-ng-bind="formData.userId"></p>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.userName.$valid &amp;&amp; modalForm.userName.$dirty, 'has-error':modalForm.userName.$invalid &amp;&amp; modalForm.userName.$dirty}">
+      <label for="userfullname" class="col-xs-3 control-label">* 姓名</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="userName" data-ng-model="formData.userName" data-ng-minlength="2" data-ng-maxlength="5" placeholder="2-5位" maxlength="5">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.userName.$dirty" data-ng-class="{'glyphicon-ok':modalForm.userName.$valid, 'glyphicon-remove':modalForm.userName.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.province.$valid &amp;&amp; modalForm.province.$dirty &amp;&amp; modalForm.city.$dirty &amp;&amp; modalForm.city.$valid, 'has-error':(modalForm.province.$invalid &amp;&amp; modalForm.province.$dirty) || (modalForm.city.$invalid &amp;&amp; modalForm.city.$dirty)}">
+      <label for="province" class="col-xs-3 control-label">* 地区</label>
+      <div class="col-xs-8">
+        <div class="row">
+          <div class="col-xs-6">
+            <select name="province" class="form-control"
+              data-ng-model="province" 
+              data-ng-options="prov.name for prov in extraData.areas"
+              data-ng-change="formData.provinceId=province.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+          <div class="col-xs-6">
+            <select name="city" class="form-control"
+              data-ng-model="city"
+              data-ng-options="city.name for city in province.subname"
+              data-ng-change="formData.cityId=city.id"
+              required>
+              <option value="">---请选择---</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.mobilePhone.$valid &amp;&amp; modalForm.mobilePhone.$dirty, 'has-error':modalForm.mobilePhone.$invalid &amp;&amp; modalForm.mobilePhone.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">* 手机号</label>
+      <div class="col-xs-8">
+        <input type="tex" class="form-control" name="mobilePhone" data-ng-model="formData.mobilePhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" maxlength="11" required>
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.mobilePhone.$dirty" data-ng-class="{'glyphicon-ok':modalForm.mobilePhone.$valid, 'glyphicon-remove':modalForm.mobilePhone.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.emergencyPhone.$valid &amp;&amp; modalForm.emergencyPhone.$dirty, 'has-error':modalForm.emergencyPhone.$invalid &amp;&amp; modalForm.emergencyPhone.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">紧急联系电话</label>
+      <div class="col-xs-8">
+        <input type="tex" class="form-control" name="emergencyPhone" data-ng-model="formData.emergencyPhone" data-ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" maxlength="11">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.emergencyPhone.$dirty" data-ng-class="{'glyphicon-ok':modalForm.emergencyPhone.$valid, 'glyphicon-remove':modalForm.emergencyPhone.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.address.$valid &amp;&amp; modalForm.address.$dirty, 'has-error':modalForm.address.$invalid &amp;&amp; modalForm.address.$dirty}">
+      <label for="usermobile" class="col-xs-3 control-label">常用目的地</label>
+      <div class="col-xs-8">
+        <input type="text" class="form-control" name="address" data-ng-model="formData.address" data-ng-maxlength="20" maxlength="20" placeholder="长度小于等于20位">
+        <i class="glyphicon form-control-feedback" data-ng-show="modalForm.address.$dirty" data-ng-class="{'glyphicon-ok':modalForm.address.$valid, 'glyphicon-remove':modalForm.address.$invalid}"></i>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-3 control-label">注册时间</label>
+      <div class="col-xs-8">
+        <p class="form-control-static" data-ng-bind="formData.createTime | myDate"></p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" data-ng-disabled="modalForm.$invalid || modalForm.$pristine" data-ng-click="confirm()">
+      <i class="glyphicon glyphicon-ok"></i> 确认
+    </button>
+    <button class="btn" data-ng-click="cancel()">
+      <i class="glyphicon glyphicon-ban-circle"></i> 取消
+    </button>
+  </div>
+</form>

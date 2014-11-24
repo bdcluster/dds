@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  var app = angular.module('DdsFilters', [])
+  angular.module('DdsFilters', [])
   .filter('myDate', ['$filter', function($filter){
     return function(d){
       var mydate, argu;
@@ -11,7 +11,6 @@
       }
     };
   }])
-  /*  1=是； 2=否*/
   .filter('cutDesc', function(){
     return function(desc){
       if (desc && desc.length>10) return desc.substring(0, 15) + '...';

@@ -15,7 +15,7 @@
     };
 
     $scope.doSearch = function(o){
-      if(angular.isObject(o)){
+      if(C.searchFlag(this.search)){
         C.list(this, angular.extend(paramsInit, o, {pageNum:1}));
       }
     };

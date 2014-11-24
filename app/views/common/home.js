@@ -20,7 +20,7 @@
         C.badResponse(res);
       });
     };
-    if(storage.get(key) === null){
+    if(storage.get(key) === null && storage.get('isLogged') === 'true'){
       $scope.provincesData();
     }
 

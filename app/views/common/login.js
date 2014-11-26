@@ -63,15 +63,15 @@
         C.badResponse(res);
       });
 
-      this.getCode();
+      // this.getCode();
     };
 
     $scope.isUnchanged = function(user){
       return angular.equals(user, $scope.master);
     };
 
-    $scope.getCode = function(){
+    /*$scope.getCode = function(){
       $scope.code = $rootScope.codeUrl + '?chaos=' + Math.random();
-    };
+    };*/
   }]);
 })();

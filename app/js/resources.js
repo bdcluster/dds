@@ -42,7 +42,7 @@
       host = '10.10.40.250';
       port = ':8080';
     }
-    $rootScope.codeUrl = http + '://' + host + port + proj + '/getCheckCode';
+    // $rootScope.codeUrl = http + '://' + host + port + proj + '/getCheckCode';
     url = http + '://' + host + port + proj + '/:endpoint/:action/:id';
 
     return $resource(url, normalPrarms, {

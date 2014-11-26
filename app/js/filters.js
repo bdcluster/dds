@@ -6,7 +6,7 @@
       var mydate, argu;
       if(d){
         mydate = new Date(d);
-        argu = arguments[1] || 'yyyy-MM-dd hh:mm:ss';
+        argu = arguments[1] || 'yyyy-MM-dd HH:mm:ss';
         return $filter('date')(mydate, argu);
       }
     };

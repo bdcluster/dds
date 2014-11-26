@@ -38,7 +38,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.email.$valid &amp;&amp; modalForm.email.$dirty, 'has-error':modalForm.email.$invalid &amp;&amp; modalForm.email.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">邮箱</label>
       <div class="col-xs-8">
-        <input type="email" class="form-control" name="email" data-ng-model="formData.email">
+        <input type="email" class="form-control" name="email" data-ng-model="formData.email" maxlength="30">
         <i class="glyphicon form-control-feedback" data-ng-show="modalForm.email.$dirty" data-ng-class="{'glyphicon-ok':modalForm.email.$valid, 'glyphicon-remove':modalForm.email.$invalid}"></i>
       </div>
     </div>

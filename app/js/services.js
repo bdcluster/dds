@@ -273,10 +273,23 @@
         return ruleRecord.join(';');
       },
 
+      /*
+        去除json中null或undefined值
+      */
+      validJson:function(json){
+        var newJson = angular.copy(json);
+        for(var key in newJson){
+          if(newJson[key] === null || newJson[key] === undefined){
+            delete newJson[key];
+          }
+        }
+        return newJson;
+      },
+
       exportFile: function(options){
         var url = $window.location.origin, 
             prj = '/ddrive-platform-web',
-            obj = angular.extend({}, options), 
+            obj = angular.extend({}, this.validJson(options)), 
             str = [],
             self= this; 
         if(obj.endpoint && obj.action){

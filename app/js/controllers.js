@@ -14,7 +14,7 @@
 
     var storage = C.storage();
     angular.extend($rootScope, {
-      version: 'ver 0.4',
+      version: 'ver 0.1',
       title: "代驾平台",
       isLogged: AuthService.isLogged || storage.get('isLogged'),
       loading: false,

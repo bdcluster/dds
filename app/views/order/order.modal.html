@@ -54,7 +54,7 @@
       <div class="col-xs-8">
         <p class="form-control-static" data-ng-bind="formData.driveStartTime | myDate"></p>
         <p class="form-control-static" data-ng-bind="formData.driveEndTime | myDate"></p>
-        <p class="form-control-static">共：<span data-ng-bind="formData.serviceTime"></span> 小时</p>
+        <p class="form-control-static">共：<span data-ng-bind="formData.serviceTime/60 + '' | limitTo:3"></span> 小时</p>
       </div>
     </div>
     <div class="form-group">

@@ -89,7 +89,7 @@
       },
       orderExport: function(){
         C.exportFile(angular.extend(
-          {endpoint:'order', action:'exportOrder'}, $scope.search
+          {endpoint:'order', action:'exportOrder'}, $scope.search, $routeParams
         ));
       },
       ordDetail: function(ord){

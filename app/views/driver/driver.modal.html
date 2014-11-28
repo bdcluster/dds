@@ -66,7 +66,7 @@
     <div class="form-group has-feedback" data-ng-class="{'has-success':modalForm.driveAge.$valid &amp;&amp; modalForm.driveAge.$dirty, 'has-error':modalForm.driveAge.$invalid &amp;&amp; modalForm.driveAge.$dirty}">
       <label for="usermobile" class="col-xs-3 control-label">驾龄</label>
       <div class="col-xs-8">
-        <input type="number" class="form-control" name="driveAge" data-ng-model="formData.driveAge" data-min="1" data-max="60" placeholder="驾龄介于1-60">
+        <input type="number" class="form-control" name="driveAge" data-ng-model="formData.driveAge" data-ng-pattern="/^[1-9]\d*$/" data-min="1" data-max="60" maxlength="2" placeholder="驾龄介于1-60">
         <i class="glyphicon form-control-feedback" data-ng-show="modalForm.driveAge.$dirty" data-ng-class="{'glyphicon-ok':modalForm.driveAge.$valid, 'glyphicon-remove':modalForm.driveAge.$invalid}"></i>
       </div>
     </div>

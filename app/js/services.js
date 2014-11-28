@@ -192,6 +192,7 @@
         var options = {
           templateUrl: path + m +'.modal.html',
           controller: 'ModalController',
+          backdrop:'static',
           resolve: {
             modalSet: function(){ return modalSet; }
           }
@@ -430,7 +431,7 @@
 
       searchFlag: function(searchData){
         var storage = this.storage(), lastSearch;
-        if(angular.equals(searchData, {}) || !angular.isObject(searchData)){
+        if(!angular.isObject(searchData)){
           return false;
         }
         else{

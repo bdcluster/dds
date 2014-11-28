@@ -93,6 +93,7 @@
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
               <input type="number" name="ruleStartTime{{$index}}" class="form-control" placeholder="开始时间"
                 min="0" max="23"
+                data-ng-pattern="/^[0-9]\d*$/"
                 data-ng-model="formData.arrayStr[$index][0]"
                 data-ng-readonly="!$first"
                 required>
@@ -105,6 +106,7 @@
               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
               <input type="number" name="ruleEndTime{{$index}}" class="form-control" placeholder="结束时间"
                 min="0" max="23"
+                data-ng-pattern="/^[0-9]\d*$/"
                 data-ng-model="formData.arrayStr[$index][1]"
                 data-ng-change="formData.arrayStr[$index+1][0]=formData.arrayStr[$index][1]"
                 required>

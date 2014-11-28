@@ -1,8 +1,8 @@
 (function(){
   'use strict';
   angular.module('OrderPeriodModule', []).controller('OrderPeriodController', [
-    '$scope','C','DDS', function(
-     $scope,  C,  DDS){
+    '$scope','$routeParams','C','DDS', function(
+     $scope,  $routeParams,  C,  DDS){
     
     var curYear = new Date().getFullYear(), curMonth = new Date().getMonth() +1;
     $scope.years = C.range(2010, curYear);

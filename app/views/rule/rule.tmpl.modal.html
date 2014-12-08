@@ -32,7 +32,7 @@
             data-datepicker-options="dateOptions"  
             data-show-button-bar="false"
             data-min-date="extraData.minDate"
-            data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd')"
+            data-ng-change="formData.openTime=(formData.openTime | date: 'yyyy-MM-dd');formData.closeTime='';"
             data-ng-click="toggleCal($event);sOpen=!sOpen;eOpen=false;"
             required readonly>
         </div>

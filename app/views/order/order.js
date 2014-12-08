@@ -1,8 +1,8 @@
 (function(){
   'use strict';
   angular.module('OrderModule', []).controller('OrderController', [
-    '$scope','$routeParams','$timeout','C','DDS', function(
-     $scope,  $routeParams,  $timeout,  C,  DDS){
+    '$scope','$routeParams','$location','$timeout','C','DDS', function(
+     $scope,  $routeParams,  $location  ,$timeout,  C,  DDS){
 
     var paramsInit = {
       endpoint:'order', action:'select',
@@ -41,7 +41,7 @@
         C.list(this, angular.extend(paramsInit, {pageNum:$scope.pageNum}));
       },
       goBack:function(){
-        history.back();
+        $location.path($routeParams.ref).search('');
       },
       doSearch: function(){
         if(C.searchFlag(this.search)){

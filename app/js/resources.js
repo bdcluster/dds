@@ -39,7 +39,7 @@
       angular.extend(normalPrarms, {local:1, mock:1, enforce:1, chaos:Math.random()});
     }
     else if(runtimeEvn() ===1){
-      host = '10.10.40.250';
+      host = '10.10.40.253';
       port = ':8080';
     }
     // $rootScope.codeUrl = http + '://' + host + port + proj + '/getCheckCode';

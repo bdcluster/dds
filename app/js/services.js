@@ -98,6 +98,11 @@
           get: function(key){
             return store.get(key);
           },
+          getOnce: function(key){
+            var val = this.get(key);
+            this.remove(key);
+            return val;
+          },
           remove: function(key){
             return store.remove(key);
           },
@@ -376,7 +381,8 @@
       },
 
       goOrderList: function(opts){
-        $location.path('/orderPeriod').search(opts);
+        var ref = $location.path();
+        $location.path('/orderPeriod').search(angular.extend(opts, {ref: ref}));
       },
 
       getKeyJson:function(str){

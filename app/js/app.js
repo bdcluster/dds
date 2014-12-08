@@ -17,6 +17,7 @@
   ])
   .run(['$rootScope', '$location', 'AuthService', 'C', function($rootScope, $location, AuthService, C) {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+      C.storage().remove('searchData'); 
       var isLogged = AuthService.isLogged || C.storage().get('isLogged');
       if (nextRoute.access && nextRoute.access.requiredLogin && !isLogged) {
         $location.path('/login');

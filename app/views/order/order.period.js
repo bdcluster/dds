@@ -4,17 +4,26 @@
     '$scope','$routeParams','C','DDS', function(
      $scope,  $routeParams,  C,  DDS){
     
+    var storage = C.storage();
     var curYear = new Date().getFullYear(), curMonth = new Date().getMonth() +1;
-    $scope.years = C.range(2010, curYear);
-    $scope.search = {
+    var curSearch =  {
       year: curYear,
       month: curMonth,
       quarter: Math.ceil((new Date().getMonth()+1)/3),
       dp1: curYear + '-' + C.twiNum(curMonth) + '-01',
       dp2: curYear + '-' + C.twiNum(curMonth) + '-' + C.mLength()[curMonth]
     };
+    $scope.years = C.range(2010, curYear);
+
+    // 如果本地数据保留了搜索数据，则$scope.search直接取该值，取完后删除，否则便初始化一个
+    if(storage.get('searchStatus')!==null){
+      $scope.search = angular.extend({}, storage.getOnce('searchStatus'));
+    }
+    else{
+      $scope.search = angular.extend({}, curSearch);
+    }
     var originSearch = angular.copy($scope.search);
-    $scope.areas = C.storage().get('provinces');
+    $scope.areas = storage.get('provinces');
 
     var paramsInit = angular.extend({endpoint:'order', action:'statis'}, C.getPeriod($scope.search));
     $scope.paramsInit = angular.copy(paramsInit);
@@ -43,15 +52,20 @@
     };
 
     $scope.refresh = function(){
+      storage.remove('searchData');
+      $scope.search = angular.extend({}, curSearch);
+      // angular.extend($scope.search, curSearch);
+
       if(!angular.equals(this.paramsInit, paramsInit)){
-        C.list(this, angular.extend(this.paramsInit, {pageNum: 1}));
+        C.list(this, angular.extend(this.paramsInit, C.getPeriod(this.search), {pageNum: 1}));
         angular.extend(this, angular.copy(C.empty));
-        $scope.search = angular.copy(originSearch);
+        $scope.search = angular.copy(curSearch);
         angular.copy(this.paramsInit, paramsInit);
       }
     };
 
     $scope.orderByCust = function(cId){
+      storage.set('searchStatus', $scope.search);
       C.goOrderList(angular.extend({custId: cId}, C.getPeriod($scope.search)));
     };
 
